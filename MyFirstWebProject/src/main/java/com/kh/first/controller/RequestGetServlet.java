@@ -66,7 +66,6 @@ public class RequestGetServlet extends HttpServlet {
 		// 이 파트에서 작업하면 되는데 오늘 시간없어서 출력문 하나만 써보자
 		// System.out.println("헉 진짜임?");
 		// get 방식 요청으로 이게 출력되는걸 어제 확인했음
-		// response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		// 실제로 서블릿 만들면 doGet, doPost만 만들어서 진행한다, 통일성이 부여된 것
 		// 이 안에서 작업을 수행하면 되는데...

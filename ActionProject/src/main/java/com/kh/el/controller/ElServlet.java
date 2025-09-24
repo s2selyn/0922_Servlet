@@ -1,6 +1,7 @@
 package com.kh.el.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -87,6 +88,34 @@ public class ElServlet extends HttpServlet {
 		session.setAttribute("academy", "KH 아카데미");
 		session.setAttribute("lecture", new Person("고길동", 40, "마포"));
 		// request, session스코프에 값담아봤따
+		
+		// request와 session에 동일한 키값으로 Attribute추가
+		// request에 한다면 덮어쓰기 될텐데 다른것에 같은 키값으로 추가해보자는것
+		request.setAttribute("key", "request Key");
+		session.setAttribute("key", "session Key");
+		// 01_el.jsp 에서 3. EL 사용 시 키값이 동일한 경우 작업했음
+		
+		// --------------------------------------------------
+		
+		// EL구문 연산용 값 추가로 넘겨주기, 지금은 임의의 상수를 넘길건데,
+		// DB에서 작업한 요청 처리결과를 넘긴다고 생각하면 됨, SELECT 결과 또는 DML 성공실패 여부
+		// 숫자값
+		request.setAttribute("small", 3);
+		request.setAttribute("big", 10);
+		
+		// 앞으로 넘어갈 수 있는 값의 형태는 숫자, 문자열
+		// 문자열
+		request.setAttribute("strOne", "안녕");
+		request.setAttribute("strTwo", new String("안녕"));
+		
+		// 조회 결과를 넘긴다면 단일행 VO, 여러행 VO의 List일 수 있음
+		// 객체
+		request.setAttribute("obj", new Person("콩쥐", 20, "콩쥐네집"));
+		
+		// 리스트
+		request.setAttribute("list", new ArrayList());
+		
+		// --------------------------------------------------
 		
 		// 응답 뷰 배정 -> 포워딩
 		// 배정하려면 requestDispatcher 필요, 인자값으로 응답 파일로 사용할 jsp경로를 전달
