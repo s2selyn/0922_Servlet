@@ -26,6 +26,7 @@ public class IncludeServlet extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/views/include.jsp")
 			   .forward(request, response);
 		// 작업 저장해야 컴파일 새로하고 서버 껐다켜야 컴파일 새로한게 반영되고 새로고쳐야 서버에서 바뀐내용을 받아온다
+		// 잘 연결됐는지 확인하고 jsp 파일에서 작업하러감
 		
 	}
 
