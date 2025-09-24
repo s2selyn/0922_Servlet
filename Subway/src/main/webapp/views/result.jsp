@@ -55,6 +55,8 @@
 			??? order에 참조해서 getXXX메소드 호출(접근제한자)
 			출력식에는 세미콜론을 달지 않는다
 			스크립트에는 세미콜론을 무조건 달아야함
+			
+			전부 getter써서 출력식에 넣어버리자
 		--%>
 		<h3>주문자정보</h3>
 		이름 : <%= order.getName() %> <br>
@@ -63,11 +65,11 @@
 		요청사항 : <%= order.getRequest() %> <br><br>
 		
 		<h3>메뉴정보</h3>
-		샌드위치 : <br>
-		채소 : <br>
-		소스 : <br>
-		쿠키 : <br>
-		결제 방식 : <br><br>
+		샌드위치 : <%= order.getSandwich() %> <br>
+		채소 : <%= order.getVegetable() %> <br>
+		소스 : <%= order.getSauce() %> <br>
+		쿠키 : <%= order.getCookie() %> <br>
+		결제 방식 : <%= order.getPayment() %> <br><br>
 		
 		위와 같이 주문하시겠습니까? <br><br>
 		

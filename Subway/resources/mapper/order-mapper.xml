@@ -22,4 +22,25 @@
 		     , SYSDATE
 		       )
 	</insert>
+	
+	<select id="findAll"
+			resultType="com.kh.subway.model.vo.Subway">
+	<!-- ??? 10:30 namespace, resultType 지정, orderDate 별칭 -->
+		SELECT
+		       NAME
+		     , PHONE
+		     , ADDRESS
+		     , REQUEST
+		     , SANDWICH
+		     , VEGETABLE
+		     , SAUCE
+		     , COOKIE
+		     , PAYMENT
+		     , ORDER_DATE orderDate
+		  FROM
+		       TB_SUBWAY
+		 ORDER
+		    BY
+		       orderDate DESC
+	</select>
 </mapper>
