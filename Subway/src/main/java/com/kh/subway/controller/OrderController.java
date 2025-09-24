@@ -2,6 +2,7 @@ package com.kh.subway.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -137,7 +138,42 @@ public class OrderController extends HttpServlet {
 		
 		// 4) 응답결과 출력
 		if(result > 0) {
-			response.getWriter().append("success :)");
+			
+			// response.getWriter().append("success :)");
+			// 문자열, printWriter 쓰면 복잡해진다. jsp를 만들어서 HTML을 보내게 하자
+			// result.jsp 생성하고왔음
+			
+			// 성공했다고 가정하고 작업하자
+			// 성공했을때 클라이언트에게 html 데이터 보내야함, 직접쓰기 힘드니 jsp 쓰기로함
+			// 여기서 할 일은?
+			
+			// 1. 사용자에게 응답 시 출력해줄 데이터가 있다면
+			// 어딘가에 속성으로 추가해주기
+			// insert로 한행 추가하는 작업임, 주문하면 보통 주문내역 보여준다, 그런느낌으로 주문할 때 입력했던 insert 결과를 다시 응답데이터 화면에 출력해줘보자
+			// 앞에서 넘어온 값들은 변수로 뽑아뒀지만, 이걸 전부 Subway order에 주소값 담았음, 이 주소값 jsp에 전달
+			// jsp는 html같지만 자바코드
+			
+			// request객체의 Attribute로 세팅(setAttribute로 값을 넣는거니까)
+			// key, value 인자로 넘기는데 안헷갈리게 key값도 value랑 똑같이 맞춰주자
+			request.setAttribute("order", order);
+			
+			// 어떤 jsp로 응답을 만들어낼건지 -> result.jsp
+			// 2. 응답 뷰 지정
+			// RequestDispacher가 필요하다, 이건 HttpServletRequest request 객체로 만들 수 있음
+			// ??? 9:25
+			// 메소드니까 인자값으로 응답으로 전달해줄 jsp파일의 경로 및 파일명을 지정
+			// 경로 시작점은 webapp폴더부터로 생각 -> /로 작성
+			// 어떻게 찾아감? views 폴더로 가야함 -> views
+			// 그 아래로 가야하니까 / 추가, 그럼 jsp 파일 있음
+			RequestDispatcher view
+			= request.getRequestDispatcher("/views/result.jsp");
+			
+			// ??? 9:30 이거 뭐하는거더라
+			view.forward(request, response);
+			
+			// 내가 보여주고싶은 응답화면을 만들어내는 절차
+			// 방법은 외우는게 아님, 반복적으로 써보면서 알아서 익히는거, 많이 써서 자연스럽게 외우는걸로
+			
 		} else {
 			response.getWriter().append("fail :(");
 		}
