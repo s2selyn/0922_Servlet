@@ -121,6 +121,7 @@
           있으면, 없지 않으면, 주소밖에 들어갈게 없는데 딱히 다른 조건은 필요없으니 otherwise
           지금 로그아웃은 오늘 남은시간에 구현 못해서 하고싶으면 서버 껐다켜거나 브라우저 껐다켜야함
           --%>
+          <%-- <c:when> 얘는 여기 choose에 들어가면 안된다 --%>
           <c:choose>
           
           	  <c:when test="${ empty sessionScope.userInfo }">
