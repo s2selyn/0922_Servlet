@@ -109,6 +109,280 @@
 	num1의 값 : ${ num1 } <br>
 	num2의 값 : ${ num2 } <br>
 	result의 값 : ${ result } <br>
+	
+	<c:set var="result" scope="request">9999</c:set>
+	<%-- value 속성을 안적고 content 영역에 쓸 수 있다 --%>
+	<%-- value속성 말고 시작태그와 종료태그 사이에도 대입할 값을 기술할 수 있음 --%>
+	
+	<hr>
+	
+	<pre>
+		* 속성 삭제(&lt;c:remove var="제거하려고하는 키값" scope="스코프영역(생략가능)"/>)
+		<%-- 태그 prefix로 시작, key를 입력하면 key-value가 같이 날아간다 --%>
+		
+		- 해당 Attribute를 Scope영역에서 제거하는 태그
+		- scope속성을 작성하지 않으면 모든 scope에서 해당 Attribute를 찾아서 다 제거함
+	</pre>
+	
+	삭제 전 result : ${ result } <br>
+	<%-- EL구문에서 그냥 result라고 작성했으니까 pageScope부터 찾아올라가는데 거기ㅣ 안써서 requestScope를 찾음, 우리가 9999 작성했으니까 그걸로 나옴, sessionScope까지 못올라갔음 --%>
+	
+	<%-- 속성 var, scope 2개 적을 수 있는데 보통은 scope를 적는다, 안적으면 다날아가니까 --%>
+	
+	<hr>
+	
+	requestScope에서 result속성을 삭제 <br>
+	
+	<%-- attribute는 key-value 세트니까 get/remove 할때 key가 필요 --%>
+	<c:remove var="result" scope="request" />
+	삭제 후 result : ${ result } <br>
+	<%-- 30은 왜나오냐? session에 담았거든요, 이건 아직 안지웠음, scope를 request로 지정했으니까 9999만 삭제됨 --%>
+	
+	<hr>
+	
+	<pre>
+		* 속성 출력(&lt;c:out value="출력할값" default="기본값" escapeXml="t/f"/>)
+		- 데이터를 출력하려고 할 때 사용하는 태그
+		- default : 기본값, value속성에 출력하고자 하는 값이 없을 경우 대체해서 출력할
+					내용물을 쓸 수 있음(생략가능)
+		- escapeXml : HTML태그를 인식시킬수도있음
+	</pre>
+	
+	num1을 출력! : <c:out value="${ num1 }" /> <br>
+	이걸 왜이렇게 씀 ? : ${ num1 } <br>
+	
+	<br>
+	
+	<%-- 귀찮아보이는데 default 속성을 이용하면 꿀같음 --%>
+	requestScope result : ${ requestScope.result } <br>
+	<%-- 우리가 지워버려서 빈문자열이 출력됨 --%>
+	out태그를 써볼까? : <c:out value="${ requestScope.result }" default="값이 없어용..." />
+	<%-- default 속성은 value에 값이 없을 때 대체해서 보여줄 기본값을 만들어주는것
+	원래 이거 하려면 if문 썼어야했음, 값이 있으면 출력, 값이 없으면 없다는 코멘트 출력 등
+	이거써서 굳이 if문 안쓰고도 출력가능
+	--%>
+	
+	<br>
+	
+	<c:set var="outStr" value="<strong>강한정보</strong>" />
+	<%-- scope지정 안했으니까 pageScope에 들어간다, 이런 동적 요소를 화면에 쓰고싶은 일이 생겼음 --%>
+	<br>
+	${ outStr } <br>
+	<%-- EL구문으로 그냥 출력하면 strong 태그 적용됨 --%>
+	
+	<%-- out 태그로 이용하면? --%>
+	<c:out value="${ outStr }" />
+	&lt;strong>강한정보&lt;/strong>
+	<%-- ??? 9:35 escapeXml을 쓰면 일어나는 일 설명 --%>
+	
+	<hr>
+	
+	<h3>2. 조건문 - if</h3>
+	
+	<pre>
+	
+		[표현법]
+		&lt;c:if test="조건식">
+			(content영역에)조건식이 true일 경우 실행할 내용(우리는 보통 출력하겠지)
+		&lt;/c:if>
+		<%-- xml 기반 기술이라 반드시 닫는 태그 필요함 --%>
+		
+		- Java의 단일 if문과 비슷한 역할을 수행하는 태그
+		- 조건식은 test라는 속성에 작성(보통 여기서 많이 실수)
+		  (조건식을 만들때는 반드시 EL구문으로 작성해야함!!!!!!!!!!)(어제 배운 논리연산, 비교연산 할 때 배운 EL구문으로 써야함, 자바코드 안된다)
+	</pre>
+	
+	<%-- ??? 9:40 예시
+	만약에 스크립틀릿이었다면 조건식을 쓸 때 뒷단에서 넘긴 값을 받아와서
+	<% if((int)request.getAttribute("v1") > (int)request.getAttribute("v2")) { %>
+		value1이 value2보다 큽니다.
+	<% } %>
+	이렇게 작성, 이거 쓰기 싫어서 배운다
+	--%>
+	<c:if test="${ num1 gt num2 }">
+		<strong>num1이 num2보다 큽니다.</strong> <br>
+	</c:if>
+	
+	<c:if test="${ num1 le num2 }">
+		<strong>num1이 num2보다 작거나 같습니다.</strong> <br>
+	</c:if>
+	<%-- 이건 단일 if 쓸 때 사용하는 태그 --%>
+	
+	<br>
+	
+	<%-- 조건이 여러개일때 사용하는 조건태그 --%>
+	<h3>3. 조건문 - choose, when, otherwise</h3>
+	<%-- oracle에서 case when then? 이런거 했던거랑 비슷함..인데 기억력 이슈 --%>
+	
+	<pre>
+		[ 표현법 ]
+		&lt;c:choose>
+			&lt;c:when test="조건1">
+				어쩌고저쩌고~
+			&lt;/c:when>
+			&lt;c:when test="조건2">
+				어쩌고저쩌고~
+			&lt;/c:when>
+			&lt;c:otherwise>
+				어쩌고저쩌고~
+			&lt;/c:otherwise>
+		&lt;/c:choose>
+		
+		- Java의 if-else문, switch문 비슷한 역할을 하는 태그
+		각 조건들은 choose의 하위요소로 when태그를 이용해서 작성
+		otherwise는 조건을 작성하지 않음
+		
+		조건 EL구문으로 작성하기!
+	</pre>
+	<%-- choose안에는 when, otherwise만 들어갈 수 있다, when, otherwise가 choose의 자식요소, choose로 전체를 감싸고 시작
+	when 태그가 if역할을 함
+	if 마지막의 else, switch의 default 쓰듯이 otherwise 사용
+	--%>
+	
+	<%-- 조건 여러개써서 화면출력을 다르게하고싶다면 아마 이런 스크립틀릿 --%>
+	<%--
+	<% if(조건1) { %>
+	
+	<% } else if(조건2) { %>
+	
+	<% } else if(조건3) { %>
+	
+	<% } else { %>
+	
+	<% } %>
+	--%>
+	<%-- 귀찮고 위화감드니까 이걸 안쓰고싶다 --%>
+	
+	<%-- DB에서 데이터 조회해왔는데 회원의 포인트라고 하자
+	이사람의 포인트가 100점보다 아래면 일반회원, 300점보다 아래면 우수회원, 300점보다 넘어간다면 아주 훌륭한 회원 이런식으로 출력해주고싶다 --%>
+	<c:set var="point" value="200" />
+	
+	회원 등급 출력 :
+	<c:choose>
+		<c:when test="${ point le 100 }">
+			일반회원 <br>
+		</c:when>
+		<c:when test="${ point le 300 }">
+			우수회원 <br>
+		</c:when>
+		<c:otherwise>
+			<strong>최우수회원</strong>
+		</c:otherwise>
+	</c:choose>
+	<%-- point value 200이니까 두번째 when을 만족하고 우수회원 출력된다 --%>
+	<%-- choose는 when과 otherwise 말고는 가질 수 없음, 그래서 '회원 등급 출력 :' <- 이런거, 주석 넣어버리면 바로 500에러남
+	주석을 when 안, otherwise 안에 넣어버리면 또 그건 가능하긴함
+	아무튼 실수 많이 하니까 기억하쇼
+	--%>
+	
+	<hr>
+	
+	<h3>4. 반복문 - forEach</h3>
+	
+	<%--
+	제어변수 역할은 var에 작성한 속성명(변수명이라고 생각)
+	향상된 for문의 varStatus는 잘 쓰지 않는다
+	--%>
+	<pre>
+		[ 표현법 ]
+		for loop문
+		&lt;c:forEach var="속성명" begin="초기값" end="끝값" step="몇씩증가">
+			반복시킬 내용
+		&lt;/c:forEach>
+		
+		step 은 생략 시 기본값이 1(보통 잘 안적음)
+		
+		향상된 for문(배열이나 collection의 모든 요소 순차반복)
+		&lt;c:forEach var="속성명" items="순차적으로접근할배열/컬렉션" varStatus="상태값">
+			반복시킬 내용
+		&lt;/c:forEach>
+		
+		var로 선언된 제어변수를 사용할때는 반드시 EL구문으로 접근해야함!!
+	</pre>
+	
+	<%-- 만약에 반복문 써서 0부터 9까지 html에 출력하고 싶은 상황이 있다면 --%>
+	<% for(int i = 0; i < 10; i++) { %>
+		<%= i %>
+	<% } %>
+	<%-- 제어변수 찍을때는 출력식을 사용
+	하지만 스크립틀릿도 싫고 출력식도 싫그등요? --%>
+	
+	<br>
+	
+	<c:forEach var="i" begin="0" end="9">
+		${ i }
+	</c:forEach>
+	
+	<br>
+	
+	<c:forEach var="i" begin="1" end="6">
+		<h${ i }>이런것도 가능</h${ i }>
+	</c:forEach>
+	<%-- 태그의 이름이 들어가는 부분에 EL구문을 써서 반복문 적용 가능 --%>
+	
+	<c:set var="color">
+		red, orangered, orange, yellow, yellowgreen, greenyellow, forestgreen
+	</c:set>
+	<%-- 이렇게 작성하면 attribute를 배열 형태로 선언한것이 된다 --%>
+	
+	color : ${ color }
+	
+	<br>
+	
+	<ul>
+		<%-- 향상된 for문을 써서 c를 이용해서 접근하도록 함 --%>
+		<c:forEach var="c" items="${ color }">
+			<li style="color: ${ c }">${ c }</li>
+		</c:forEach>
+	</ul>
+	
+	<hr>
+	
+	<%-- 서블릿에서 DB갔다온척함, 그럼 request에 담겨서 왔을것임 --%>
+	<%-- table태그는 정보를 정돈해서 보여주고 싶을 때 쓴다, tbody에서는 tag library 써보고
+	tfoot도 용도가 있으니 배워보자
+	출력하고싶은 데이터는 DB에서 조회해서 requestScope에 추가해둠, 뽑아서 출력해야하는데
+	조회결과가 없을 수 있음, 테이블에 insert가 되지않아서 비었거나 모든데이터 삭제해서 비었거나 뒷단에 특정 문제가 생겨서 정상적으로 데이터가 넘어오지 않았거나
+	있을수도있고 없을수도있는 상황을 구분해서 데이터 보여줘야하니까 조건문 만들어야함
+	두가지모두 하고싶은일이 있음(있는거출력/없다고출력)
+	이럴때 보통 choose when otherwise사용
+	--%>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>이름</th>
+				<th>나이</th>
+				<th>주소</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:choose>
+				<c:when test="${ empty list }">
+					<%-- 여기 들어왔다는 것은 list가 없다, 비어있다는 의미이므로 --%>
+					<tr>
+						<th colspan="3">조회결과가 존재하지 않습니다.</th>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<%-- list가 비어있지 않을 경우를 처리할 내용, list의 요소가 있긴 있는데 몇개인지 모름, 조회해온 내용 모두 출력하고싶으니 반복문
+					for loop문 또는 향상된 for문이 있는데 일반적으로 이런 상황에서는 향상된 for문 사용(list 또는 배열)
+					??? 10:44 loop도 EL구문 써서 하면 된다
+					toString 오버라이딩 안해둬서 person객체 주소값 출력된다.
+					person 객체를 출력하고싶은게 아니라 필드값을 출력하고싶으니 EL구문 + 각 person객체를 접근할 제어변수 p + 참조연산자 + 필드명
+					스크립틀릿은 getter메소드명
+					EL구문 쓰고있으니 필드명만 쓰면 네이밍 컨벤션에 맞춰서 getter 메소드를 호출한다
+					--%>
+					<c:forEach var="p" items="${ requestScope.list }">
+						<tr>
+							<td>${ p.name }</td>
+							<td>${ p.age }</td>
+							<td>${ p.address }</td>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</tbody>
+	</table>
 
 </body>
 </html>
