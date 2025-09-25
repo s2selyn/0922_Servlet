@@ -10,6 +10,8 @@
 		color: red;
 		font-size: 64px;
 		text-align: center;
+		height: 600px;
+		line-height: 600px;
 	}
 </style>
 </head>

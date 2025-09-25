@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.kh.java.member.model.service.MemberService;
 import com.kh.java.member.model.vo.Member;
@@ -104,14 +105,85 @@ public class LoginController extends HttpServlet {
 		// 스텝 2. RequestDispatcher를 만들어서 => 뷰 지정(어떤 jsp 쓸건지)
 		// 스텝 3. RequestDispatcher이용해서 forward()호출
 		
-		// 성공실패에 따라서 화면지정하려면 if-else 해서 각각 써줘야함, 따로따로 작업하자
-		// 실패했다고 가정하고 작업, 실패용 페이지 따로 만들기, 만약에 로그인페이지 따로 만들었다면 거기로 이동하면 되는데 모달로 만들었기 때문에 페이지 따로 추가
-		// 실패했따!
-		// msg라는 키값으로 결과페이지에 포워딩해야함, jsp에서 정하고왔음
-		request.setAttribute("msg", "로그인에 실패했습니다."); // 여기가 스텝 1
-		// 메세지 자체는 보내기 나름
+		// 로그인에 성공할 수 도있음 / 실패할 수 도있음
+		// 2. 성공실패 여부에 따라서 응답 페이지 다르게 보내주기
+		if(loginMember != null) {
+			// 로그인에 성공했따!!
+			
+			// 사용자의 정보를 앞단에 넘기기
+			// 로그인한 회원의정보를 로그아웃하거나
+			// 브라우저를 종료하기 전까지는 계속해서 유지하고 사용할 것이기 때문에
+			// sessionScope에 담기
+			
+			// 할말 많은데 일단 세션에 담는것부터
+			// 스텝 1. session의 Attribute로 사용자 정보 추가
+			// session의 타입 : HttpSession
+			// => 현재 요청 보내는 Client의 Session : HttpServletRequest request에 있음, 여기서 session을 얻는 방법은 request.getSession();
+			HttpSession session = request.getSession();
+			
+			// attribute 추가방법은 참조해서 setAttribute
+			session.setAttribute("userInfo", loginMember);
+			
+			// 로그인 성공 페이지는 따로 안만들었기 때문에 웰컴파일 다시 보여주는걸로 가정하자.
+			// 스텝 2. RequestDispatcher get해오기, 인자로 웰컴파일 경로 작성(webapp 바로 아래니까 / 적고 바로 파일명), forward 메소드 호출해서 전달
+			request.getRequestDispatcher("/index.jsp")
+				   .forward(request, response);
+			
+			// 로그인 했는데 로그인이랑 회원가입은 로그인전에 보여야할것같고
+			// 내정보랑 로그아웃은 로그인하면 보여야할것같은데
+			// 한 화면에 존재하고, 변화없으니 위화감이 든다
+			// 그럼 로그인 전에 보고싶은거, 로그인 후에 보고싶은게 다름 -> 조건
+			// 보이는 부분에 대한 조건은 헤더에 적어놨으니까 헤더를 수정해야함 -> header.jsp
+			
+		} else {
 		
-		request.getRequestDispatcher(""); // 여기가 스텝 2
+			// 성공실패에 따라서 화면지정하려면 if-else 해서 각각 써줘야함, 따로따로 작업하자 -> 나중에 조건문으로 분리
+			// 실패했다고 가정하고 작업, 실패용 페이지 따로 만들기, 만약에 로그인페이지 따로 만들었다면 거기로 이동하면 되는데 모달로 만들었기 때문에 페이지 따로 추가
+			// 실패했따!
+			// msg라는 키값으로 결과페이지에 포워딩해야함, jsp에서 정하고왔음
+			request.setAttribute("msg", "로그인에 실패했습니다."); // 여기가 스텝 1
+			// 메세지 자체는 보내기 나름
+			
+			request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
+				   .forward(request, response); // 여기가 스텝 2
+			
+		}
+		// 실패했을 때 request에 담아서 보낸다, 근데 로그인에 실패했습니다. 를 다른곳에서 사용할 일이 있을까?
+		// 한번 보여주고 쓰면 끝
+		// 만약에 로그인된 사용자의 정보를 request에 이런식으로 담아서 보내면 어떻게될까?
+		// 네이버에서 봤듯이 로그인하면 사용자정보가 나오는데, request에 담아서 보냈다면?
+		// 다른 요청을 보냈을 때 request에 더이상 존재하지 않는다, 계속 로그인된 상태를 유지못하고 한번 보여주고 끝나버림
+		// request는 사라지니까!
+		// 보편적으로 로그인은 내가 로그아웃하거나 브라우저를 끄기 전까지는 계속 로그인된 상태가 유지되고 상태를 확인할 수 있다
+		// 그럼 request에 담으면 안될것같은데?
+		
+		// 어제복습
+		// 1. 로그인된 사용자의 정보를 어딘가에 담을 것(application, session, request, page)
+		// 선택지 네개
+		/*
+		 * 크다
+		 * 1) application : 웹 애플리케이션 전역에서 사용 가능
+		 * 					(일반 자바 클래스에서 값을 사용할 수 있음)
+		 * 여기 담으면 서블릿이고 jsp고 상관없음, Service, VO, DAO에서도 가져다 쓸 수 있음
+		 * 
+		 * 2) session : 모든 JSP와 Servlet에서 꺼내 쓸 수 있음
+		 * 				단, session에 값이 지워지기 전까지
+		 * 				세션 종료 시점 : 브라우저 종료, 서버 멈춤, 코드로 지움(보통 로그아웃 기능 구현)
+		 * 
+		 * 3) request : 해당 request를 포워딩한 응답 JSP에서만 쓸 수 있음
+		 * 				요청 부터 응답까지만 딱 쓸 수 있음
+		 * 
+		 * 4) page : 값을 담은 JSP에서만 쓸 수 있음
+		 * 작다
+		 * 
+		 * => session, request를 많이 사용함
+		 * 
+		 */
+		// 지금은 request에 담아서 보내면 한번쓰고 땡, 다른 페이지(요청)에서는 성공정보가 남아있지않음
+		// 세션을 이용한 로그인 방식은.. ㅋㅋ 세션에 담습니다
+		// ??? 17:08 그럼 여기 있으면 JSP, Servlet 모두 사용 가능
+		// 아무튼 우리가 이번에 구현할건 세션 방식의 로그인(다른 방식도 있다)
+		// 정확히 표현하면 세션 및 쿠키를 이용한 방식인데 아직 쿠키 안배웠으니 세션만 써보자
 		
 		// 성공했다고 가정하고 작업
 		

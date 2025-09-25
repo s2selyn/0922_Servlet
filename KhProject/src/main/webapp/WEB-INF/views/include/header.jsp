@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -98,25 +99,49 @@
             <a class="nav-link js-scroll-trigger" href="#">사진게시판</a>
           </li>
           
+          <!--
+          	로그인 전 : 로그인 / 회원가입
+          	로그인 후 : 내정보 / 로그아웃
+          -->
           
+          <%-- 조건문 중에 오늘 배운 choose when otherwise를 쓸건데 선행작업이 필요함
+          3행에 올라가서 작업
+          prefix는 taglib의 속성
+          스크립틀릿 + @ + 지시어는 taglib + prefix="c" + uri
+          --%>
           
-          <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#log-in">로그인</a>
-          </li>
-          <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="join">회원가입</a>
-          </li>
+          <%-- 조건을 적용할 부분을 choose태그로 전체 감싸야함
+          첫번째 조건은 when으로 감싼다
+          조건식은 test 속성에 작성
+          조건식은 EL구문으로 써야함!
+          로그인 했는지 안했는지는 어떻게 알아?
+          로그인을 했다면 sessionScope에 userInfo라는 Attribute로 값이 담겨있을것이다
+          session에 참조해서 userInfo
+          이게 없어야 로그인 안된 상황이니까 없으면?은 empty
+          있으면, 없지 않으면, 주소밖에 들어갈게 없는데 딱히 다른 조건은 필요없으니 otherwise
+          지금 로그아웃은 오늘 남은시간에 구현 못해서 하고싶으면 서버 껐다켜거나 브라우저 껐다켜야함
+          --%>
+          <c:choose>
           
-         
-
-          
-          <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="myPage">내정보</a>
-          </li>
-          <li class="nav-item">
-          <a class="nav-link js-scroll-trigger" href="logout" onclick="return confirm('진짜로 로그아웃 하려고?')">로그아웃</a>
-          </li>
-          
+          	  <c:when test="${ empty sessionScope.userInfo }">
+		          <li class="nav-item">
+		          <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#log-in">로그인</a>
+		          </li>
+		          <li class="nav-item">
+		          <a class="nav-link js-scroll-trigger" href="join">회원가입</a>
+		          </li>
+	          </c:when>
+	         
+	          <c:otherwise>
+		          <li class="nav-item">
+		          <a class="nav-link js-scroll-trigger" href="myPage">내정보</a>
+		          </li>
+		          <li class="nav-item">
+		          <a class="nav-link js-scroll-trigger" href="logout" onclick="return confirm('진짜로 로그아웃 하려고?')">로그아웃</a>
+		          </li>
+	          </c:otherwise>
+	          
+          </c:choose>
           
         </ul>
       </div>
