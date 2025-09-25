@@ -8,13 +8,9 @@
 </head>
 <body>
 
-	<form action="insert.do" method="get">
+	<a href="insert.do">Employee INSERT</a> <br>
 	
-	</form>
-	
-	<a href="insert.do">Employee INSERT</a>
-	
-	<a href="select.do">Employee SELECT</a>
+	<a href="select.do">Employee SELECT</a> <br>
 
 </body>
 </html>
