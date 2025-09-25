@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- settings : 설정들을 작성하는 영역 -->
+	<settings>
+		<!-- 만약에 빈 값이 들어오면 빈 칸이 아니라 NULL값으로 인식하겠다. -->
+		<!-- 공식문서에 써있습니다, 마이바티스 구동 시 설정정보를 넣는 곳, jdbcTypeForNull 이거 쓸것이야 -->
+		<!-- 일반적으로 오라클 쓴다면 NULL 작성, 다른거 쓸거면 OTHER -->
+		<!-- name 속성에 세팅하고싶은거 작성하면 되는데 대소문자 틀리면 큰일남 -->
+		<!-- value값도 작성해줘야하는데, 소문자로 null 쓰면 다뒤집어지고난리남 -->
+		<setting name="jdbcTypeForNull" value="NULL" />
+		<!-- 꼭 대문자로 NULL써야함 -->
+	</settings>
+
+	<typeAliases>
+	
+	</typeAliases>
+	<environments default="development">
+	
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			
+			<dataSource type="UNPOOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@115.90.212.20:10000:XE" />
+				<property name="username" value="CJ18" />
+				<property name="password" value="CJ181234" />
+			
+			</dataSource>
+
+		</environment>
+	
+	</environments>
+	
+	<mappers>
+		<mapper resource="/mapper/order-mapper.xml" />
+	</mappers>
+
+</configuration>

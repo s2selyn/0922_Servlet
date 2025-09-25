@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+
+	<!--
+		* web.xml파일
+		
+		- 배포 서술자(DD, Deployment Descriptor)
+		- 해당 웹 애플리케이션의 기본적인 설정을 위해서 작성하는 파일
+		- 서버를 동작시켜서 애플리케이션을 구동하면 제일 먼저 읽히는 파일
+		- 개발자가 web.xml을 수정하지 않고도 개발 및 운영이 가능하지만
+		  규모가 커질 수록 직접 수정해야하는 경우가 대다수 
+	-->
+
+  <display-name>MyFirstWebProject</display-name><!-- 우리 프로젝트 이름이 여기 나옴 -->
+
+  <!--
+  	* welcome-file : 클라이언트가 Web Browser를 통해서 URL를 입력해서
+  					 요청을 보낼 때 가장 먼저 보여지게 되는 메인페이지를 지정하는 태그
+  					 
+	서버를 돌려놨는데, 웹브라우저에서 요청을 어떻게 보냄?
+	https를 쓰려면 나중에 인증서 사서 붙여야하니까 도메인 사서 쓰기 전까지는 http
+	
+	http://구동중인톰캣서버의ip주소:포트번호/contextRoot
+	contextRoot는 어떤 것에 요청을 보낼건지
+	???
+	통으로 만드는 웹사이트에서 많이 볼 수 있는 URL
+	도메인은 돈주고 사는거, 법무부에 /moj.go.kr/moj/index.do
+	index.do는 매핑값, 나중에 서블릿 하면서 얘기할거고
+	국가기관이 이런게 많음 통짜싸이트
+	행안부 mois.go.kr/frt 어쩌고저쩌고인데
+	frt가 contextRoot
+	기획재정부는? 스크롤 내리기 a태그로 했군요, 아무튼 contextRoot가 전부 다름
+	아무튼 우리로 따지면?
+	
+	=> 각자 본인 컴퓨터에 구축해놓은 서버의 IP주소를 입력 : 127.0.0.1 == localhost
+	내꺼 돌리는거니까 루프백 ip, localhost라고 적어도된다
+	
+	=> 서버의 포트번호 : 4000(80으로 지정할 경우 생략이 가능)
+	??? 15:39
+	
+	=> 서버내의 구동중인 contextRoot지정 : first
+	
+	http://127.0.0.1:4000/first 라고 작성하면 우리의 웰컴파일을 받을 수 있다.
+	
+	단, welcome-file-list에 존재하는 파일명은 반드시 프로젝트 생성시 지정했던
+	??? 폴더 위치 여기 맞나요? src/main/webapp 이거같은디? ContentDirectory(src/java/webapp)폴더에 위치해야함(여기 없으면 못찾음)
+
+  -->
+
+  <welcome-file-list><!-- 실질적으로 중요한건 여기 -->
+  <!-- 아까 컨텐트 디렉토리 만들었음, src/main/webapp 이라고 content directory 하고 만들었음
+  얘 바로 밑에 사용자가 처음 요청을 보냈을 때 가장 먼저 보여지게 할 파일을 어떤걸로 정할지 작성하는 태그들
+  없으면 딴거 쓰겠다는 의미로 미리 작성된거라 우리가 쓸거 남기고 다 지움 -->
+    <welcome-file>index.html</welcome-file><!-- 바꾸고 싶으면 쓰고싶은 웰컴파일명을 여기에 바꿔주면 된다, 지정한 것이 웰컴파일이 되어 사용자에게 응답으로 전송됨, 일반적으로는 index라는 이름을 씀, 확장자는 달라질 수 있다(이름은 웰컴파일이야 라는 의미로 관례적으로 index) -->
+  </welcome-file-list>
+</web-app>
