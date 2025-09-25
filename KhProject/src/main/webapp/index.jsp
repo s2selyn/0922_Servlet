@@ -40,6 +40,12 @@
 		
 	-->
 	
+	<%-- header.jsp include하기 --%>
+	<jsp:include page="WEB-INF/views/include/header.jsp" />
+	
+	<%-- main.jsp include하기 --%>
+	<jsp:include page="WEB-INF/views/include/main.jsp" />
+	
 	<%-- footer include하기, 상대경로로 작성 --%>
 	<jsp:include page="WEB-INF/views/include/footer.jsp" />
 
