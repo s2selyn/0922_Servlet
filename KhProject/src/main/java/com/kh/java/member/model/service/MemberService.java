@@ -15,7 +15,7 @@ public class MemberService {
 	
 	// 로그인 하는거 비밀번호 암호화를 뺐는데... 고민중
 	// 반환형 아직 안정해서 void
-	public void login(Member member) {
+	public Member login(Member member) {
 		
 		// 컨트롤러가 서비스에 요청처리해줌, 자기가 못하니까 얘보고 로그인해달라고
 		// 그럼 이 메소드가 해야할일은 로그인 처리, DAO가 검증 ??? 여기도 확인해야해!!!
@@ -32,7 +32,11 @@ public class MemberService {
 		// ??? 트랜젝션 처리?
 		SqlSession sqlSession = Template.getSqlSession();
 		// 이거 받아오고 나서 서비스에서 할 작업은 DAO 호출, 메소드명은 똑같아야 안헷갈림, 호출하면서 인자 넘겨줘야한다
-		md.login(sqlSession, member);
+		Member loginMember = md.login(sqlSession, member);
+		
+		sqlSession.close();
+		
+		return loginMember;
 		
 		/*
 		if(member.getUserId() == null || member.getUserId().trim().isEmpty()) {

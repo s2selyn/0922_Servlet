@@ -3,4 +3,32 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberMapper">
+
+	<!-- ??? 16:10 select 태그에 필요한 속성값 3개
+	이름 너무 긴거 처리할 방법 생각 -->
+	<select id="login"
+			resultType="com.kh.java.member.model.vo.Member"
+			parameterType="com.kh.java.member.model.vo.Member">
+		SELECT
+		       USER_NO userNo
+		     , USER_ID userId
+		     , USER_PWD userPwd
+		     , USER_NAME userName
+		     , EMAIL
+		     , ENROLL_DATE enrollDate
+		     , MODIFY_DATE modifyDate
+		     , STATUS
+		  FROM
+		       KH_MEMBER
+		 WHERE
+		       USER_ID = #{userId}
+		   AND
+		       USER_PWD = #{userPwd}
+		   AND
+		       STATUS = 'Y'
+	</select>
+	<!-- 필드명에 맞춰서 컬럼명 옆에 별칭달아줌 -->
+	<!-- 탈퇴 구현을 실제로 삭제하는게 아니라 상태 구분으로 해놓을거라 로그인은 탈퇴아닌 사람만 하기 위한 조건도 추가해서 작성 -->
+	<!-- 로그인 절차가 어렵고 구현은 어렵지 않다, 바뀌는건 WHERE 조건정도? -->
+	
 </mapper>

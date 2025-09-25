@@ -86,10 +86,17 @@ public class LoginController extends HttpServlet {
 		// 데이터 가공완
 		
 		// 그러면 이제 뭐 해야할까요?(요청 처리)
-		new MemberService().login(member);
+		Member loginMember = new MemberService().login(member);
 		// 메소드 이름만 봐도 알수있도록 작성
 		// select 조건으로 사용할 인자값 전달, id, pwd를 담은 member를 전달
 		// MemberService 가서 작업
+		// 그리고 돌아오는 값을 변수로 받는다 -> Member loginMember
+		
+		// 성공했을 경우 : 조회성공한 컬럼값을 필드에 담은(컬럼값을 필드에 담은) 멤버객체 주소값
+		// 실패했을 경우 : null값
+		System.out.println(loginMember);
+		// 잘됐다면 내가 toString 오버라이딩 해놨으니까 필드에 있는 값 나와야하고, 잘못된 값 넣어서 실패했다면 null값이 나오는지 테스트
+		// 성공실패 경우 전부 체크하고 다음으로 넘어간다
 		
 	}
 

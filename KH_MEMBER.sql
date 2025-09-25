@@ -37,3 +37,8 @@ CREATE TABLE KH_MEMBER(
 CREATE SEQUENCE KH_UNO
 	   NOCACHE;
 -- 캐시는 소중하그등요? 옛날만큼 비싸진 않지만...
+
+INSERT INTO KH_MEMBER(USER_NO, USER_ID, USER_PWD, USER_NAME, EMAIL) VALUES
+(KH_UNO.NEXTVAL, 'admin', '1234', '홍길동', 'hong@kh.com');
+
+COMMIT;
