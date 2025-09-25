@@ -39,6 +39,9 @@
 		??? 11:43 requestScope 등 어떤 객체 사용하는지에 집중
 		
 	-->
+	
+	<%-- footer include하기, 상대경로로 작성 --%>
+	<jsp:include page="WEB-INF/views/include/footer.jsp" />
 
 </body>
 </html>
