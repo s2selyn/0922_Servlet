@@ -85,7 +85,7 @@ public class LoginController extends HttpServlet {
 		member.setUserPwd(userPwd);
 		// 데이터 가공완
 		
-		// 그러면 이제 뭐 해야할까요?(요청 처리)
+		// 3) 그러면 이제 뭐 해야할까요?(요청 처리)
 		Member loginMember = new MemberService().login(member);
 		// 메소드 이름만 봐도 알수있도록 작성
 		// select 조건으로 사용할 인자값 전달, id, pwd를 담은 member를 전달
@@ -94,9 +94,23 @@ public class LoginController extends HttpServlet {
 		
 		// 성공했을 경우 : 조회성공한 컬럼값을 필드에 담은(컬럼값을 필드에 담은) 멤버객체 주소값
 		// 실패했을 경우 : null값
-		System.out.println(loginMember);
+		// System.out.println(loginMember);
 		// 잘됐다면 내가 toString 오버라이딩 해놨으니까 필드에 있는 값 나와야하고, 잘못된 값 넣어서 실패했다면 null값이 나오는지 테스트
 		// 성공실패 경우 전부 체크하고 다음으로 넘어간다
+		
+		// 이제 바뀐걸 해보자~
+		// 4) 응답화면 지정
+		// 스텝 1. request속성에 출력할 값 추가 => setAttribute()
+		// 스텝 2. RequestDispatcher를 만들어서 => 뷰 지정(어떤 jsp 쓸건지)
+		// 스텝 3. RequestDispatcher이용해서 forward()호출
+		
+		// 성공실패에 따라서 화면지정하려면 if-else 해서 각각 써줘야함, 따로따로 작업하자
+		// 실패했다고 가정하고 작업, 실패용 페이지 따로 만들기, 만약에 로그인페이지 따로 만들었다면 거기로 이동하면 되는데 모달로 만들었기 때문에 페이지 따로 추가
+		// 실패했따!
+		// msg라는 키값으로 결과페이지에 포워딩해야함
+		
+		
+		// 성공했다고 가정하고 작업
 		
 	}
 
