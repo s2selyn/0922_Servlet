@@ -31,3 +31,9 @@ CREATE TABLE KH_MEMBER(
 	STATUS CHAR(1) DEFAULT 'Y' CHECK(STATUS IN ('Y', 'N')) -- DELETE 하지않고 탈퇴여부 판단할 컬럼 추가
 );
 -- 실제 회원가입 시점에 사용자에게 입력받는 값은 4개
+
+-- 우리반에서 앞으로 제일로 좋다 == 자바
+
+CREATE SEQUENCE KH_UNO
+	   NOCACHE;
+-- 캐시는 소중하그등요? 옛날만큼 비싸진 않지만...
