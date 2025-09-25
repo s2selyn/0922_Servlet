@@ -107,8 +107,11 @@ public class LoginController extends HttpServlet {
 		// 성공실패에 따라서 화면지정하려면 if-else 해서 각각 써줘야함, 따로따로 작업하자
 		// 실패했다고 가정하고 작업, 실패용 페이지 따로 만들기, 만약에 로그인페이지 따로 만들었다면 거기로 이동하면 되는데 모달로 만들었기 때문에 페이지 따로 추가
 		// 실패했따!
-		// msg라는 키값으로 결과페이지에 포워딩해야함
+		// msg라는 키값으로 결과페이지에 포워딩해야함, jsp에서 정하고왔음
+		request.setAttribute("msg", "로그인에 실패했습니다."); // 여기가 스텝 1
+		// 메세지 자체는 보내기 나름
 		
+		request.getRequestDispatcher(""); // 여기가 스텝 2
 		
 		// 성공했다고 가정하고 작업
 		
