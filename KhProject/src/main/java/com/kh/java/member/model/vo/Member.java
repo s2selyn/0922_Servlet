@@ -15,6 +15,7 @@ public class Member {
 	// 옛날이라면 int로 퉁쳐지지만 오늘날은 long써야함, 이건 죽었다깨나도 다못씀, 920경 정도 표현가능
 	// 나중에 long으로 고치지말고 처음부터 long쓰자는게 디폴트, 게시글 카테고리 만드는 그정도 간단한거만 int로
 	// 대부분의 상황에서는 long이 압도적으로 우세
+	
 	// long vs Long 이게 그럼 다음 문제(primitive or Wrapper 중에 고르는것)
 	// 보편적으로는 Wrapper를 선호(Long), 가장 큰 이유는 프레임워크 호환성, 마이바티스 쓰는데 자바의 가장 대표적인 ORM은 하이버네이트? 이게있는데 그쪽이 Wrapper가 호환성이 더 잘 맞음
 	// 하이버네이트는 래퍼가 강제되는 경우가 있음, 뒷단 레포지토리 보면 그런경우가 있다
@@ -23,11 +24,14 @@ public class Member {
 	// 그럼 모양이 long의 경우는 { "userNo" : "0" } 또는 Long의 경우는 { "userNo" : null }이렇게 보낼 수 있는데 0인 경우에 값이 있는건지 null인지 헷갈림, 진짜 0인지 값이 없어서 0으로 넣은건지
 	// 마이바티스 쓰면 어차피 Long 클래스로 변환되기 때문에 상관없음 그래서 과감하게 Long으로 선택
 	// ??? 15:23 PK는 Long으로 쓴다, PK가 아니면 다른 선택지가 있음, 솔직히 데이터 낭비라서 손해볼 수 있지만 결국 PK는 한테이블에 하나뿐이라 이런경우는 Long을 사용하는것이 압도적으로 선호된
-	private String userId; // USER_ID VARCHAR2(30) UNIQUE NOT NULL, 이건 아무생각없이 String 가능
+	private String userId; // USER_ID VARCHAR2(30) UNIQUE NOT NULL,
+	// VARCHAR2 이건 아무생각없이 String 가능
 	private String userPwd; // USER_PWD VARCHAR2(30) NOT NULL,
 	private String userName; // USER_NAME VARCHAR2(20) NOT NULL,
 	private String email; // EMAIL VARCHAR2(30) NOT NULL,
+	
 	private Date enrollDate; // ENROLL_DATE DATE DEFAULT SYSDATE,
+	// ??? 여기도 선택지 언급됨
 	private Date modifyDate; // MODIFY_DATE DATE DEFAULT SYSDATE,
 	private String status; // STATUS CHAR(1) DEFAULT 'Y' CHECK(STATUS IN ('Y', 'N'))
 	

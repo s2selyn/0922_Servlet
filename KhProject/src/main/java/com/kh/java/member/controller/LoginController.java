@@ -1,11 +1,15 @@
 package com.kh.java.member.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kh.java.member.model.service.MemberService;
+import com.kh.java.member.model.vo.Member;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
@@ -74,6 +78,18 @@ public class LoginController extends HttpServlet {
 		
 		// 값이 넘어오는지 잘 확인했으니 두개의 값을 어디 하나에 담아가자
 		// VO에 담기로 하고, Member VO 작성하러감
+		
+		// VO 작성하고 왔다
+		Member member = new Member(); // 방금 만든 vo로 import 주의해서 할것
+		member.setUserId(userId);
+		member.setUserPwd(userPwd);
+		// 데이터 가공완
+		
+		// 그러면 이제 뭐 해야할까요?(요청 처리)
+		new MemberService().login(member);
+		// 메소드 이름만 봐도 알수있도록 작성
+		// select 조건으로 사용할 인자값 전달, id, pwd를 담은 member를 전달
+		// MemberService 가서 작업
 		
 	}
 
