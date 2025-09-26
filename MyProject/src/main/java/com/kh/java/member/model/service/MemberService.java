@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.kh.java.common.Template;
 import com.kh.java.member.model.dao.MemberDao;
+import com.kh.java.member.model.dto.MemberDto;
 import com.kh.java.member.model.vo.Member;
 
 public class MemberService {
@@ -19,6 +20,11 @@ public class MemberService {
 		sqlSession.close();
 		
 		return loginMember;
+		
+	}
+	
+	public int join(MemberDto joinMember) {
+		return 0;
 		
 	}
 	

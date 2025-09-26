@@ -44,10 +44,10 @@ public class LoginController extends HttpServlet {
 			
 		} else {
 		
-			request.setAttribute("msg", "로그인에 실패했습니다."); // 여기가 스텝 1
+			request.setAttribute("msg", "로그인에 실패했습니다.");
 			
 			request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
-				   .forward(request, response); // 여기가 스텝 2
+				   .forward(request, response);
 			
 		}
 		

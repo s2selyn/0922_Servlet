@@ -8,5 +8,11 @@
 </head>
 <body>
 
+	<%-- header.jsp include하기 --%>
+	<jsp:include page="/WEB-INF/views/include/header.jsp" />
+	
+	<%-- footer include하기, 절대경로로 작성 --%>
+	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+
 </body>
 </html>
