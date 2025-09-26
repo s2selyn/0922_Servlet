@@ -34,6 +34,8 @@ public class JoinController extends HttpServlet {
 		
 		int result = new MemberService().join(joinMember);
 		
+		// 지금 상태에서 500에러 났음! SQL Syntax Error
+		
 		// result는 DML 수행이니까 행의 수로 돌아오는데 지금회원가입 한명할거니까 성공하면 1행, 실패하면 0행이 돌아온다
 		// result에 따라 Dispatcher 어디로 보낼 지 결정해야함. 지금은 다시 회원가입 페이지로 보내는 상태임.
 		request.getRequestDispatcher("/WEB-INF/views/member/join.jsp")

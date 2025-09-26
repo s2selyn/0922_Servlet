@@ -26,8 +26,22 @@
 		       STATUS = 'Y'
 	</select>
 
-	<insert id="join">
-	
+	<insert id="join"
+			parameterType="com.kh.java.member.model.dto.MemberDto">
+		INSERT
+		  INTO
+		       MP_MEMBER
+		VALUES
+		       (
+		       USER_NO userNo
+		     , USER_ID userId
+		     , USER_PWD userPwd
+		     , USER_NAME userName
+		     , EMAIL
+		     , ENROLL_DATE enrollDate
+		     , MODIFY_DATE modifyDate
+		     , STATUS
+			   )
 	</insert>
 
 </mapper>

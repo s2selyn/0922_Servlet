@@ -24,7 +24,14 @@ public class MemberService {
 	}
 	
 	public int join(MemberDto joinMember) {
-		return 0;
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = md.join(sqlSession, joinMember);
+		
+		sqlSession.close();
+		
+		return result;
 		
 	}
 	
