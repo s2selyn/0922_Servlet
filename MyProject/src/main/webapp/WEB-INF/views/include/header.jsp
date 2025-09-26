@@ -99,29 +99,6 @@
             <a class="nav-link js-scroll-trigger" href="#">사진게시판</a>
           </li>
           
-          <!--
-          	로그인 전 : 로그인 / 회원가입
-          	로그인 후 : 내정보 / 로그아웃
-          -->
-          
-          <%-- 조건문 중에 오늘 배운 choose when otherwise를 쓸건데 선행작업이 필요함
-          3행에 올라가서 작업
-          prefix는 taglib의 속성
-          스크립틀릿 + @ + 지시어는 taglib + prefix="c" + uri
-          --%>
-          
-          <%-- 조건을 적용할 부분을 choose태그로 전체 감싸야함
-          첫번째 조건은 when으로 감싼다
-          조건식은 test 속성에 작성
-          조건식은 EL구문으로 써야함!
-          로그인 했는지 안했는지는 어떻게 알아?
-          로그인을 했다면 sessionScope에 userInfo라는 Attribute로 값이 담겨있을것이다
-          session에 참조해서 userInfo
-          이게 없어야 로그인 안된 상황이니까 없으면?은 empty
-          있으면, 없지 않으면, 주소밖에 들어갈게 없는데 딱히 다른 조건은 필요없으니 otherwise
-          지금 로그아웃은 오늘 남은시간에 구현 못해서 하고싶으면 서버 껐다켜거나 브라우저 껐다켜야함
-          --%>
-          <%-- <c:when> 얘는 여기 choose에 들어가면 안된다 --%>
           <c:choose>
           
           	  <c:when test="${ empty sessionScope.userInfo }">
@@ -159,7 +136,7 @@
 			<!-- Modal Header -->
 			<div class="modal-header">
 				<h4 class="modal-title">
-					<span style="color: #52b1ff;">KH</span> 로그인
+					<span style="color: #52b1ff;">MP</span> 로그인
 				</h4>
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
