@@ -66,5 +66,9 @@ public class MemberDao {
 		// 비밀번호 입력이 틀리면 실패한다
 		
 	}
+	
+	public int updatePwd(SqlSession sqlSession, Map<String, String> map) {
+		return sqlSession.update("memberMapper.updatePwd", map);
+	}
 
 }

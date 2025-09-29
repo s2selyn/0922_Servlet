@@ -195,5 +195,22 @@ public class MemberService {
 		return result;
 		
 	}
+	
+	public int updatePwd(Map<String, String> map) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = md.updatePwd(sqlSession, map);
+		
+		// DAO 갔다와서 트랜잭션 처리 및 반납
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		
+		sqlSession.close();
+		
+		return result;
+		
+	}
 
 }
