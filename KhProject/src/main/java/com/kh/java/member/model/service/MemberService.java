@@ -1,5 +1,7 @@
 package com.kh.java.member.model.service;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.kh.java.common.Template;
@@ -150,6 +152,24 @@ public class MemberService {
 		sqlSession.close();
 		
 		// 결과값 반환
+		return result;
+		
+	}
+	
+	public int update(Map<String, String> map) {
+		
+		SqlSession session = Template.getSqlSession();
+		
+		int result = md.update(session, map);
+		
+		// 일반적인 DML이 성공했다면 커밋
+		if(result > 0) {
+			session.commit();
+		}
+		
+		// 자원반납
+		session.close();
+		
 		return result;
 		
 	}

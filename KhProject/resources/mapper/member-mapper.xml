@@ -55,4 +55,21 @@
 		       )
 	</insert>
 	
+	<!-- 태그명, ID 확정, SET 하고 뭘 써야하나? 대입연산자 ㅎㅎ
+	근데 map에 담아 온 것이 userName, email 뿐이라 이상태에서는 전체 값이 바뀌어버린다
+	각 행을 식별할 무언가가 있어야함, 지금 없음... 어디까지 돌아가야해? -->
+	<!-- 파라미터 전달 안하고 잘 수행되는지 확인해보자, 적어주는게 좋은데 안적어도 잘 되는지 확인해보기 -->
+	<update id="update">
+		UPDATE
+		       KH_MEMBER
+		   SET
+		       USER_NAME = #{userName}
+		     , EMAIL = #{email}
+		     , MODIFY_DATE = SYSDATE
+		 WHERE
+		       USER_NO = #{userNo}
+		   AND
+		       STATUS = 'Y'
+	</update>
+	
 </mapper>
