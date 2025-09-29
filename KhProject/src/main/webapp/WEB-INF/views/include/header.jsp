@@ -73,6 +73,36 @@
 
 <body id="page-top">
 
+	<c:if test="${ not empty alertMsg }">
+
+		<script>
+		
+			// 성공 메세지 작성하려고 LoginController에서 넘어왔따
+			// EL구문은 자바코드, 바깥쪽은 자바스크립트코드
+			// 자바스크립트에서 자바문자열을 출력하고싶은것은 alert(${ alertMsg }); 이렇게는 쓸 수 없다
+			// 자바스크립트에서 문자열 리터럴을 쓰고싶다면? alert(로그인성공); -> 이건 안나온다
+			// 문자열 출력하고싶으면 자바스크립트에서는 쌍따옴표로 감싸줘야함 -> alert("로그인성공");
+			alert("${ alertMsg }"); // 이렇게 하는게 1절, 4절까지 가야함
+			// 스크립트 태그 안에 있어서 항상 헤더에 오면 이게 떠버림
+			// 뒷단에서 담겨있을때만 이걸 띄워주야함
+			// -> alertMsg가 있을 때만 -> 조건 -> jsp 상이니까 조건문은? -> choose 말고, 조건이 하나니까 -> c:if
+			// 조건으로 감싸면 여기까지 2절
+			
+			// 로그인을 했는데 alert가 뜨지 않음, 그럼 alertMsg가 비어있다는 뜻
+			// 왜 비어있나요? 결론은 request에 담았기 때문에 request가 없음
+			// 우리가 응답 jsp로 포워딩하면서 request, response를 같이 전달하는데
+			// sendRedirect를 보내면서 새로운 request가 만들어짐, 그 이전에 request가 끝나서 사용불가
+			// 이런 상황에서는 request에 담아봐야 의미가 없으니 scope를 바꿔야함 -> LoginController에서 작업
+			// ??? 16:25
+			// removeAttribute는 자바코드
+			// ??? 16:25
+			// remove 태그까지 작성해야 4절 끝
+			
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+		
+	</c:if>
+
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">

@@ -154,6 +154,19 @@ public class LoginController extends HttpServlet {
 			// sendRedirect는 response객체를 이용
 			// response.sendRedirect("/다시 요청 보낼 URL경로");
 			// 지금은 /kh로 요청을 보낼 수 있으므로
+			
+			// -----
+			// UpdateMemberController에서 작업하다 와서 추가한 부분
+			// request.setAttribute("alertMsg", "로그인에 성공~");
+			// 모든 페이지에 헤더가 붙어있으니 헤더에서 alert을 띄우자고 생각해봐서 자바스크립트 코드로 작성해야함
+			// header.jsp에 가서 추가
+			// request에 담으니 메세지 출력되지 않음
+			// session에 담아야 다시 요청해도 유지가 됨 -> 3절
+			session.setAttribute("alertMsg", "로그인에 성공~");
+			// 이상태에서는 헤더가 있는 곳 갈때마다 계속 뜬다, 한번만 띄우고싶은데? header에서 다시 작업
+			
+			// -----
+			
 			response.sendRedirect("/kh");
 			// 이렇게 코드를 작성하고 로그인하면 url이 바뀌지 않고 그대로 localhost:4000/kh 로 남아있음
 			/*

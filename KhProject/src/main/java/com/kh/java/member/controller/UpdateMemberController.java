@@ -109,6 +109,7 @@ public class UpdateMemberController extends HttpServlet {
 			// 화면에 업데이트값을 보여주려면 테이블에 다녀와서 session의 값을 갱신해야함
 			// 목표 => DB가서 갱신된 회원정보 들고오기
 			// 	   => 들고온 회원정보 userInfo로 덮어씌우기
+			
 			// 조회하는거 성공해서 들고오고싶었으면 컨트롤러에서 하는게 아니라 서비스에서 했어야함
 			// 반환이 int가 아니라 Member였어야함, 성공했으면 Member를 조회해서 돌려보내고, 실패했으면 null
 			// 이게 설계의 중요성, update니까 int에 받아오면 되겠다고 생각했음
@@ -117,12 +118,41 @@ public class UpdateMemberController extends HttpServlet {
 			// 성공 시 바뀐 정보, 가입 시 보여줄 정보, 탈퇴했을 때 보낼곳 등 화면상에 보일 값들을 미리 생각하고 작업해야함
 			// login 호출하려면 또 id, pwd 있어야하니 map에 없어서 또 뜯어고쳐야하고...
 			// 시간이 너무 오래걸리니까
+			/*
 			Member loginInfo = new MemberService().login(member);
 			session.setAttribute("userInfo", loginInfo);
 			
 			// 성공했을 때 마이페이지로 다시 돌려준다고 가정
 			request.getRequestDispatcher("/WEB-INF/views/member/my_page.jsp")
 				   .forward(request, response);
+			*/
+			// 여기 너무 찝찝함 -> MyInfoController에 똑같은 코드가 있음
+			// 새로운 사용자의 정보를 담아서 반환해주는 코드 ??? 16:05 를 MyInfoController에서 작성해뒀음
+			// 손해다 같은 코드 두번 써서, 동작하는데는 문제가 없지만
+			// 나중에 jsp가 바뀔 수 있음, 그때마다 포워딩해주는 코드를 이걸 고쳐줘야함
+			// 이미 세션을 덮어써서 가는 코드를 만들어뒀다
+			// /my_page 하는 코드가 있음
+			// 이런 상황에서 포워딩으로 보내는 것 보다 재요청 방식을 생각해볼 수 있음
+			// ??? 16:05 계속 작성과정 설명
+			// sendRedirect
+			// /kh/myPage
+			// 사용자가 다시 요청을 보내도록, context root 변할 수 있으니 String 리터럴 말고
+			
+			// -----
+			session.setAttribute("alertMsg", "정보 변경 성공!");
+			// -----
+			
+			response.sendRedirect(request.getContextPath() + "/myPage");
+			
+			// 잘됐는데 티가 별로 안나니까 뭔가를 더 할까?
+			// 성공했을 때는? 메세지 보내서 alert 띄우기 해보자
+			// 실패했을 때 메세지 보내서 결과보여주듯이
+			// 메세지 보내려면 attribute에 담아야함
+			// attribute 담으려면 scope 정해야함 application, session, request 셋중하나에서 골라야함
+			// 실패했을때는 한번 보여주고 말 내용이라 계속 유지될 필요가 없으니 request에 담았음
+			// 로그인된 사용자의 정보면? 로그인이 되어있다면 어딜 가든 유지가 되어야함 -> session에 담았다
+			// 여기서도 alert 메세지 한번 띄울거고 계속 띄울건 아닌데 개념상으론 request에 담는게 맞음
+			// 문제는? 로그인 컨트롤러에 가자
 			
 		} else {
 			

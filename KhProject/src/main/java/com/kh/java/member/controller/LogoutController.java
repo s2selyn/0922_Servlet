@@ -33,6 +33,11 @@ public class LogoutController extends HttpServlet {
 		// 주의점은 userInfo 말고도 세션에 있는 모든것이 날아간다
 		// 로그아웃하면 다 날리는게 맞을수도?
 		request.getSession().invalidate();
+		
+		// -----
+		request.getSession().setAttribute("alertMsg", "잘가쇼~");
+		// -----
+		
 		// 이 시점에서 할 수 있는 실수 / 잘못 생각할수도 있는 부분
 		// 요청 url logout해서 서블릿한테 받음
 		// 이 다음에 응답을 해준게 없음, 끝 하고 말았음 클라이언트에게 아무것도 안돌려줘서 아무것도 안나옴

@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.kh.java.member.model.service.MemberService;
 import com.kh.java.member.model.vo.Member;
@@ -61,7 +62,10 @@ public class SignUpController extends HttpServlet {
 		// 5) 회원가입 성공했는지 안했는지에 따라서
 		// 	  응답화면을 다르게 지정
 		// 성공실패여부에 따라 다르게 할거니까 if-else
-		if(result > 0) {
+		if(result > 0) { // 성공
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("alertMsg", "회원가입 성공 ~ !");
 			
 			// 응답 페이지를 보내줘야하는데 딱히 없다 로그인 페이지를 모달에 해둬서.. 따로 만들었다면 거기로 보내면 됨
 			// 웰컴파일말고 보낼데가 없네? 여기 보내려면 sendRedirect, /kh로 작성하면 바뀔 수 있으니 request 객체에서 context root를 얻도록 작성

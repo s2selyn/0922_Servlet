@@ -117,7 +117,7 @@
 	      </div>
 	
 	      <div class="modal-body">
-	        <form action="삭제요청 매핑값" method="post">
+	        <form action="delete.me" method="post">
 	        
 			  <div class="form-group">
 			    <label for="userPwd" style="font-size:12px; color:red">탈퇴를 원하신다면 비밀번호를 입력해주세요.</label>
