@@ -56,6 +56,8 @@ public class LogoutController extends HttpServlet {
 		// getContextPath 이런게있음 -> 메소드 호출 반환타입이 String -> "/kh" 대신 사용가능
 		// 이제 context root 변경되어도 이 코드를 수정하지 않아도 된다!
 		
+		// 로그아웃 간단, 프론트에서 써도 동작하지만 엔드에서 써주는것이 좋다
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
