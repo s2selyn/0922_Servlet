@@ -31,4 +31,28 @@
 	<!-- 탈퇴 구현을 실제로 삭제하는게 아니라 상태 구분으로 해놓을거라 로그인은 탈퇴아닌 사람만 하기 위한 조건도 추가해서 작성 -->
 	<!-- 로그인 절차가 어렵고 구현은 어렵지 않다, 바뀌는건 WHERE 조건정도? -->
 	
+	<!-- 태그 속성 두개 필요, id 속성값은 메소드명과 똑같이 쓰기로 했음
+	두번째 속성은 마이바티스가 알아서 잘 해주겠지만 일단 작성해주자 -->
+	<insert id="signUp"
+			parameterType="com.kh.java.member.model.vo.Member">
+		INSERT
+		  INTO
+		       KH_MEMBER
+		       (
+		       USER_NO
+		     , USER_ID
+		     , USER_PWD
+		     , USER_NAME
+		     , EMAIL
+		       )
+		VALUES
+		       (
+		       KH_UNO.NEXTVAL
+		     , #{userId}
+		     , #{userPwd}
+		     , #{userName}
+		     , #{email}
+		       )
+	</insert>
+	
 </mapper>

@@ -37,5 +37,9 @@ public class MemberDao {
 		// 실행한 결과를 반환해줘야하니까 return
 		
 	}
+	
+	public int signUp(SqlSession sqlSession, Member member) {
+		return sqlSession.insert("memberMapper.signUp", member);
+	}
 
 }
