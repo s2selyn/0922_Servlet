@@ -47,5 +47,24 @@ public class MemberDao {
 	public int update(SqlSession sqlSession, Map<String, String> map) {
 		return sqlSession.update("memberMapper.update", map);
 	}
+	
+	public int delete(SqlSession sqlSession, Member member) {
+		
+		return sqlSession.update("memberMapper.delete", member);
+		// 메소드명은 update로 동일하게, memberMapper의 id만 다르게 호출
+		// 이게 가능한 이유 -> 로그인, 정보수정 기능 구현할 때 조건을 status column이 y일것으로 달아놨음
+		// status 컬럼값이 y가 아니라면 정보수정도 못하고 로그인도 못하기 때문에 사실상 이용할 수 있는 기능이 없어서 탈퇴나 다름없음
+		// delete 하면 데이터를 살리기 굉장히 귀찮기 때문에 update로 기능들만 이용 못하는 상태로 못하게 해두겠다
+		// 못살리는건 아님, 살릴 수 있음, delete의 기록도 다 남고 기본적으로 회사에 가면 서버관리자분들이 많다, 회사에 없어도 외주하기도 하고
+		// 보통 중요한 정보는 외부에서 접근 불가능해서, 특히 케이블 문제도 전부 사람이 가서 해야함
+		// 서버문제는 언제 생길지 알 수 없음, 서버관리자는 너무 힘들다 ...
+		// 순수서버관리자도 있고 시스템 만지는 사람도 있고
+		// 백업 시간이 보통 26시, 28시, 31시 이렇게 된다, 이건 무슨말이냐? 새벽2시에 백업, 새벽4시에 백업, 아침7시에 백업, 문제 생길 수 있으니 집에 못가 끝나야 감
+		// 이걸 매일 함... 매우 힘든 작업, 이런거 하려면 돈이라도 많이 주는 데를 가야만 해...
+		// delete하면 이 서버관리자분들이 살려.. 너무 힘든 일이야, 데이터 날리기는 너무 위험한 작업임, delete는 금단의 주문, 너무 위험하다
+		// userNo는 session에서 뽑을테니 잘못될리없고
+		// 비밀번호 입력이 틀리면 실패한다
+		
+	}
 
 }

@@ -72,4 +72,19 @@
 		       STATUS = 'Y'
 	</update>
 	
+	<update id="delete">
+		UPDATE
+		       KH_MEMBER
+		   SET
+		       STATUS = 'N'
+		     , MODIFY_DATE = SYSDATE
+		 WHERE
+		       USER_NO = #{userNo}
+		   AND
+		       USER_PWD = #{userPwd}
+		   AND
+		       STATUS = 'Y'
+	</update>
+	<!-- 탈퇴한 회원의 탈퇴 요청이 또 올 수 있으니 상태 조건 추가 -->
+	
 </mapper>

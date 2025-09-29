@@ -173,5 +173,27 @@ public class MemberService {
 		return result;
 		
 	}
+	
+	public int delete(Member member) {
+		
+		SqlSession session = Template.getSqlSession();
+		
+		// DAO 호출해서 전달
+		int result = md.delete(session, member);
+		
+		if(result > 0) {
+			
+			// 결과를 가지고 트랜잭션 처리
+			session.commit();
+			
+		}
+		
+		// 자원 반납
+		session.close();
+		
+		// 결과 반환
+		return result;
+		
+	}
 
 }

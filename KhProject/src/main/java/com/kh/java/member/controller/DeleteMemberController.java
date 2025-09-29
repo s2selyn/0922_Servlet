@@ -77,11 +77,21 @@ public class DeleteMemberController extends HttpServlet {
 		
 		if(result > 0) {
 			
+			// 성공했을 때는 session을 날려서 로그아웃 상태로 만들어주고
+			session.removeAttribute("userInfo");
+			
+			// 서운하니까 알림메세지도 띄워주고
+			session.setAttribute("alertMsg", "안녕히가세요~");
+			
+			// redirect로 메인으로 보내주기
+			response.sendRedirect(request.getContextPath());
+			
 		} else {
 			
 			request.setAttribute("msg", "비밀번호를 확인하세요!");
 			// 지금 경우에는 예외가 발생하지 않는다면 비밀번호가 잘못되었을 수밖에 없음
-			request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp");
+			request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
+				   .forward(request, response);
 			// 얘도 지금 똑같은 페이지에 보내는 코드 계속 중복이라 참기가 힘들군
 			
 		}
