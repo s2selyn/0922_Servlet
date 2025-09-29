@@ -161,7 +161,7 @@
 	
 	
 	      <div class="modal-body">
-	        <form action="비밀번호 수정 매핑값" method="post">
+	        <form action="updatePwd.me" method="post">
 	        
 			  <div class="form-group">
 			    <label for="userPwd">현재 비밀번호 :</label>
