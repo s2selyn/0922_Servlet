@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,29 +49,30 @@ tr:hover{
                   </thead>
                   <tbody>
 	           
-	                
+	                <c:forEach var="board" items="${ boards }">
                     <tr style="color: #52b1ff;"
                         class="board"
                         id="${ board.boardNo }">
                         <td>
-                        10
+                        ${ board.boardNo }
                         </td>
                         <td>
-                        공용
+                        ${ board.category }
                         </td>
                         <td>
-                        관리자
+                        ${ board.boardWriter }
                         </td>
                         <td style="color: #52d6ffcc;">
-                        제목들어가는자리 &nbsp;
+                        ${ board.boardTitle } &nbsp;
                         </td>
                         <td>
-                        2025-09-25
+                        ${ board.createDate }
                         </td>
                         <td>
-                        5
+                        ${ board.count }
                         </td>
                     </tr>    
+                    </c:forEach>
 	        
                   </tbody>
                   
@@ -84,37 +86,12 @@ tr:hover{
 	       		class="btn btn-outline-primary" style="color:#52b1ff;"
 	       		onclick="location.href='이전페이지매핑값'">이전</button>
         
-			
+				<c:forEach var="i" begin="${ pi.startPage }"
+								   end="${ pi.endPage }">
                 <button 
                 class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">1</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">2</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">3</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">4</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">5</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">6</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">7</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">8</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">9</button>
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='페이지요청'">10</button>
+                onclick="location.href='boards?page=${i}'">${i}</button>
+				</c:forEach>
 	        			
 	        	<button 
 	       		class="btn btn-outline-primary" style="color:#52b1ff;"

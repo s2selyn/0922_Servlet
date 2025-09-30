@@ -219,18 +219,13 @@ public class BoardListController extends HttpServlet {
 		// select로 시작하고싶으면 BoardList로 메소드 이름 작성, offset이랑 boardLimit이 필요하니 넘겨준다
 		List<Board> boards = new BoardService().selectBoardList(pi);
 		
-		System.out.println(boards);
+		// System.out.println(boards);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		// 리스트도 보여주고, 페이징 버튼도 만들어야하니 두개를 앞단으로 보내줘야한다
+		// pi랑 boards랑 보내줘야함 --> 우째요?
+		// request에 담아야하나 session에 담아야하나? 한번쓰면 말것같음 -> request에 setAttribute
+		request.setAttribute("pi", pi);
+		request.setAttribute("boards", boards);
 		
 		// jsp로 연결되는지 확인하기 위해서 requestDispatcher
 		request.getRequestDispatcher("/WEB-INF/views/board/board_list.jsp")
