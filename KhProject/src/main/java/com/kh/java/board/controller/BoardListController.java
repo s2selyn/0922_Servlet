@@ -67,6 +67,144 @@ public class BoardListController extends HttpServlet {
 		// System.out.println(listCount); 콘솔에 더미만큼 잘 나온다
 		
 		currentPage = Integer.parseInt(request.getParameter("page")); // 앞에서 넘기는거 받아온다, 반환타입 String이라서 대입못함 -> parseInt 호출 -> Integer의 메소드이다
+		// System.out.println(currentPage);
+		
+		pageLimit = 10;
+		boardLimit = 10;
+		// 아까 정한 대로 대입하면 되는데 계산 편하게 하려고 10으로 둘다 작성 후 나중에 5로 고치자
+		// 산수 해야함, maxPage 계산해야하거등
+		// * maxPage : 가장 마지막페이지가 몇 번 페이지인지
+		// 지금은 3이다 근데 항상 3이 아님, 게시글 하나라도 늘어나면 4, 100이 늘어나면 13이 된다?
+		// 게시글의 개수에 따라서 유동적으로 변하는 값, 변하도록 만들어줘야한다
+		/*
+		 * 뭐랑 뭐로 생각했더니 maxPage가 나왔는지 생각
+		 * listCount, boardLimit에 영향을 받음
+		 * 총 게시글 개수와 한 페이지에 몇개씩 보여줄지(페이지 리밋은 페이징 버튼 개수니까 상관없음)
+		 * 
+		 * 처음 하는거니까 계산 쉽게 하자
+		 * - 공식구하기
+		 *   단, boardLimit이 10이라고 가정
+		 * 
+		 * 총 개수		한페이지		나눗셈 결과		마지막페이지
+		 * 100		/	  10	=		10.0			10
+		 * 107		/	  10	=		10.7			11
+		 * 111		/	  10	=		11.1			12
+		 * 
+		 * 나눗셈만으로는 해결이 안되고
+		 * 나머지라고 하면 안된다, 자바인것을 인지하고 자바를 생각해야함
+		 * int / int이므로 결과가 int로밖에 나오지 않는다
+		 * 우리가 필요한 것은 소숫점 자리가 있으면 될 것 같은데? 그걸 올림처리 하면 마지막페이지가 나올듯, 0만 아니면 올라간다
+		 * => 나눗셈(listCount/boardCount)의 결과를 올림처리할경우 maxPage가 나옴
+		 * 
+		 * int/int로는 소수점이 있는 나눗셈 결과를 얻어낼 수 없다
+		 * 결과가 실수형이라면 실수와 실수를 연산해야 실수 결과가 나온다
+		 * 나눗셈을 하기 전에 정수를 실수로 바꿔줘야함, 둘중에 아무거나 하나만 실수로 바꿔주면 된다
+		 * 하나가 double이면 나머지 하나가 double에 맞춰서 연산된다, 작은거랑 큰거 연산하면 작은게 큰거로 바뀌어서 연산(promotion)
+		 * 앞에껄 바꾼다고 치자
+		 * 스텝
+		 * 1. listCount를 double로 변환 -> (double)listCount
+		 * 2. listCount / boardLimit -> (double)listCount / boardLimit 이러면 나눗셈 결과가 나온다
+		 * 3. 결과를 올림처리 => Math.ceil()
+		 * 4. maxPage에 대입해야하는데 double인 상태이므로 int형으로 강제형변환
+		 * 
+		 * 자바라는 프로그래밍 언어의 특성을 생각해서 산수 해야한다
+		 * 그럼 이제 한페이지에 무슨 값이 리터럴로 들어가든 상관없는 공식이 됨
+		 * 
+		 */
+		maxPage = (int)Math.ceil((double)listCount / boardLimit);
+		
+		// * startPage : 페이지 하단에 보여질 페이징 버튼 중 시작 값
+		// 이것도 고정값이 아니고 예를들어서 10을 넘어가면 11페이지부터 보인다, 그리고 20페이지를 넘어가면 21 이런식
+		// 이 값은 어떤 숫자의 영향을 받아서 정해짐?
+		/*
+		 * currentPage, pageLimit에 영향을 받음
+		 * 한 번 보여줄 때 페이지 버튼 몇개 보여줄지에 의해서도 영향을 받음
+		 * 
+		 * - 공식 구하기
+		 * 	 단, pageLimit이 10이라고 가정
+		 * 
+		 * startPage : 1, 11, 21, 31 ... => n * 10 + 1(등차수열)
+		 * 
+		 * 만약에 pageLimit이 5라고 가정
+		 * startPage : 1, 6, 11, 16 ... => n * 5 + 1
+		 * 
+		 * 10과 5의 자리에 우리가 설정하는 pageLimit이 들어간다
+		 * 즉, startPage == n * pageLimit + 1;
+		 * 
+		 * n이 뭔지만 알면된다
+		 * 이것도 쉽게 생각해보자
+		 * 
+		 * pageLimit이 10이라고 가정(한 페이지의 페이징 버튼은 10개씩 보여준다)
+		 * currentPage			startPage
+		 * 		1					1
+		 * 		5					1
+		 * 		10					1
+		 * 		11					11
+		 * 		13					11
+		 * 		17					11
+		 * 		20					11
+		 * 		21					21
+		 * 		30					21
+		 * 
+		 * 		1 ~ 10	/	10 => 0 ~ 1(10으로 나누면 1부터 9까지는 0이 나오다가 10으로 나누면 1이 나옴)
+		 * 	   11 ~ 20  /   10 => 1 ~ 2
+		 * 	   21 ~ 30  /	10 => 2 ~ 3
+		 * 
+		 * 마지막 친구들이 자기를 페이지 리밋값으로 나눈거라 1씩 올라가버림, 근데 이건 필요없어서 1씩 빼버리고싶음
+		 * 그럼 나누기 전에(currentPage)에서 1씩 빼줌
+		 * 
+		 * 		0 ~ 9   /	10 => 0
+		 * 	   10 ~ 19  /   10 => 1
+		 * 	   20 ~ 29  /   10 => 2
+		 * 
+		 * n = (currentPage - 1) / pageLimit
+		 * 
+		 * startPage = (currentPage - 1) / pageLimit * pageLimit + 1;
+		 * 
+		 */
+		startPage = (currentPage - 1) / pageLimit * pageLimit + 1;
+		
+		
+		// * endPage : 페이지 하단에 보여질 페이지 버튼의 끝 수
+		// 이건 startPage와 pageLimit을 보고 구하면 된다
+		/*
+		 * startPage, pageLimit에 영향을 받음
+		 * (maxPage도 영향을 끼침)
+		 * endPage가 maxPage보다 큰 숫자가 나온다면 maxPage를 바꿔줘야하는 상황이 된다
+		 * 
+		 * - 공식을 생각해보자
+		 * 	 단, pageLimit이 10이라는 가정
+		 * 
+		 * startPage : 1 => endPage : 10
+		 * startPage : 21 => endPage : 30
+		 * 
+		 * endPage = startPage + pageLimit - 1;
+		 * 
+		 */
+		endPage = startPage + pageLimit - 1;
+		// 현재 최대한 풀어서 하고 있는데 Math class 사용하면 더 간략하게 가능하지만 산수 레벨
+		// 공식이기 때문에 boardLimit, pageLimit에 상관없이 구할 수 있게 된다.
+		// 총 게시글, 현재페이지 번호에 상관없이 똑같이 쓸 수 있음
+		
+		// 근데 벌써 문제가 생김, pageLimit 10, boardLimit 5로 했는데 현재 게시글 30개라서 6페이지가 나올 수 있음
+		// endPage가 10으로 나온다. 페이징 버튼 6개까지만 보여줄게 있고 7부터 10까지는 보여줄게 없음
+		// endPage를 maxPage로 바꿔주자
+		// startPage가 1이라서 endPage에 지금 10이 들어있는데
+		// maxPage가 6이라면??(7 ~ 10에서 보여줄 게 없다)
+		if(endPage > maxPage) {
+			
+			endPage = maxPage;
+			// endPage에 maxPage를 대입해줘야함
+			
+		}
+		
+		// 현재 몇페이지를 요청한지, 한페이지에 몇개 보여줄지, 총 게시글수가 몇개인지에 따라 값이 바뀌니까 리터럴을 쓸 수는 없다
+		// 산수해서 사용자가 요청한 페이지에 따라 시작 페이징 버튼을 만들어줄것을 생각, 마지막 버튼 등 시작값 끝값을 정하고 반복문을 통해 생성
+		// startPage부터 endPage까지 버튼 생성
+		
+		// DB에 게시글이 30개가 있음
+		// DBeaver에서 설명
+		
 		
 		
 		
