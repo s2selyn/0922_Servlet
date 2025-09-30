@@ -1,6 +1,7 @@
 package com.kh.java.board.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.java.board.model.service.BoardService;
+import com.kh.java.board.model.vo.Board;
+import com.kh.java.common.vo.PageInfo;
 
 @WebServlet("/boards")
 public class BoardListController extends HttpServlet {
@@ -204,6 +207,25 @@ public class BoardListController extends HttpServlet {
 		
 		// DB에 게시글이 30개가 있음
 		// DBeaver에서 설명
+		int offset = (currentPage - 1) * boardLimit;
+		
+		// 변수 8개 생김, DB도 가야하고 페이징 버튼도 만들어야하는데 관리하기 힘들다 -> 이 여덟게 담을 VO 클래스 생성
+		// 게시판 만드는 사람들은 전부 사용가능한 친구, 페이징처리하려면 다 필요함 -> common에 vo 패키지를 만들자
+		PageInfo pi = new PageInfo(listCount, currentPage, pageLimit, boardLimit, startPage, endPage, maxPage, offset);
+		// System.out.println(pi);
+		
+		// 이제 진짜 DB 가보자, 만든 변수들로 게시글 내용 조회해와서 출력해보기
+		// 나중에 컨트롤러에 돌아왔을 때의 형태는? 5행 조회 -> List -> 뭐가 담김? Board 모양이 담긴 리스트(제네릭)
+		// select로 시작하고싶으면 BoardList로 메소드 이름 작성, offset이랑 boardLimit이 필요하니 넘겨준다
+		List<Board> boards = new BoardService().selectBoardList(pi);
+		
+		System.out.println(boards);
+		
+		
+		
+		
+		
+		
 		
 		
 		

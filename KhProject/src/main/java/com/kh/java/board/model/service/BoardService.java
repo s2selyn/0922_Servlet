@@ -1,9 +1,13 @@
 package com.kh.java.board.model.service;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.kh.java.board.model.dao.BoardDao;
+import com.kh.java.board.model.vo.Board;
 import com.kh.java.common.Template;
+import com.kh.java.common.vo.PageInfo;
 
 public class BoardService {
 	
@@ -23,6 +27,18 @@ public class BoardService {
 		sqlSession.close();
 		
 		return listCount;
+		
+	}
+	
+	public List<Board> selectBoardList(PageInfo pi) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		List<Board> boards = bd.selectBoardList(sqlSession, pi);
+		
+		sqlSession.close();
+		
+		return boards;
 		
 	}
 

@@ -15,5 +15,50 @@
 		   AND
 		       BOARD_TYPE = 1
 	</select>
+	
+	<!-- ??? 12:16 offset, boardLimit을 가져왔기 때문에
+	카테고리를 들고갈건데, 실제로 테이블에 들어있는 것은 숫자
+	화면상에 띄워줄때는 카테고리 이름을 띄워줄것임
+	조인해야한다
+	보드 테이블 작성자에 USER_NO가 들어있음(PK)
+	출력할 때 1 보여주긴 그러니까 조회해갈 때 MEMBER테이블에 있는 USER_NAME을 들고가자
+	이것도 조인해야함
+	컨텐트는 없어도 되겠다, 이건 상세조회 할 때 할거니까
+	??? ANSI구문, USING과 ON의 차이
+	나중에 게시글 삭제기능 구현할건데 DELETE 안하고 STATUS 컬럼값 바꿀것임
+	삭제되지 않은것만 조회되게 해야함 -> WHERE
+	게시판 타입이 있음, 지금 일반게시판에 쓴것만 조회해야하니까 AND로 조건 추가
+	SELECT 하는데 정렬 안해주니까 ORDER BY 추가
+	30개 내림차순 상태니까 특정 개수만큼 들고가기 위해서 OFFSET 추가
+	pi에 값을 담아왔음, 그거 뽑으려면 #{}
+	
+	member, board에도 status가 있어서 겹치므로 수정 -> KH_BOARD.STATUS = 'Y' (열의 정의가 애매)
+	컬럼 별칭 없으면 매핑 안되니까 별칭 추가해야함, 변수명과 일치하는지 확인
+	-->
+	<select id="selectBoardList"
+			parameterType="com.kh.java.common.vo.PageInfo"
+			resultType="com.kh.java.board.model.vo.Board">
+		SELECT
+		       BOARD_NO boardNo
+		     , CATEGORY_NAME category
+		     , USER_NAME boardWriter
+		     , BOARD_TITLE boardTitle
+		     , CREATE_DATE createDate
+		     , COUNT
+		  FROM
+		       KH_BOARD
+		  JOIN
+		       KH_CATEGORY USING (CATEGORY_NO)
+		  JOIN
+		       KH_MEMBER ON (BOARD_WRITER = USER_NO)
+		 WHERE
+		       KH_BOARD.STATUS = 'Y'
+		   AND
+		       BOARD_TYPE = 1
+		 ORDER
+		    BY
+		       BOARD_NO DESC
+		OFFSET #{offset} ROWS FETCH NEXT #{boardLimit} ROWS ONLY
+	</select>
 
 </mapper>
