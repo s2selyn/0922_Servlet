@@ -82,6 +82,7 @@ public class JoinController extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/member/join.jsp")
                    .forward(request, response);
         }
+        
 	}
 
 }

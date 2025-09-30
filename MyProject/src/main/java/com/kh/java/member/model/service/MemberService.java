@@ -29,6 +29,10 @@ public class MemberService {
 		
 		int result = md.join(sqlSession, joinMember);
 		
+		if(result > 0) {
+			sqlSession.commit();
+		}
+		
 		sqlSession.close();
 		
 		return result;
