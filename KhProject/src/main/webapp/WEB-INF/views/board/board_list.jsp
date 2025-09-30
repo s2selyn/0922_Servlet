@@ -81,12 +81,17 @@ tr:hover{
          </div>
       </div>
          <div class="paging-area" align="center" >
+         
+				<button 
+	       		class="btn btn-outline-primary" style="color:#52b1ff;"
+	       		onclick="location.href='boards?page=${pi.startPage - 1}'">이전전</button>
         	
         		<c:if test="${ pi.currentPage > 1 }">
 		        	<button 
 		       		class="btn btn-outline-primary" style="color:#52b1ff;"
 		       		onclick="location.href='boards?page=${pi.currentPage - 1}'">이전</button>
         		</c:if>
+        		
 				<c:forEach var="i" begin="${ pi.startPage }"
 								   end="${ pi.endPage }">
 	                <button 
@@ -99,6 +104,10 @@ tr:hover{
 		       		class="btn btn-outline-primary" style="color:#52b1ff;"
 		       		onclick="location.href='boards?page=${pi.currentPage + 1}'">다음</button>
 	       		</c:if>
+	       		
+				<button 
+	       		class="btn btn-outline-primary" style="color:#52b1ff;"
+	       		onclick="location.href='boards?page=${pi.endPage + 1}'">다다음</button>
         	
         </div>
       
