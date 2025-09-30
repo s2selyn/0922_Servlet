@@ -63,5 +63,17 @@
 		       BOARD_NO DESC
 		OFFSET #{offset} ROWS FETCH NEXT #{boardLimit} ROWS ONLY
 	</select>
+	
+	<select id="selectCategory"
+			resultType="com.kh.java.board.model.vo.Category">
+		SELECT
+		       CATEGORY_NO categoryNo
+		     , CATEGORY_NAME categoryName
+		  FROM
+		       KH_CATEGORY
+		 ORDER
+		    BY
+		       CATEGORY_NO ASC
+	</select>
 
 </mapper>

@@ -82,20 +82,23 @@ tr:hover{
       </div>
          <div class="paging-area" align="center" >
         	
-	        	<button 
-	       		class="btn btn-outline-primary" style="color:#52b1ff;"
-	       		onclick="location.href='이전페이지매핑값'">이전</button>
-        
+        		<c:if test="${ pi.currentPage > 1 }">
+		        	<button 
+		       		class="btn btn-outline-primary" style="color:#52b1ff;"
+		       		onclick="location.href='boards?page=${pi.currentPage - 1}'">이전</button>
+        		</c:if>
 				<c:forEach var="i" begin="${ pi.startPage }"
 								   end="${ pi.endPage }">
-                <button 
-                class="btn btn-outline-primary" style="color:#52b1ff;"
-                onclick="location.href='boards?page=${i}'">${i}</button>
+	                <button 
+	                class="btn btn-outline-primary" style="color:#52b1ff;"
+	                onclick="location.href='boards?page=${i}'">${i}</button>
 				</c:forEach>
 	        			
-	        	<button 
-	       		class="btn btn-outline-primary" style="color:#52b1ff;"
-	       		onclick="location.href='다음페이지매핑값'">다음</button>
+	        	<c:if test="${ pi.currentPage ne pi.maxPage }">
+		        	<button 
+		       		class="btn btn-outline-primary" style="color:#52b1ff;"
+		       		onclick="location.href='boards?page=${pi.currentPage + 1}'">다음</button>
+	       		</c:if>
         	
         </div>
       

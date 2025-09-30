@@ -72,8 +72,8 @@ public class BoardListController extends HttpServlet {
 		currentPage = Integer.parseInt(request.getParameter("page")); // 앞에서 넘기는거 받아온다, 반환타입 String이라서 대입못함 -> parseInt 호출 -> Integer의 메소드이다
 		// System.out.println(currentPage);
 		
-		pageLimit = 10;
-		boardLimit = 10;
+		pageLimit = 3;
+		boardLimit = 5;
 		// 아까 정한 대로 대입하면 되는데 계산 편하게 하려고 10으로 둘다 작성 후 나중에 5로 고치자
 		// 산수 해야함, maxPage 계산해야하거등
 		// * maxPage : 가장 마지막페이지가 몇 번 페이지인지

@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.kh.java.board.model.dao.BoardDao;
 import com.kh.java.board.model.vo.Board;
+import com.kh.java.board.model.vo.Category;
 import com.kh.java.common.Template;
 import com.kh.java.common.vo.PageInfo;
 
@@ -39,6 +40,18 @@ public class BoardService {
 		sqlSession.close();
 		
 		return boards;
+		
+	}
+	
+	public List<Category> selectCategory() {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		List<Category> categories = bd.selectCategory(sqlSession);
+		
+		sqlSession.close();
+		
+		return categories;
 		
 	}
 
