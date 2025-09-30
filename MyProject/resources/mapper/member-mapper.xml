@@ -31,16 +31,20 @@
 		INSERT
 		  INTO
 		       MP_MEMBER
+		       (
+		       USER_NO
+		     , USER_ID
+		     , USER_PWD
+		     , USER_NAME
+		     , EMAIL
+		       )
 		VALUES
 		       (
-		       USER_NO userNo
-		     , USER_ID userId
-		     , USER_PWD userPwd
-		     , USER_NAME userName
-		     , EMAIL
-		     , ENROLL_DATE enrollDate
-		     , MODIFY_DATE modifyDate
-		     , STATUS
+		       MP_UNO.NEXTVAL
+		     , #{userId}
+		     , #{userPwd}
+		     , #{userName}
+		     , #{email}
 			   )
 	</insert>
 

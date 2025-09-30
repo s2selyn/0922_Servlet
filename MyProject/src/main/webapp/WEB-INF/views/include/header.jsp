@@ -106,7 +106,7 @@
 		          <a class="nav-link js-scroll-trigger" data-toggle="modal" data-target="#log-in">로그인</a>
 		          </li>
 		          <li class="nav-item">
-		          <a class="nav-link js-scroll-trigger" href="join">회원가입</a>
+		          <a class="nav-link js-scroll-trigger" href="${pageContext.request.contextPath}/join">회원가입</a>
 		          </li>
 	          </c:when>
 	         

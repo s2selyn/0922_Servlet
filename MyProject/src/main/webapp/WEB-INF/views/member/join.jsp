@@ -29,21 +29,21 @@
 		<%-- 회원가입 페이지에서 입력받을 내용 : userId, userPwd, userName, email --%>
 		
 		<%-- 폼태그 내부에 인풋요소 4개, 가입버튼, 초기화버튼, 취소버튼 --%>
-		<form id="joinform">
+		<form id="joinform" action="${pageContext.request.contextPath}/join" method="post">
 		
 			<br>
 		
 			<fieldset>
 			
-				사용할 아이디 입력 : <input type="text" class="form-control" required /> <br>
+				사용할 아이디 입력 : <input type="text" name="userId" class="form-control" required /> <br>
 				
 				<label class="form-label">사용할 비밀번호 입력 : </label>
-				<input type="password" id="inputPassword5" class="form-control" required /> <br>
+				<input type="password" name="userPwd" id="inputPassword5" class="form-control" required /> <br>
 				
-				이름 입력 : <input type="text" class="form-control" required /> <br>
+				이름 입력 : <input type="text" name="userName" class="form-control" required /> <br>
 				
 				<label class="form-label">이메일 입력 : </label>
-				<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" required />
+				<input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" required />
 				
 			</fieldset>
 			
@@ -51,7 +51,7 @@
 			
 			<input type="submit" /> <br>
 			<input type="reset" /> <br>
-			<button id="cancel">취소</button> <br>
+			<button type="button" id="cancel">취소</button> <br>
 			
 		</form>
 		

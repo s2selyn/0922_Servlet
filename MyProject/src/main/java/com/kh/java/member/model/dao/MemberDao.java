@@ -15,7 +15,7 @@ public class MemberDao {
 	
 	public int join(SqlSession sqlSession, MemberDto joinMember) {
 		
-		return sqlSession.selectOne("memberMapper.join", joinMember);
+		return sqlSession.insert("memberMapper.join", joinMember);
 		
 	}
 
