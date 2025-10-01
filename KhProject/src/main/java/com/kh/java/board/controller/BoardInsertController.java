@@ -12,7 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.kh.java.board.model.vo.Board;
 import com.kh.java.common.MyRenamePolicy;
+import com.kh.java.member.model.vo.Member;
 import com.oreilly.servlet.MultipartRequest;
 
 @WebServlet("/insert.board")
@@ -46,8 +48,19 @@ public class BoardInsertController extends HttpServlet {
 																 "UTF-8",
 																 new MyRenamePolicy());
 			
+			// System.out.println(title);
 			String title = multiRequest.getParameter("title");
-			System.out.println(title);
+			String content = multiRequest.getParameter("content");
+			String category = multiRequest.getParameter("category");
+			Long userNo = ((Member)session.getAttribute("userInfo")).getUserNo();
+			
+			// 3) 가공해야디~
+			Board board = new Board();
+			board.setBoardTitle(title);
+			board.setBoardContent(content);
+			board.setCategory(category);
+			board.setBoardWriter(String.valueOf(userNo));
+			
 			
 		}
 		
