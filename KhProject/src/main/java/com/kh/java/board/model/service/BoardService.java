@@ -140,6 +140,10 @@ public class BoardService {
 			// 그리고 첨부파일 조회도 해야함
 			Attachment at = bd.selectAttachment(sqlSession, boardNo);
 			
+			// -----
+			Long userNo = bd.selectBoardWriter(sqlSession, boardNo);
+			// -----
+			
 			// 조회 되는지 먼저 확인, sql 잘못되면 sql exception 예외 일어나니까 예외 일어나지 않는지 확인한다
 			// System.out.println(board);
 			// System.out.println(at);
@@ -170,6 +174,10 @@ public class BoardService {
 			map.put("board", board);
 			map.put("at", at);
 			
+			// -----
+			map.put("boardWriter", userNo);
+			// -----
+			
 			return map;
 			// 조회에 성공했을 때는 결과를 담은 map을 반환
 			
@@ -178,6 +186,48 @@ public class BoardService {
 		// if에 못들어갔다면 안된거니까
 		// 업데이트에 실패했으면 돌려줄게 없음
 		return null;
+		
+	}
+	
+	public int deleteBoard(Board board) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = bd.deleteBoard(sqlSession, board);
+		
+		// 지우는거 성공했으면 나중에 커밋도 해줘야함
+		
+		Attachment at = bd.selectAttachment(sqlSession, board.getBoardNo().intValue());
+		// 근데 아까 만들 때 생각안한게, 매개변수 타입이 int, boardNo는 Long
+		// Long을 또 int로 바꿔줘야함? 이건 래퍼클래스와 기본자료형이라 형변환 안됨
+		// intValue : Long의 메소드, int로 변환(정확히는 Integer -> int로 거쳐가는것)
+		
+		int result2 = 1;
+		// 게시글 지우는데 성공하면 첨부파일도 지워야함
+		if(at != null) { // result > 0 에서 조건 수정
+			
+			result2 = bd.deleteAttachment(sqlSession, board.getBoardNo());
+			// 둘다 성공하면 커밋
+			
+			// 둘중 하나라도 실패하면 별개의 경우
+			// 애초에 파일이 없었다면 result가 0이 돌아오니 아까처럼 체크하면 안됨
+			// 아까처럼 1로 초기화하고 대입해도 문제생길까?
+			// 파일이 있을때만 SQL문 실행해야겠다면? 뭘 해봐야 게시글에 파일이 있는지 없는지 알수있음? DB가서 조회해야함
+			// 게시글 번호를 가지고 파일이 있나없나 조회하는건 이미 만들어뒀다, selectAttachment, 이건 게시글 번호만 있으면 파일이 있나없나 알수있음
+			// null이면 파일이 없는거고, null이 아닐때만 서비스에서 이걸 수행하면 된다
+			// result2 초기화 위에 파일 있는지 확인하는 코드 추가
+			
+		}
+		
+		if(result * result2 > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		
+		return result * result2;
+		// 둘다 잘됐을때만 1, 둘중 하나라도 잘못되면 0이 반환됨
+		// 아까랑 동일하게 트랜잭션 처리방식 구현함
 		
 	}
 

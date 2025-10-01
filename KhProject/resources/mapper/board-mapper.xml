@@ -230,5 +230,37 @@
 		   AND
 		       REF_BNO = #{boardNo}
 	</select>
+	
+	<select id="selectBoardWriter"
+			resultType="long">
+		SELECT
+		       BOARD_WRITER
+		  FROM
+		       KH_BOARD
+		 WHERE
+		       BOARD_NO = #{boardNo}
+	</select>
+	
+	<update id="deleteBoard"
+			parameterType="com.kh.java.board.model.vo.board">
+		UPDATE
+		       KH_BOARD
+		   SET
+		       STATUS = 'N'
+		 WHERE
+		       BOARD_NO = #{boardNo}
+		   AND
+		       BOARD_WRITER = #{boardWriter}
+	</update>
+	
+	<update id="deleteAttachment"
+			parameterType="long">
+		UPDATE
+		       KH_ATTACHMENT
+		   SET
+		       STATUS = 'N'
+		 WHERE
+		       REF_BNO = #{boardNo}
+	</update>
 
 </mapper>

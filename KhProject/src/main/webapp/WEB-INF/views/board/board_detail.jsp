@@ -75,7 +75,21 @@
 		             style="background-color: #52b1ff; height: 40px; color: white; border: 0px solid #388E3C; opacity: 0.8"
 		          >목록</a>&nbsp;&nbsp;
 		          
+		          <!--
+		          	버튼 두 개를 게시글 작성자만 볼 수 있게 하고 싶음
+		          	사용자의 식별 : MEMBER -> PK(USER_NO), UNIQUE(USER_ID) 값으로 할 수 있음
+		          	현재 로그인된 사용자의 것과 board table에 있는 컬럼값과 비고해야함
+		          	멤버테이블의 userId는 안됨?
+		          	조인해서 들고온거랑 비교해야함
+		          	지금은 userNo, userId 둘 다 없어서 비교가 안됨
+		          	어쩔 수 없이 가서 다시 조회해와야한다
+		          	그게 싫다면 여기서 요청을 보낼 때 게시글 번호를 같이 보내서 작성자(게시글에 달려있는 보드라이터를 조회)를 조회해서 현재 세션에 담긴 사용자
+		          	근데 a 태그라 get방식으로 보내니 악의적인 사용자가 바꾸어 보낼 수 있으니까 안된다
+		          	지금은 boardWriter로 식별불가
+		          	명확한걸 위해 USER_NO를 가져오는게 좋겠다
+		          -->
 		          
+		          <c:if test="${ userInfo.userNo eq map.boardWriter }">
 			          <a 
 			            class="btn" 
 			            href="수정요청 매핑값"
@@ -84,9 +98,10 @@
 			          
 			          <a 
 			            class="btn" 
-			            href="삭제하기" onclick="return confirm('정말로 삭제하시겠습니까?')"
+			            href="delete.board?boardNo=${ map.board.boardNo }" onclick="return confirm('정말로 삭제하시겠습니까?')"
 			      		style="background-color: red; height: 40px; color: white; border: 0px solid #388E3C; opacity: 0.8"
 			      		>삭제</a>&nbsp;&nbsp;
+			      </c:if>
 
 		      </div>
 		    </div>

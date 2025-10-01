@@ -50,8 +50,40 @@ public class BoardDetailController extends HttpServlet {
 		// 일단 어떻게 돌아올지 나중에 정하고 서비스 가서 작업 먼저 하자
 		
 		// ??? 14:46
-		request.setAttribute("map", map);
+		// request.setAttribute("map", map);
+		// -----
 		
+		// -----
+		String path = "";
+		// 위에서 만들어놓은 map이 null이면 넘어가면 안됨, 이건 실패했다는 듯
+		// 성공실패 작업 추가
+		if(map != null) {
+			
+			request.setAttribute("map", map);
+			
+			/*
+			request.getRequestDispatcher("/WEB-INF/views/board/board_detail.jsp")
+			   	   .forward(request, response);
+			*/
+			path = "board/board_detail";
+			
+		} else {
+			
+			request.setAttribute("msg", "게시글이 읎으요");
+			
+			/*
+			request.getRequestDispatcher("WEB-INF/views/common/result_page.jsp")
+				   .forward(request, response);
+			*/
+			path = "common/result_page";
+			
+		}
+		// -----
+		
+		// -----
+		// 중복제거, 변수 선언 if문 위에서 함
+		request.getRequestDispatcher("WEB-INF/views/" + path + ".jsp")
+			   .forward(request, response);
 		// -----
 		
 		// 지금 상세보기 하러 서블릿에 왔다, DB에 다녀와야함
@@ -60,8 +92,10 @@ public class BoardDetailController extends HttpServlet {
 		// 보여줄 화면이 생겨야 DB에 가서 뭘 들고올지를 정할 수 있다.
 		
 		// jsp 생성 후 포워딩 먼저 해둠
+		/*
 		request.getRequestDispatcher("/WEB-INF/views/board/board_detail.jsp")
 			   .forward(request, response);
+		*/
 		// ??? 12:13 여기서 생각해야 할 내용
 		
 	}

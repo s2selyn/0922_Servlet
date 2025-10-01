@@ -47,5 +47,22 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectAttachment", boardNo);
 	}
 	// 마이바티스를 사용한다면 사용하는 문법이 정해져있기 때문에 DAO에서 쓸것들도 자동으로 거의 다 정해진다
+	
+	public Long selectBoardWriter(SqlSession sqlSession, int boardNo) {
+		return sqlSession.selectOne("boardMapper.selectBoardWriter", boardNo);
+	}
+	
+	public int deleteBoard(SqlSession sqlSession, Board board) {
+		
+		// 지우는 척 하는 업데이트임
+		// 실질적으로 업데이트해서 status 컬럼만 바꿔주면 지우는것과 다름없음
+		// status 업데이트해서 n으로 바꾸기 할건데 여기까진 별문제없다
+		return sqlSession.update("boardMapper.deleteBoard", board);
+		
+	}
+	
+	public int deleteAttachment(SqlSession sqlSession, Long boardNo) {
+		return sqlSession.update("boardMapper.deleteAttachment", boardNo);
+	}
 
 }
