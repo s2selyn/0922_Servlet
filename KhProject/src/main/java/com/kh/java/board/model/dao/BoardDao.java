@@ -28,7 +28,7 @@ public class BoardDao {
 	}
 	
 	public int insertBoard(SqlSession sqlSession, Board board) {
-		return 0;
+		return sqlSession.insert("boardMapper.insertBoard", board);
 	}
 	
 	public int insertAttachment(SqlSession sqlSession, Attachment at) {

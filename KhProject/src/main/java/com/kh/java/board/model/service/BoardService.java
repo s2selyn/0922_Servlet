@@ -60,13 +60,18 @@ public class BoardService {
 		
 		SqlSession sqlSession = Template.getSqlSession();
 		
+		// INSERT를 두 번 수행
+		// BOARD 테이블에 한 번 => 무조건
 		int boardResult = bd.insertBoard(sqlSession, board);
 		
+		// ATTACHMENT 테이블에 한 번 => 파일이 존재할 때만 가야함
 		int atResult = 1;
 		
 		if(at != null) {
+			
 			at.setRefBno(board.getBoardNo());
 			atResult = bd.insertAttachment(sqlSession, at);
+			
 		}
 		
 		// 두 개의 DML구문을 하나의 트랜잭션으로 묶어서 처리
