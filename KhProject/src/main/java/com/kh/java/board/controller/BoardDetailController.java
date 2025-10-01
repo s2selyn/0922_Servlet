@@ -1,6 +1,7 @@
 package com.kh.java.board.controller;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,10 +44,13 @@ public class BoardDetailController extends HttpServlet {
 		// 가공할건 없음(값이 하나뿐)
 		
 		// 요청처리 -> 서비스단으로 boardNo넘김, 넘기는것 자체는 쉽지만...
-		new BoardService().selectBoard(boardNo);
+		Map<String, Object> map = new BoardService().selectBoard(boardNo);
 		// 나중에 어떻게 받을지가 문제, 하나만 받는거면 각각 받느면 되는데 지금은 board + attechment 두개가 있을 수 있는게 문제
 		// 조회두번은 서비스에서 할거고
 		// 일단 어떻게 돌아올지 나중에 정하고 서비스 가서 작업 먼저 하자
+		
+		// ??? 14:46
+		request.setAttribute("map", map);
 		
 		// -----
 		

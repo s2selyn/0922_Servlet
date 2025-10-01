@@ -1,6 +1,7 @@
 package com.kh.java.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -98,7 +99,7 @@ public class BoardService {
 		
 	}
 	
-	public void selectBoard(int boardNo) {
+	public Map<String, Object> selectBoard(int boardNo) {
 		
 		SqlSession sqlSession = Template.getSqlSession();
 		// 여기까지는 확정
@@ -138,7 +139,37 @@ public class BoardService {
 			// 그리고 첨부파일 조회도 해야함
 			Attachment at = bd.selectAttachment(sqlSession, boardNo);
 			
+			// 조회 되는지 먼저 확인, sql 잘못되면 sql exception 예외 일어나니까 예외 일어나지 않는지 확인한다
+			// System.out.println(board);
+			// System.out.println(at);
+			
+			// 이걸 jsp에게 보내야한다
+			// 댓글도 들고가야하는데 아직 작성 안만들었으니까 board, at 들고 jsp 가야함
+			// 일단 컨트롤러로 다시 보내야하는데 두개라서 어떻게 돌려주는게 좋을까?
+			// 하나밖에 못돌려주니까 하나에 담는게 좋을 것 같은데 어디에 담을까?
+			// 리퀘스트에 담으려면 컨트롤러에 가야함, 어딘가에 담겨서 컨트롤러로 리턴되어야, 컨트롤러에서 변수에 담아서 또 jsp에 보내겠지
+			// list도 방법 중의 하나
+			// 서로 다른 자료형 두개를 어딘가에 담고싶음, 자바인데 자바에서 서로 다른 자료형 두개의 값을 어디에 담고싶은것
+			// 그러면 선택지 네개뿐, object형 배열, list, set, map
+			// 이거 말고는 자바에서 여러개 자료형 담을수있는게 없다, 그게 싫다면 새로 DTO 만들어서 담든가.. 그거 만들어서 하는거 좋긴한데 다른사람이 공부해야함
+			// 이미 있는거 쓰는게 좋다, list, set, map이라면 자바개발자는 누구나 알겠지, 여러개 담으려고 썼구나 하고
+			// 지금은 어디에 담는게 좋을까? 사실 object형 배열이랑 arraylist는 같고 문제가 index 개념이 있어서 나중에 뽑을 때 get 0, 1 이런거 해야해서 불편해서 패스
+			// set, map이 남는다, 지금은 조금 더 적합한게 map, 어디 담아도 담아서 넘기는건 문제가 없음
+			// 컬렉션은 각각 특징이 있으니까, 리스트는 순서 필요할 때, 순서가 보장되어야 할 때 필요함
+			// set은 집합, 중복 없애고 싶을 때, 똑같은거 안들어가게 하고싶을때
+			// map은 key-value로 데이터 관리하고싶을때, 값에 대한 인지를 명확하게 시키고 싶을 때
+			// 지금 board, attachment가 누가 먼저가야하는 순서필요한건아님, 중복을 없애야 하는 것도 아님
+			// board, attachment라는 식별값을 달아주면 좋은 상황이니 map이 적합하다고 할 수 있다, 각각 주소값이니까 주소값에 key값을 달아줄 수 있음
+			Map<String, Object> map = Map.of("board", board,
+											 "at", at);
+			return map;
+			// 조회에 성공했을 때는 결과를 담은 map을 반환
+			
 		}
+		
+		// if에 못들어갔다면 안된거니까
+		// 업데이트에 실패했으면 돌려줄게 없음
+		return null;
 		
 	}
 

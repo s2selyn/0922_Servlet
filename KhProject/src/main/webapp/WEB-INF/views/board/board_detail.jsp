@@ -20,12 +20,12 @@
 		<div class="row">
 		  <div class="offset-lg-2 col-lg-8">
 		    <div class="card">
-		      <div class="card-header text-white" style="background-color: #52b1ff;">10번 게시물 내용</div>
+		      <div class="card-header text-white" style="background-color: #52b1ff;">${ map.board.boardNo }번 게시물 내용</div>
 		      <div class="card-body"> 
 		
 		          <div class="form-group">
 		            <label>카테고리</label><br>
-		            <span>원본게시글 카테고리</span>
+		            <span>${ map.board.category }</span>
 		          </div>      
 		        
 		          <div class="form-group">

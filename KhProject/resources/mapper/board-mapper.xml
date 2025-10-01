@@ -167,7 +167,7 @@
 		       KH_ATTACHMENT
 		       (
 		       FILE_NO
-		     , REF_NO
+		     , REF_BNO
 		     , ORIGIN_NAME
 		     , CHANGE_NAME
 		     , FILE_PATH
@@ -194,19 +194,41 @@
 		       STATUS = 'Y'
 	</update>
 	
-	<select id="selectBoard">
+	<select id="selectBoard"
+			resultType="com.kh.java.board.model.vo.Board"
+			parameterType="_int">
 		SELECT
-		       BOARD_NO
-		     , USER_NAME
-		     , CATEGORY_NAME
-		     , BOARD_TITLE
-		     , BOARD_COUNT
+		       BOARD_NO boardNo
+		     , USER_NAME boardWriter
+		     , CATEGORY_NAME category
+		     , BOARD_TITLE boardTitle
+		     , BOARD_CONTENT boardContent
 		  FROM
 		       KH_BOARD
+		  JOIN
+		       KH_CATEGORY USING (CATEGORY_NO)
+		  JOIN
+		       KH_MEMBER ON (BOARD_WRITER = USER_NO)
+		 WHERE
+		       KH_BOARD.STATUS = 'Y'
+		   AND
+		       BOARD_NO = #{boardNo}
 	</select>
 	
-	<select id="selectAttachment">
-	
+	<select id="selectAttachment"
+			resultType="com.kh.java.board.model.vo.Attachment"
+			parameterType="_int">
+		SELECT
+		       FILE_NO fileNo
+		     , ORIGIN_NAME originName
+		     , CHANGE_NAME changeName
+		     , FILE_PATH filePath
+		  FROM
+		       KH_ATTACHMENT
+		 WHERE
+		       STATUS = 'Y'
+		   AND
+		       REF_BNO = #{boardNo}
 	</select>
 
 </mapper>
