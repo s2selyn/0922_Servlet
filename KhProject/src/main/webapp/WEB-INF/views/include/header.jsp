@@ -25,6 +25,18 @@
   
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css"/>
 
 <style>
     #mainNav .navbar-nav .nav-item .nav-link {
@@ -82,7 +94,7 @@
 			// 자바스크립트에서 자바문자열을 출력하고싶은것은 alert(${ alertMsg }); 이렇게는 쓸 수 없다
 			// 자바스크립트에서 문자열 리터럴을 쓰고싶다면? alert(로그인성공); -> 이건 안나온다
 			// 문자열 출력하고싶으면 자바스크립트에서는 쌍따옴표로 감싸줘야함 -> alert("로그인성공");
-			alert("${ alertMsg }"); // 이렇게 하는게 1절, 4절까지 가야함
+			alertify.alert("${ alertMsg }"); // 이렇게 하는게 1절, 4절까지 가야함
 			// 스크립트 태그 안에 있어서 항상 헤더에 오면 이게 떠버림
 			// 뒷단에서 담겨있을때만 이걸 띄워주야함
 			// -> alertMsg가 있을 때만 -> 조건 -> jsp 상이니까 조건문은? -> choose 말고, 조건이 하나니까 -> c:if
