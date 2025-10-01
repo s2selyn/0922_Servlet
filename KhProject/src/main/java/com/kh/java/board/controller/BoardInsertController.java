@@ -32,8 +32,10 @@ public class BoardInsertController extends HttpServlet {
 			int maxSize = 10 * 1024 * 1024;
 			
 			HttpSession session = request.getSession();
-			request.getServletContext();
+			// request.getServletContext();
 			ServletContext application = session.getServletContext();
+			String savePath = application.getRealPath("/resources/board_upfiles");
+			// System.out.println(savePath);
 			
 		}
 		

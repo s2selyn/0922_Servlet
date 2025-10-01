@@ -64,6 +64,10 @@ tr:hover{
                         </td>
                         <td style="color: #52d6ffcc;">
                         ${ board.boardTitle } &nbsp;
+                        <!--
+                        <a href="detail.board?boardNo=${ board.boardNo }">
+                        </a>
+                        -->
                         </td>
                         <td>
                         ${ board.createDate }
@@ -80,6 +84,27 @@ tr:hover{
             </div>            
          </div>
       </div>
+      <script>
+      		$(function() {
+      			
+      			$(".board").click(e => {
+      				
+      				// console.log(e.currentTarget.id);
+      				// 현재 내가 클릭한 이벤트가 발생한 이벤트 타겟 요소객체가 선택된다 --> e.currentTarget
+      				// 요소객체가 필요한게 아니라 요소객체의 id속성값이 필요함
+      				// 이걸 얻고싶으면 여기서 currentTarget의 id 속성값을 얻어내고 싶다면 객체의 속성값을 얻어내고 싶다면
+      				// 객체명을 쓴다, 참조를 한다, 속성명을 쓴다(객체에 참조해서 속성명을 적는다) --> e.currentTarget.id
+      				const targetId = e.currentTarget.id;
+      				location.href = `detail.board?boardNo=\${targetId}`;
+      				// jsp에서 백틱문법 쓰면 el구문으로 해석하고 서버에서 돌려버림, 빈문자열이 된다
+      				// 이럴 때 js 파일로 분리하거나 $앞에 \을 붙여준다
+      				
+      				// location.href = `detail.board`;
+      				
+      			});
+      			
+      		});
+      </script>
          <div class="paging-area" align="center" >
          
 				<button 
