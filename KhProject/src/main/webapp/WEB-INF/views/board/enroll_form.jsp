@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +16,13 @@
 </head>
 <body>
 	<jsp:include page="../include/header.jsp" />
+	
+	<c:if test="${ userInfo eq null }">
+		<script>
+			alert("글작성은 로그인 이후 가능합니다.");
+			location.href = "/kh";
+		</script>
+	</c:if>
 
 
 	<div class="outer">
@@ -22,14 +30,19 @@
         <h2 align="center">게시글 작성하기</h2>
         <br><br> 
 		
-        <form action="enrollForm.board" method="post" id="insert-form"
+        <form action="insert.board" method="post" id="insert-form"
         	  enctype="multipart/form-data">
+        <!-- 파일첨부요청을 보낼 때 form태그에 반드시
+        	enctype="multipart/form-data" 라고 적혀있어야함
+         -->
         
         	<div class="form-group">
 	        	<select name="category" class="form-control">
-                    <option value="10">
-                        공용
+	        	<c:forEach items="${category}" var="c">
+                    <option value="${ c.categoryNo }">
+                        ${ c.categoryName }
                     </option>
+                </c:forEach>
 	        	</select>
         	</div>
 

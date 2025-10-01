@@ -75,5 +75,111 @@
 		    BY
 		       CATEGORY_NO ASC
 	</select>
+	
+	<insert id="insertBoard1"
+			parameterType="com.kh.java.board.model.vo.Board">
+		INSERT
+		  INTO
+		       KH_BOARD
+		       (
+		       BOARD_NO
+		     , BOARD_TYPE
+		     , CATEGORY_NO
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_WRITER
+		       )
+		VALUES
+		       (
+		       SEQ_BNO.NEXTVAL
+		     , 1
+		     , #{category}
+		     , #{boardTitle}
+		     , #{boardContent}
+		     , #{boardWriter}
+		       )
+	</insert>
+	
+	<insert id="insertAttachment1"
+			parameterType="com.kh.java.board.model.vo.Attachment">
+		INSERT
+		  INTO
+		       KH_ATTACHMENT
+		       (
+		       FILE_NO
+		     , REF_NO
+		     , ORIGIN_NAME
+		     , CHANGE_NAME
+		     , FILE_PATH
+		       )
+		VALUES
+		       (
+		       SEQ_FNO.NEXTVAL
+		     , SEQ_BNO.CURRVAL
+		     , #{originName}
+		     , #{changeName}
+		     , #{filePath}
+		       )
+	</insert>
+	
+	<!--
+		selectKey
+		
+		게시글 + 첨부파일 INSERT
+		주문 + 주문상세 INSERT
+		회원 + 권한 INSERT
+		등 여러 테이블 연관관계, 자식-부모관계에서 외래키 사용할때 등에서 무조건 사용
+		이게 마이바티스 사용하는 업계 표준(currval보다 이것을 쓴다) 
+	-->
+	
+	<insert id="insertBoard"
+			parameterType="com.kh.java.board.model.vo.Board">
+		<selectKey resultType="long" keyProperty="boardNo"
+				   order="BEFORE">
+			SELECT SEQ_BNO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT
+		  INTO
+		       KH_BOARD
+		       (
+		       BOARD_NO
+		     , BOARD_TYPE
+		     , CATEGORY_NO
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_WRITER
+		       )
+		VALUES
+		       (
+		       #{boardNo}
+		     , 1
+		     , #{category}
+		     , #{boardTitle}
+		     , #{boardContent}
+		     , #{boardWriter}
+		       )
+	</insert>
+	
+	<insert id="insertAttachment"
+			parameterType="com.kh.java.board.model.vo.Attachment">
+		INSERT
+		  INTO
+		       KH_ATTACHMENT
+		       (
+		       FILE_NO
+		     , REF_NO
+		     , ORIGIN_NAME
+		     , CHANGE_NAME
+		     , FILE_PATH
+		       )
+		VALUES
+		       (
+		       SEQ_FNO.NEXTVAL
+		     , #{refBno}
+		     , #{originName}
+		     , #{changeName}
+		     , #{filePath}
+		       )
+	</insert>
 
 </mapper>

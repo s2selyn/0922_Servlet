@@ -1,33 +1,41 @@
 package com.kh.java.board.controller;
 
 import java.io.IOException;
-import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.kh.java.board.model.service.BoardService;
-import com.kh.java.board.model.vo.Category;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-@WebServlet("/enrollForm.board")
-public class EnrollFormController extends HttpServlet {
+@WebServlet("/insert.board")
+public class BoardInsertController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public EnrollFormController() {
+    public BoardInsertController() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		List<Category> categories = new BoardService().selectCategory();
+		request.setCharacterEncoding("UTF-8");
 		
-		request.setAttribute("category", categories);
+		// String title = request.getParameter("title");
+		// System.out.println(title);
 		
-		request.getRequestDispatcher("/WEB-INF/views/board/enroll_form.jsp")
-			   .forward(request, response);
+		if(ServletFileUpload.isMultipartContent(request)) {
+			
+			int maxSize = 10 * 1024 * 1024;
+			
+			HttpSession session = request.getSession();
+			request.getServletContext();
+			ServletContext application = session.getServletContext();
+			
+		}
 		
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.kh.java.board.model.vo.Attachment;
 import com.kh.java.board.model.vo.Board;
 import com.kh.java.board.model.vo.Category;
 import com.kh.java.common.vo.PageInfo;
@@ -24,6 +25,14 @@ public class BoardDao {
 	
 	public List<Category> selectCategory(SqlSession sqlSession) {
 		return sqlSession.selectList("boardMapper.selectCategory");
+	}
+	
+	public int insertBoard(SqlSession sqlSession, Board board) {
+		return 0;
+	}
+	
+	public int insertAttachment(SqlSession sqlSession, Attachment at) {
+		return sqlSession.insert("boardMapper.insertAttachment", at);
 	}
 
 }
