@@ -12,6 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import com.kh.java.common.MyRenamePolicy;
+import com.oreilly.servlet.MultipartRequest;
+
 @WebServlet("/insert.board")
 public class BoardInsertController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -36,6 +39,15 @@ public class BoardInsertController extends HttpServlet {
 			ServletContext application = session.getServletContext();
 			String savePath = application.getRealPath("/resources/board_upfiles");
 			// System.out.println(savePath);
+			
+			MultipartRequest multiRequest = new MultipartRequest(request,
+																 savePath,
+																 maxSize,
+																 "UTF-8",
+																 new MyRenamePolicy());
+			
+			String title = multiRequest.getParameter("title");
+			System.out.println(title);
 			
 		}
 		

@@ -34,5 +34,18 @@ public class BoardDao {
 	public int insertAttachment(SqlSession sqlSession, Attachment at) {
 		return sqlSession.insert("boardMapper.insertAttachment", at);
 	}
+	
+	public int increaseCount(SqlSession sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.increaseCount", boardNo);
+	}
+	
+	public Board selectBoard(SqlSession sqlSession, int boardNo) {
+		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
+	}
+	
+	public Attachment selectAttachment(SqlSession sqlSession, int boardNo) {
+		return sqlSession.selectOne("boardMapper.selectAttachment", boardNo);
+	}
+	// 마이바티스를 사용한다면 사용하는 문법이 정해져있기 때문에 DAO에서 쓸것들도 자동으로 거의 다 정해진다
 
 }

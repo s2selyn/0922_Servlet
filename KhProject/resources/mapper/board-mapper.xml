@@ -181,5 +181,32 @@
 		     , #{filePath}
 		       )
 	</insert>
+	
+	<update id="increaseCount"
+			parameterType="_int">
+		UPDATE
+		       KH_BOARD
+		   SET
+		       COUNT = COUNT + 1
+		 WHERE
+		       BOARD_NO = #{boardNo}
+		   AND
+		       STATUS = 'Y'
+	</update>
+	
+	<select id="selectBoard">
+		SELECT
+		       BOARD_NO
+		     , USER_NAME
+		     , CATEGORY_NAME
+		     , BOARD_TITLE
+		     , BOARD_COUNT
+		  FROM
+		       KH_BOARD
+	</select>
+	
+	<select id="selectAttachment">
+	
+	</select>
 
 </mapper>
