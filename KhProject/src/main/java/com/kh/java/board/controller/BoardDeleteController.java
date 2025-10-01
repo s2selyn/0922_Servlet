@@ -34,14 +34,17 @@ public class BoardDeleteController extends HttpServlet {
 		// 어딘가에 담아서 보내야하는데 board에 담으려고 Long으로 값을 뽑음
 		Board board = new Board();
 		board.setBoardNo(boardNo);
-		board.setBoardContent(String.valueOf(userNo));
+		board.setBoardWriter(String.valueOf(userNo));
 		// String으로 뽑았다면 이걸 안해도 됐겠죠? ㅎㅎ
+		System.out.println(board); // 처음에 setBoardWriter가 아니라 setBoardContent로 써서 삭제 실패함
 		
 		int result = new BoardService().deleteBoard(board);
 		// delete인척하는 update이기 때문에 나중에 int로 받아올 것이다
 		
 		// 게시글 삭제에 실패, 성공할 수 있음, 그것에 따라 응답화면 다르게 보여줄 것
 		if(result > 0) {
+			
+			response.sendRedirect(request.getContextPath() + "/boards?page=1");
 			
 		} else {
 			

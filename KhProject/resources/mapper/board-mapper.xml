@@ -242,7 +242,7 @@
 	</select>
 	
 	<update id="deleteBoard"
-			parameterType="com.kh.java.board.model.vo.board">
+			parameterType="com.kh.java.board.model.vo.Board">
 		UPDATE
 		       KH_BOARD
 		   SET
