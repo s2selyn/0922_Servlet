@@ -24,7 +24,10 @@ public class BoardDao {
 	}
 	
 	public List<Category> selectCategory(SqlSession sqlSession) {
+		
 		return sqlSession.selectList("boardMapper.selectCategory");
+		// 나중에 카테고리 패키지를 만들어서 카테고리 추가, 삭제 이것을 관리자 기능으로 넣을수도 있다
+		
 	}
 	
 	public int insertBoard(SqlSession sqlSession, Board board) {

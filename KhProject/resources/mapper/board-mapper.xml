@@ -80,6 +80,7 @@
 		OFFSET #{offset} ROWS FETCH NEXT #{boardLimit} ROWS ONLY
 	</select>
 	
+	<!-- 매퍼에 세미콜론 쓰면 에러납니다 -->
 	<select id="selectCategory"
 			resultType="com.kh.java.board.model.vo.Category">
 		SELECT
