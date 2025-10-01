@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,33 +31,44 @@
 		        
 		          <div class="form-group">
 		            <label>작성자</label>
-		            <input type="text" class="form-control" name='writer' value="원본게시글작성자" readonly>
+		            <input type="text" class="form-control" name='writer' value="${ map.board.boardWriter }" readonly>
 		          </div>
 		          
 		          <div class="form-group">
 		            <label>제목</label>
-		            <input type="text" class="form-control" name='title' value="원본게시글제목" readonly>
+		            <input type="text" class="form-control" name='title' value="${ map.board.boardTitle }" readonly>
 		          </div>
 		
 		          <div class="form-group">
 		            <label>내용</label>
-		            <textarea class="form-control" rows="5" name='content' readonly style="resize:none;">원본 게시글 내용</textarea>
+		            <textarea class="form-control" rows="5" name='content' readonly style="resize:none;">${ map.board.boardContent }</textarea>
 		          </div>
 		
 		          <div class="form-group">
 		            <label>첨부파일</label>
 
+					<c:choose>
+						<c:when test="${ map.at ne null }">
+						<!-- 
+						??? 15:30
+						localhost:4000/kh/resources/board_upfiles/KHacacemy_20251001143059_514.jpg
+						a 태그에 이 경로를 이용하도록 속성을 작성해줘야함
+						앞의 부분은 filePath필드, 뒤는 무슨 필드? 에 담아옴
+						 -->
+						
 			            	<!-- 첨부파일은 있을수도있음 -->
 			            	<a 
-			            	download="파일명"
-			            	href="파일경로"
-			            	>파일명</a><br>
+			            	download="${ map.at.originName }"
+			            	href="${ map.at.filePath }/${ map.at.changeName }"
+			            	>${ map.at.originName }</a><br>
 			            	
-			            	<img src="파일경로"/>
-
-
+			            	<img src="${ map.at.filePath }/${ map.at.changeName }" width="360" height="240"/>
+						</c:when>
+						<c:otherwise>
 			            	<!-- 첨부파일은 없을수도있음 -->
 			            	&nbsp;&nbsp;<span>첨부파일이 존재하지 않습니다.</span>
+			            </c:otherwise>
+			       </c:choose>
 		          </div>
 		         
 		          <a class="btn" href="boards?currentPage=1"

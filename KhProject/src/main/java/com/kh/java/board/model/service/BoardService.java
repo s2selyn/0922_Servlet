@@ -1,5 +1,6 @@
 package com.kh.java.board.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -160,8 +161,15 @@ public class BoardService {
 			// map은 key-value로 데이터 관리하고싶을때, 값에 대한 인지를 명확하게 시키고 싶을 때
 			// 지금 board, attachment가 누가 먼저가야하는 순서필요한건아님, 중복을 없애야 하는 것도 아님
 			// board, attachment라는 식별값을 달아주면 좋은 상황이니 map이 적합하다고 할 수 있다, 각각 주소값이니까 주소값에 key값을 달아줄 수 있음
+			/*
 			Map<String, Object> map = Map.of("board", board,
 											 "at", at);
+		    */
+			
+			Map<String, Object> map = new HashMap();
+			map.put("board", board);
+			map.put("at", at);
+			
 			return map;
 			// 조회에 성공했을 때는 결과를 담은 map을 반환
 			
