@@ -52,7 +52,7 @@
 			<div style="align:right;" >
 				<a class="btn btn-sm btn-primary"
 				   style="background:rgb(193 229 255); border:none; width:100%"
-				   href="사진게시글작성 매핑값"
+				   href="form.image"
 				>글작성</a>
 			</div>
 
