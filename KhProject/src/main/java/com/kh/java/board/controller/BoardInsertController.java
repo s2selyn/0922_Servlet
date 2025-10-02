@@ -252,6 +252,7 @@ public class BoardInsertController extends HttpServlet {
 			// 3_2) 첨부파일의 경우 => 선택적
 			// 첨부할수도 있고 안할수도있음, 첨부안했는데 insert할수는 없음
 			Attachment at = null; // 그래서 선언만 해뒀음
+			// 첨부파일이 없으면 null을 보내고, 있으면 null이 아닌것을 보내기 위해 if문안에서 대입함
 			
 			// 첨부파일의 유무를 파악
 			// 원본파일 이름을 얻으려면 input 요소의 name 속성값을 메소드의 인자로 전달한다

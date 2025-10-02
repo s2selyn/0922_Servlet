@@ -63,10 +63,10 @@ public class BoardService {
 		SqlSession sqlSession = Template.getSqlSession();
 		
 		// INSERT를 두 번 수행
-		// BOARD 테이블에 한 번 => 무조건
+		// BOARD 테이블에 한 번 => 무조건 가는것, 게시글 등록 요청이니까(제목+내용)
 		int boardResult = bd.insertBoard(sqlSession, board);
 		
-		// ATTACHMENT 테이블에 한 번 => 파일이 존재할 때만 가야함
+		// ATTACHMENT 테이블에 한 번 => 파일이 존재할 때만 가야함(첨부했을수도/안했을수도)
 		int atResult = 1;
 		
 		if(at != null) {
@@ -95,7 +95,7 @@ public class BoardService {
 			
 		}
 		
-		// 트랜잭션처리까지 끝내고 난 후 성공실패여부를 반환
+		// 트랜잭션처리까지 끝내고 난 후 성공실패여부를 반환 -> 컨트롤러에게 반환
 		return (boardResult * atResult);
 		// 둘 다 성공하면 1*1, 하나라도 실패하면 0이 곱해져서 0이 돌아간다
 		
