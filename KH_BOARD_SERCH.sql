@@ -15,3 +15,19 @@ SELECT BOARD_TITLE, BOARD_NO
   JOIN KH_MEMBER ON (BOARD_WRITER = USER_NO)
  WHERE
        USER_NAME LIKE '%' || '홍' || '%';
+
+-- 사용자가 조건을 내용으로 키워드를 다 라고 입력한 게시글의 개수
+SELECT COUNT(*)
+  FROM KH_BOARD JOIN KH_MEMBER ON (BOARD_WRITER = USER_NO)
+ WHERE
+       KH_BOARD.STATUS = 'Y'
+   AND
+       BOARD_CONTENT LIKE '%다%';
+
+-- 사용자가 조건을 제목으로 키워드를 다 라고 입력한 게시글의 개수
+SELECT COUNT(*)
+  FROM KH_BOARD JOIN KH_MEMBER ON (BOARD_WRITER = USER_NO)
+ WHERE
+       KH_BOARD.STATUS = 'Y'
+   AND
+       BOARD_TITLE LIKE '%다%';

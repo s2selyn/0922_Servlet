@@ -287,5 +287,31 @@ public class BoardService {
 		return (boardResult * atResult);
 		
 	}
+	
+	public int searchedCount(Map<String, Object> map) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int count = bd.searchedCount(sqlSession, map);
+		
+		sqlSession.close();
+		
+		// 조회라서 딱히 다른건 필요없고 count만 잘 돌려주면 될듯
+		return count;
+		
+	}
+	
+	// 진짜 게시글 검색 메소드
+	public List<Board> selectSearchList(Map<String, Object> map) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		List<Board> boards = bd.selectSearchList(sqlSession, map);
+		
+		sqlSession.close();
+		
+		return boards;
+		
+	}
 
 }

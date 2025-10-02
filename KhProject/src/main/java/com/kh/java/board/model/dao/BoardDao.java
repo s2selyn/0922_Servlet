@@ -1,6 +1,7 @@
 package com.kh.java.board.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
@@ -75,6 +76,18 @@ public class BoardDao {
 	
 	public int updateAttachment(SqlSession sqlSession, Attachment at) {
 		return sqlSession.update("boardMapper.updateAttachment", at);
+	}
+	
+	public int searchedCount(SqlSession sqlSession, Map<String, Object> map) {
+		return sqlSession.selectOne("boardMapper.searchedCount", map);
+	}
+	
+	public List<Board> selectSearchList(SqlSession sqlSession, Map<String, Object> map) {
+		
+		// ??? 12:35 주의할점: 미리 보드리스트를 만들어서 키값 잘 맞춰서 출력해줘야함
+		return sqlSession.selectList("boardMapper.selectSearchList", map);
+		// map에 담은게 많아서 매퍼에서 할일이 많다
+		
 	}
 
 }
