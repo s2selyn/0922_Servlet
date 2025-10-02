@@ -183,42 +183,92 @@ public class BoardInsertController extends HttpServlet {
 			 * 
 			 * 사용자가 올린 파일명은 이름을 바꿔서 업로드하는게 일반적인 관례
 			 * 
+			 * Q) 파일명 왜 바꾸나요?
+			 * A) 똑같은 파일명 있을 수 있으니까
+			 * 	  파일명에 한글 / 특수문자 / 공백문자 포함경우 서버에 따라 문제가발생
+			 * 
+			 * 개발할때는 한글 피해야함, 윈도우<->맥 이러면 난리남, 중국어 일본어 등 마찬가지
+			 * 문제 발생 상황들을 막기 위해서 이름 변경 필수
+			 * 
+			 * 개발할때는 한글 없다고 생각하쇼
+			 * 
+			 * 워크스페이스 경로에 한글 있으면 나중에 파일도 안올라가고
+			 * 컴퓨터 사용자계정도 영어여야함
+			 * 파일명, 경로, 폴더명에 한글특문공백은 전부 존재하면 안되는 것들
+			 * 집 컴퓨터 사용자 이름 한글이면 밀어버리쇼
+			 * 
+			 * 윈도우 운영체제 내장 프로그램중에 원격 접속 프로그램이 있음
+			 * 그걸로 나중에 클라우드 서비스에 원격접속 작업해야하는데 한글 사용자 이름은 접속이 안됨, 저장할때마다 경고뜨고 브라우저 계속 열리고 문제생김
+			 * 영어권 국가 사람들은 이런 문제가 일어나지 않아... 아무도 그런일을 겪지 못한다
+			 * 근데 원인이 이건지 알려면 밀어봐야함
+			 * 근데 밀어서 사용자이름 영어로 하니 다 해결된적이 있다네요 ㅎ
+			 * 아무튼 한글 항상 회피. 무시무시한 친구임, 개발할때 한글 피해야한다
+			 * 
 			 */
+			// 생성자 호출해서 객체 올릴건데 기본생성자 없음, 반드시 인자값 전달해야함
+			// 리퀘스트 객체 보낼것임, 저장경로(아까 변수로 빼뒀음), 최대용량, 인코딩방식, 이름바꿔주는객체 클래스로 만들어뒀음
 			MultipartRequest multiRequest = new MultipartRequest(request,
 																 savePath,
 																 maxSize,
 																 "UTF-8",
 																 new MyRenamePolicy());
+			// 여기까지가 1절
+			// 이 객체 생성이 파일 업로드하는것이므로 board_upfiles에 올라왔는지 확인, 이름 바뀌어서 저장됨
+			// 정적 자원 배포하는 경로
+			// kh/가 webapp을 의미하니까 이 아래의 resources/board_upfiles/파일명 으로 정적 자원에 접근가능
+			// 이미지 태그, 다운로드 받게해주기 등을 이 주소를 이용해서 서버에 올라와있는것을 브라우저에 띄워줄수있게됨
+			// 이건 파일 업로드 기능, 잘못된 코드, 보드 insert와 상관이 없다, 우리는 board insert 요청이 와서 여기로 들어온것임
+			// -- 파일업로드 --
+			// 무슨 요청이 와서 여기 왔더라? 클라이언트가 게시글 작성할래 요청을 했음
+			// 파일은 부가적인것, 제목내용쓰고 파일첨부도 하고싶어서(파일첨부는 할수도있고 안할수도 있음)
+			// 주어는 테이블에 1행 insert, 파일업로드까지는 테이블에 1행 insert와는 아무런 연관이 없음
+			// 사용자가 파일을 첨부했을 때 파일을 서버에 올리는 과정! 구분 잘해야함
 			
-			// System.out.println(title);
+			// 실질적으로 우리가 해야 할 일
+			// BOARD테이블에 INSERT하기
+			
+			// 리퀘스트에서 값이 안뽑혔음, 이제 MultipartRequest이걸로 하면 얘로부터 값을 뽑을 수 있음
+			// 2) 값뽑기
 			String title = multiRequest.getParameter("title");
+			// System.out.println(title); 잘 뽑히는지 체크
 			String content = multiRequest.getParameter("content");
-			String category = multiRequest.getParameter("category");
+			String category = multiRequest.getParameter("category"); // 이건 select
+			
+			// 사용자 번호가 있어야함, 이건 세션에서 얻음
 			Long userNo = ((Member)session.getAttribute("userInfo")).getUserNo();
 			
 			// 3) 가공해야디~
+			// 뭘로 가공할지 고민, 맵? 리스트? board로 결정, 이거 하려고 board 만든거임
 			Board board = new Board();
 			board.setBoardTitle(title);
 			board.setBoardContent(content);
 			board.setCategory(category);
 			board.setBoardWriter(String.valueOf(userNo));
+			// 여기까진 많이 해봤다
+			
+			// 업로드한 파일을 나중에 다시 사용할 수 있게 정보 저장을 해야함
+			// 이걸 위해서 테이블도 따로만들었음 -> 파일의 정보를 테이블에 insert 하기 위해서 Attachment VO 생성
 			
 			// 3_2) 첨부파일의 경우 => 선택적
-			Attachment at = null;
+			// 첨부할수도 있고 안할수도있음, 첨부안했는데 insert할수는 없음
+			Attachment at = null; // 그래서 선언만 해뒀음
 			
 			// 첨부파일의 유무를 파악
+			// 원본파일 이름을 얻으려면 input 요소의 name 속성값을 메소드의 인자로 전달한다
 			// System.out.println(multiRequest.getOriginalFileName("upfile"));
+			// 코드를 만난 순간 파일이 올라감, 이 메소드를 호출했을 때,
 			// 첨부파일이 있다면 "원본파일명" / 없다면 null값을 반환
-			
 			if(multiRequest.getOriginalFileName("upfile") != null) {
+				// 첨부파일이 있을때만 작업하고싶은 내용
 				
 				// 첨부파일이 있다!!!!! => VO로 만들기
 				at = new Attachment();
 				
-				// originName
+				// 필드에 값 담기
+				// originName, if문에 들어왔다는 것은 이게 무조건 100% 있다는 뜻
 				at.setOriginName(multiRequest.getOriginalFileName("upfile"));
 				
-				// changeName
+				// changeName, multiRequest에서 얻어낼 수 있음
 				at.setChangeName(multiRequest.getFilesystemName("upfile"));
 				
 				// filePath
@@ -227,6 +277,12 @@ public class BoardInsertController extends HttpServlet {
 			}
 			
 			// 4) 요청처리 Service 호출
+			// 서비스에서는 insert 최소한번, 최대두번
+			// 파일첨부 실패했을 때 게시글 작성도 실패하게 할 것임 -> 이걸 하나의 트랜잭션으로
+			// 보드 테이블, 어태치먼트 테이블에 인서트, 둘 중 하나라도 실패하면 둘 다 롤백 -> 하나의 트랜잭션으로 묶음
+			// 서비스는 DAO 메소드를 호출해서 insert 할것임, 그렇지만 DAO는 하나의 메소드가 하나의 스킬만을 수행하게 만들어야함(마이바티스 쓰니까 그렇게밖에 못함)
+			// 호출 결과를 따로 받아서 그걸로 트랜잭션 처리
+			// 컨트롤러에서 서비스를 두번 부르는게 아니라 컨트롤러에서는 하나의 서비스 메소드를 부르면서 board, attachment 두개를 같이 옮겨줌
 			new BoardService().insert(board, at);
 			
 		}

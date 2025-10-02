@@ -5,12 +5,12 @@ import java.sql.Date;
 public class Attachment {
 	
 	private Long fileNo;
-	private Long refBno;
-	private String originName;
-	private String changeName;
-	private String filePath;
+	private Long refBno; // 파일은 게시글 작성때만 생기니까 어떤 게시글에 달리는지 저장하기 위함, 외래키
+	private String originName; // 원본 파일명
+	private String changeName; // 바꾼 파일명
+	private String filePath; // 경로, 일반/사진 게시판에 따라 저장할 폴더가 다름
 	private Date uploadDate;
-	private int fileLevel;
+	private int fileLevel; // 사진게시판에서 사용할것
 	private String status;
 	
 	public Attachment() {

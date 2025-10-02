@@ -279,5 +279,33 @@
 		 WHERE
 		       REF_BNO = #{boardNo}
 	</update>
+	
+	<update id="updateBoard"
+			parameterType="com.kh.java.board.model.vo.Board">
+		UPDATE
+		       KH_BOARD
+		   SET
+		       BOARD_TITLE = #{boardTitle}
+		     , BOARD_CONTENT = #{boardContent}
+		     , CATEGORY_NO = #{category}
+		 WHERE
+		       BOARD_NO = #{boardNo}
+		   AND
+		       STATUS = 'Y'
+		   AND
+		       BOARD_WRITER = #{boardWriter}
+	</update>
+	
+	<update id="updateAttachment"
+			parameterType="com.kh.java.board.model.vo.Attachment">
+		UPDATE
+		       KH_ATTACHMENT
+		   SET
+		       ORIGIN_NAME = #{originName}
+		     , CHANGE_NAME = #{changeName}
+		     , FILE_PATH = #{filePath}
+		 WHERE
+		       FILE_NO = #{fileNo}
+	</update>
 
 </mapper>

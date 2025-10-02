@@ -95,6 +95,7 @@ public class BoardService {
 			
 		}
 		
+		// 트랜잭션처리까지 끝내고 난 후 성공실패여부를 반환
 		return (boardResult * atResult);
 		// 둘 다 성공하면 1*1, 하나라도 실패하면 0이 곱해져서 0이 돌아간다
 		
@@ -228,6 +229,55 @@ public class BoardService {
 		return result * result2;
 		// 둘다 잘됐을때만 1, 둘중 하나라도 잘못되면 0이 반환됨
 		// 아까랑 동일하게 트랜잭션 처리방식 구현함
+		
+	}
+	
+	public int update(Board board, Attachment at) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		// 하나는 확정, board 테이블 update 한번은 무조건 한다, 파일과는 전혀 상관이 없는 게시글 업데이트
+		int boardResult = bd.updateBoard(sqlSession, board);
+		
+		// Attachment~
+		// 이건 경우가 세개
+		// 1. 첨부파일이 없다, 새롭게 첨부를 안했다면 할일없음 => 새 첨부파일이 없을 때(어쨌든 묶어서 트랜잭션 처리 해줘야함)
+		// 결과 받을 변수 미리 선언
+		int atResult = 1;
+		
+		// 새 첨부파일이 존재할 경우 -> if, 일단 유일하게 생각없이 쓸 수 있는거, 조건이라면 if 쓰고 시작
+		// 새 파일이 있는지 없는지는 앞에 Attachment at를 봐야함, null만 아니면 생성하니까 null 아니면 있다는 뜻
+		if(at != null) {
+			
+			// 경우의 수가 또 나뉜다
+			// case 1
+			// 2. 기존파일이 있었다 업데이트
+			if(at.getFileNo() != null) {
+				// fileNo 자료형이 Wrapper클래스(참조자료형)인데 왜 null과 비교? 초기화 안하면 기본값이 null이라서
+				// 지역변수와 필드의 가장 큰 차이, 지역변수는 초기화를 안하면 못씀
+				// 필드는 초기화 안해도 쓸수있음, 기본값이 들어가있음, 기본자료형은 0, 0.0이런거고 참조자료형은 null이 들어있음
+				// 이건 기존에 첨부파일이 있따는 뜻 => UPDATE
+				atResult = bd.updateAttachment(sqlSession, at);
+				
+			} else {
+				// case 2
+				// 3. 기존파일이 없었다가 생겼다 인서트
+				// 기존 첨부파일 없음 => INSERT
+				atResult = bd.insertAttachment(sqlSession, at);
+				
+			}
+			
+		}
+			
+		// 첨부파일 없으면 뭐 할거없음
+		
+		// 둘 다 성공했을 때 만 commit;
+		// 하나라도 실패했으면 rollback;
+		if(boardResult * atResult > 0) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
 		
 	}
 
