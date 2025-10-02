@@ -38,6 +38,7 @@
 	        	</select>
         	</div>
         	
+        	<%-- ??? 스크립트 태그 작성 설명 있음 --%>
         	<script>
         		$(function() {
         			$('option[class="${map.board.category}"]').attr("selected", true);
