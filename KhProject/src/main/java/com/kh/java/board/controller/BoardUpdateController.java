@@ -173,6 +173,26 @@ public class BoardUpdateController extends HttpServlet {
 			int result = new BoardService().update(board, at);
 			// 결과는 int로 받음
 			
+			// 돌아온 결과로 응답화면 지정
+			if(result > 0) {
+				
+				// 성공했다면 alert메세지 출력
+				session.setAttribute("alertMsg", "게시글 수정 성공~");
+				
+				// 상세보기 페이지로 redirect
+				// http://localhost:4000/kh		/detail.board?boardNo=번호
+				response.sendRedirect(request.getContextPath() + 
+									  "/detail.board?boardNo=" + 
+									  boardNo);
+				
+			} else {
+				
+				request.setAttribute("msg", "게시글 수정에 실패했어요..");
+				request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
+					   .forward(request, response);
+				
+			}
+			
 		}
 		
 	}

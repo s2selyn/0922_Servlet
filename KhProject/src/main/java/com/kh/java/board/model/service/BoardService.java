@@ -260,10 +260,13 @@ public class BoardService {
 				atResult = bd.updateAttachment(sqlSession, at);
 				
 			} else {
+				
 				// case 2
 				// 3. 기존파일이 없었다가 생겼다 인서트
 				// 기존 첨부파일 없음 => INSERT
 				atResult = bd.insertAttachment(sqlSession, at);
+				// 기존에 만들어둔것들 사용하면 된다 아주 간단
+				// mapper의 insertAttachment도 selectKey 쓰는 버전으로 업그레이드 했으니 아주 좋음
 				
 			}
 			
@@ -278,6 +281,10 @@ public class BoardService {
 		} else {
 			sqlSession.rollback();
 		}
+		
+		sqlSession.close();
+		
+		return (boardResult * atResult);
 		
 	}
 
