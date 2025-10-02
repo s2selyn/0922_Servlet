@@ -31,3 +31,5 @@ SELECT COUNT(*)
        KH_BOARD.STATUS = 'Y'
    AND
        BOARD_TITLE LIKE '%다%';
+
+-- 이걸 마이바티스 동적 sql써서 하려고 했으니 무슨 조건을 선택했는지, 검색어를 뭘 입력했는지 같이 넘겨야 매퍼에서 이걸로 검색할수있음

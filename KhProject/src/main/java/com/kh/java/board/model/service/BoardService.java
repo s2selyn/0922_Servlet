@@ -337,17 +337,49 @@ public class BoardService {
 			// Mapper까지 갔다왔음
 			
 			// 2. 게시글 INSERT가 성공 시 첨부파일들 INSERT
-			if(result > 0 ) {
+			if(result > 0) {
 				
 				// 첨부파일 개수만큼 INSERT
+				for(Attachment file : files) {
+					
+					// boardNo가 왔으니까 이걸 넣어야함
+					file.setRefBno(board.getBoardNo());
+					
+					result = bd.insertAttachmentList(sqlSession, file);
+					// 파일이 들어가다가 실패할수도 있음, 문제가 생겨서 결과가 0이 올것이다
+					// 그러면 반복문 탈출하도록 if문 작성
+					// 올바르게 성공하면 1, 실패하면 0(게시글 실패도 마찬가지일거임)
+					// 이 위에서 예외 발생해서 아래의 if로 못들어간다면 -> catch에서 롤백해야함
+					// catch에서 result = 0; 해주는 이유는 이 안에 들어올 때 반복문 이전의 if에 의해서 들어온 것이므로 result에 0보다 큰 값(아마도 1)이 들어있음
+					// 그 상태에서 예외가 발생하면 0이 대입되지 못하고 catch구문으로 넘어간다, 그러면 return 할 때 result가 1인 상태로 돌아가버리니까 실패했는데도 성공값이 반환됨
+					// 그러면 안되니까 catch에서 0을 대입해서 실패한 값이 반환되도록 해줌!
+					if(result == 0) {
+						break;
+					}
+					
+				}
 				
+			}
+			
+			// 3. 다성공했으면 Commit
+			if(result > 0) {
+				sqlSession.commit();
+			} else {
+				sqlSession.rollback();
 			}
 			
 		} catch(Exception e) {
 			
+			sqlSession.rollback();
+			e.printStackTrace();
+			result = 0;
+			
+		} finally {
+			sqlSession.close(); // 자원반납
 		}
 		
 		return result;
+		// 이렇게 작성하면 결과 곱할 필요도 없음 깔끔, DAO에 insertAttachmentList 작성하러감
 		
 	}
 

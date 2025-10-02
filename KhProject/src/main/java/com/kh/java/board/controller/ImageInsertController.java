@@ -58,7 +58,8 @@ public class ImageInsertController extends HttpServlet {
 			String boardContent = multiRequest.getParameter("content");
 			
 			// boardWriter not null이라서 뽑아서 보내줘야함 -> session의 userInfo에 들었음
-			// ??? 16:12 한줄로 쓰는 법
+			// 한줄로 쓰는 법
+			// String boardWriter = String.valueOf(((Member)(request.getSession()).getAttribute("userInfo")).getUserNo());
 			
 			// 여러 줄 쓰기
 			HttpSession session = request.getSession();
@@ -95,7 +96,7 @@ public class ImageInsertController extends HttpServlet {
 			}
 			*/
 			List<Attachment> files = new ArrayList();
-			// ??? 16:20 리스트 쓰는 이유
+			// 이미지가 여러개인데, 한개랑 네개 사이중에 하나, 몇개일지 모르니까, 네개 확정이면 배열 쓰면 됨
 			
 			// 키값 file1 ~ file4
 			for(int i = 1; i <= 4; i++) {
@@ -152,9 +153,21 @@ public class ImageInsertController extends HttpServlet {
 					
 				}
 				
-				// 요청처리 -> 서비스단으로 전달(이미지 무조건 있으니 이 스코프에서 한다)
-				// 블럭 관리에 유의
-				new BoardService().insertImage(board, files);
+			}
+			
+			// 요청처리 -> 서비스단으로 전달(이미지 무조건 있으니 이 스코프에서 한다)
+			// 블럭 관리에 유의
+			int result = new BoardService().insertImage(board, files);
+			
+			if(result > 0) { // 성공
+				
+				response.sendRedirect(request.getContextPath() + "/images");
+				
+			} else { // 실패
+				
+				request.setAttribute("msg", "게시글 작성 실패");
+				request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
+					   .forward(request, response);
 				
 			}
 			
