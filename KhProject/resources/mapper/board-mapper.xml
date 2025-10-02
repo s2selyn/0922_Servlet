@@ -356,5 +356,31 @@
 		       BOARD_NO DESC
 		OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
 	</select>
+	
+	<insert id="insertImageBoard"
+			parameterType="com.kh.java.board.model.vo.Board">
+		<selectKey resultType="long" keyProperty="boardNo"
+				   order="BEFORE">
+			SELECT SEQ_BNO.NEXTVAL FROM KH_BOARD
+		</selectKey>
+		INSERT
+		  INTO
+		       KH_BOARD
+		       (
+		       BOARD_NO
+		     , BOARD_TYPE
+		     , BOARD_TITLE
+		     , BOARD_CONTENT
+		     , BOARD_WRITER
+		       )
+		VALUES
+		       (
+		       #{boardNo}
+		     , 2
+		     , #{boardTitle}
+		     , #{boardContent}
+		     , #{boardWriter}
+		       )
+	</insert>
 
 </mapper>

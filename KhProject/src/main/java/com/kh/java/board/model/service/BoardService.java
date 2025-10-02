@@ -313,5 +313,42 @@ public class BoardService {
 		return boards;
 		
 	}
+	
+	// 게시판은 board, 파일은 attachment에 insert할거임, 둘 다 만들어놨음
+	// 그럼 우리가 이걸 만들어놓은걸 쓸 수 있지 않을까? 라고 생각할 수 있음
+	public int insertImage(Board board, List<Attachment> files) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		// 보드에 INSERT하는거 만들어놨음
+		// Attachment에 INSERT하는거 만들어놨음
+		// 매퍼에서 확인해보자 -> 다시 돌아옴, 새로 만들기로 함
+		
+		// 일단 결과값 선언, 초기화하고 반환하는 코드를 만들어둠
+		int result = 0;
+		
+		// 맨날 insert 하다가 예외가 생김... insert 하는게 댓글만 남음, 게시판 레벨에선 이게 마지막
+		// 그러니까 이번엔 예외처리를 한번 해보자 본격적! insert맨날 똑같이 하면 지겨워
+		try {
+			
+			// 1. 게시글 INSERT
+			// 결과는 result로 받아옴
+			result = bd.insertImageBoard(sqlSession, board);
+			// Mapper까지 갔다왔음
+			
+			// 2. 게시글 INSERT가 성공 시 첨부파일들 INSERT
+			if(result > 0 ) {
+				
+				// 첨부파일 개수만큼 INSERT
+				
+			}
+			
+		} catch(Exception e) {
+			
+		}
+		
+		return result;
+		
+	}
 
 }

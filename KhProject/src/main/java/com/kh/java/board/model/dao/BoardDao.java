@@ -89,5 +89,9 @@ public class BoardDao {
 		// map에 담은게 많아서 매퍼에서 할일이 많다
 		
 	}
+	
+	public int insertImageBoard(SqlSession sqlSession, Board board) {
+		return sqlSession.insert("boardMapper.insertImageBoard", board);
+	}
 
 }
