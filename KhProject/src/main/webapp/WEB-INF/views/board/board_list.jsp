@@ -90,7 +90,7 @@ tr:hover{
 					<option value="content">내용</option>
 					<option value="title">제목</option>
 				</select>
-				<input type="text" name="query" class="form-control" />
+				<input type="text" name="query" class="form-control" value="${ keyword }" />
 				<input type="hidden" name="page" value="1" />
 				<button type="submit" class="btn btn-block" style="background:#52b1ff; color:white">검색</button>
 			</form>
@@ -98,6 +98,16 @@ tr:hover{
 <%-- 검색기능 구현용 div 붙여넣기 --%>
                               
             </div>            
+            
+            <c:if test="${ not empty condition }">
+            <script>
+            	$(function() {
+            		$('#search-area option[value=${condition}]')
+            		.attr('selected', true);
+            	})
+            </script>
+            </c:if>
+            
          </div>
       </div>
       <script>
@@ -135,9 +145,20 @@ tr:hover{
         		
 				<c:forEach var="i" begin="${ pi.startPage }"
 								   end="${ pi.endPage }">
+
+				<c:choose>
+				<c:when test="${ not empty condition }">
+	                <button 
+	                class="btn btn-outline-primary" style="color:#52b1ff;"
+	                onclick="location.href='search.board?page=${i}&condition=${condition}&query=${keyword}'">${i}</button>
+	            </c:when>
+	            <c:otherwise>
 	                <button 
 	                class="btn btn-outline-primary" style="color:#52b1ff;"
 	                onclick="location.href='boards?page=${i}'">${i}</button>
+	            </c:otherwise>
+	                
+				</c:choose>
 				</c:forEach>
 	        			
 	        	<c:if test="${ pi.currentPage ne pi.maxPage }">
