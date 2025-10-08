@@ -82,6 +82,7 @@ public class BoardUpdateController extends HttpServlet {
 			// 헤헤 아까 돌아가기로 했으니 다시 돌아가자 -> update_form.jsp ㄱㄱ
 			// fileNo 넘기는 코드 작성하고 돌아왔음
 			
+			// 이제 multipart객체가 생성되었으므로 값뽑기 수행가능
 			// 값뽑기
 			String category = multiRequest.getParameter("category");
 			String boardTitle = multiRequest.getParameter("title");
@@ -94,7 +95,7 @@ public class BoardUpdateController extends HttpServlet {
 			Member member = (Member)session.getAttribute("userInfo");
 			// -----
 			
-			// board 객체로 가공
+			// 하나에 담아야하니까 board 객체로 가공
 			Board board = new Board();
 			board.setCategory(category);
 			board.setBoardTitle(boardTitle);
@@ -108,12 +109,12 @@ public class BoardUpdateController extends HttpServlet {
 			// 아까 생각한 경우의 수, attachment 작업 해야할 수 있음
 			// Attachment객체 선언만!!!
 			// 실제 첨부파일이 존재할 경우에만 => 객체 생성
-			// 없으면 작업할 필요가 없으니 null로 초기화
+			// 파일이 첨부되었을때만 작업하자, 없으면 테이블에 작업할 필요가 없으니 null로 초기화
 			Attachment at = null;
 			
 			// 존재할때만 -> 조건
 			// 있는지없는지 확인은 뭘해봐야 알수있음? 파일 이름이 있으면 된다
-			// -> 이건 multiRequest에 getOriginalFileName메소드 호출하면서 인자값으로 input type="file"의 name 속성값 
+			// -> 이건 multiRequest에 getOriginalFileName메소드 호출하면서 인자값으로 input type="file"의 name 속성값
 			if(multiRequest.getOriginalFileName("reUpfile") != null) {
 				
 				// 새로운 첨부파일이 존재하면 객체 생성 후 원본명, 바꾼명, 경로 담기
@@ -128,12 +129,12 @@ public class BoardUpdateController extends HttpServlet {
 				// UPDATE : 원래 있던 파일이 몇 행이냐??
 				
 				// 내가 무슨값으로 어떤연산을 해서 어떤 조건을 걸 지 이걸 생각
-				// 업데이트 하려면 파일번호, 인서트 하려면 REF_BNO를 넣어줘야함
+				// Attachment 객체에 업데이트 하려면 파일번호, 인서트 하려면 REF_BNO를 넣어줘야함
 				// 뭘 봐야 INSERT/UPDATE 구분가능? 앞에서 원본파일이 있으면 파일넘버를 넘김, 그러므로 파일넘버가 널이 아니면 업데이트
-				// ??? 10:18 생각과정 다시 확인
-				// 파일 넘버가 널이면 INSERT
+				// 파일넘버가 몇번일지는 모르지만, 원본파일이 없었다면 파일넘버는 null, 그럼 insert 해줘야함
+				// 파일 넘버가 몇이든 이것은 원본파일이 있다는것이니까 update 해줘야함
 				// 파일넘버가 있을때/없을때 다른작업
-				// 뭘 봐야 알수있나? multiRequest
+				// 파일넘버가 널인지 아닌지는 뭘 봐야 알수있나? multiRequest
 				if(multiRequest.getParameter("fileNo") != null) {
 					
 					// 새로운 첨부파일이 있음 + 원본파일도 있었음
@@ -161,7 +162,6 @@ public class BoardUpdateController extends HttpServlet {
 					at.setRefBno(boardNo);
 					
 				}
-				
 				
 			}
 			
