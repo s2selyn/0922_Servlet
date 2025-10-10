@@ -50,6 +50,8 @@ public class ImageDetailController extends HttpServlet {
 		
 		Map<String, Object> map = new BoardService().selectImageDetail(num);
 		
+		// System.out.println(map);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

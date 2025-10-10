@@ -226,6 +226,7 @@
 		     , BOARD_CONTENT boardContent
 		  FROM
 		       KH_BOARD
+		  LEFT
 		  JOIN
 		       KH_CATEGORY USING (CATEGORY_NO)
 		  JOIN
@@ -250,6 +251,9 @@
 		       STATUS = 'Y'
 		   AND
 		       REF_BNO = #{boardNo}
+		 ORDER
+		    BY
+		       FILENO ASC
 	</select>
 	<!-- 여기에서 FLIE_NO를 조회해가는 이유에 대한 설명
 	화면에 출력하고 싶은 내용을 조회하는건데, 출력하지도 않을 걸 왜 조회하느냐?

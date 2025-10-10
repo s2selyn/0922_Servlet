@@ -78,3 +78,56 @@ SELECT
  ORDER
     BY
        BOARD_NO DESC;
+
+SELECT
+       BOARD_NO boardNo
+     , USER_NAME boardWriter
+     , CATEGORY_NAME category
+     , BOARD_TITLE boardTitle
+     , BOARD_CONTENT boardContent
+  FROM
+       KH_BOARD
+  LEFT
+  JOIN
+       KH_CATEGORY USING (CATEGORY_NO)
+  JOIN
+       KH_MEMBER ON (BOARD_WRITER = USER_NO)
+ WHERE
+       KH_BOARD.STATUS = 'Y'
+   AND
+       BOARD_NO = 71;
+
+SELECT
+       FILE_NO fileNo
+     , ORIGIN_NAME originName
+     , CHANGE_NAME changeName
+     , FILE_PATH filePath
+  FROM
+       KH_ATTACHMENT
+ WHERE
+       STATUS = 'Y'
+   AND
+       REF_BNO = 71
+ ORDER
+    BY
+       FILENO ASC;
+
+SELECT
+       BOARD_NO boardNo
+     , BOARD_TITLE boardTitle
+     , BOARD_CONTENT boardContent
+     , FILE_NO fileNo
+     , ORIGIN_NAME originName
+     , CHANGE_NAME changeName
+     , FILE_PATH filePath
+  FROM
+       KH_BOARD
+  JOIN
+       KH_ATTACHMENT ON (BOARD_NO = REF_BNO)
+ WHERE
+       KH_BOARD.STATUS = 'Y'
+   AND
+       REF_BNO = 71
+ ORDER
+    BY
+       FILENO ASC;

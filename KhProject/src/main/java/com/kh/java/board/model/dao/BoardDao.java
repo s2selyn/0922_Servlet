@@ -102,5 +102,9 @@ public class BoardDao {
 	public List<ImageBoardDto> selectImageList(SqlSession sqlSession) {
 		return sqlSession.selectList("boardMapper.selectImageList");
 	}
+	
+	public List<Attachment> selectAttachmentList(SqlSession sqlSession, int boardNo) {
+		return sqlSession.selectList("boardMapper.selectAttachment", boardNo);
+	}
 
 }
