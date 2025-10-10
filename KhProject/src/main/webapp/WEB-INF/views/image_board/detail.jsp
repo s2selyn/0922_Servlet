@@ -46,13 +46,17 @@
 		
 		          <div class="form-group" align="center">
 		            <label style="color:#52b1ff; font-weight:bold;">대표 이미지</label>
-		            <img width="100%" src="이미지경로"/>
+		            <img width="100%" src="${ board.files.get(0).filePath }/${ board.files.get(0).changeName }"/>
 		          </div>
 		          
-				  <div class="form-group" align="center">
-					<label style="color:#52b1ff;">상세 이미지-1번</label>
-					<img width="100%" src="이미지경로"/>
-				  </div>
+		          <%-- 상세이미지는 있을수도있고 없을수도있음, 있는만큼 출력해야함 -> 상세이미지 개수만큼 반복문 -> jsp니까 forEach
+		          items로 못함, 시작은 0번인덱스가 대표이미지로 빠졌으니 1부터, 끝은 있는만큼 해야하니 size 이용 --%>
+		          <c:forEach begin="1" end="${ board.files.size() - 1 }" var="i">
+					  <div class="form-group" align="center">
+						<label style="color:#52b1ff;">상세 이미지-${ i }번</label>
+						<img width="100%" src="${ board.files.get(i).filePath }/${ board.files.get(i).changeName }"/>
+					  </div>
+				  </c:forEach>
 		         
 		          <a class="btn" href="게시글목록매핑값"
 		             style="background-color: #52b1ff; height: 40px; color: white; border: 0px solid #388E3C; opacity: 0.8"
