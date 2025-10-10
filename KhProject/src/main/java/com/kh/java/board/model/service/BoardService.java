@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.kh.java.board.model.dao.BoardDao;
+import com.kh.java.board.model.dto.BoardDto;
 import com.kh.java.board.model.dto.ImageBoardDto;
 import com.kh.java.board.model.vo.Attachment;
 import com.kh.java.board.model.vo.Board;
@@ -403,7 +404,7 @@ public class BoardService {
 		
 	}
 	
-	public Map<String, Object> selectImageDetail(Long boardNo) {
+	public BoardDto selectImageDetail(Long boardNo) {
 		
 		SqlSession sqlSession = Template.getSqlSession();
 		
@@ -461,6 +462,7 @@ public class BoardService {
 			// 새로개발하면 항상 문제는 생긴다 근데 그건 운영잘못이 되어서 퇴근불가, 운영은 보수적으로 가길 원함, 기존대로 하면 사고가 적으니
 			// 개발은 위에서 새로만들라하건 영업때문이건 만들어야하니까
 			
+			/*
 			// 우리는 LEFT 조인으로 변경하는걸로 하자 -> 커밋을 하고 기록을 남겨놓자, 영향이 있을 수 있고, 문제가 생기면 되돌릴수있음
 			// 딱히 영향받을것이 없으니 그대로 호출하도록 하자
 			Board board = bd.selectBoard(sqlSession, boardNo.intValue());
@@ -478,7 +480,25 @@ public class BoardService {
 			map.put("board", board);
 			map.put("files", files);
 			
-			return map;
+			마이바티스 collection 쓰기전에 주석처리
+			*/
+			
+			// -----
+			BoardDto boards = bd.selectBoardAndAttachment(sqlSession, boardNo);
+			// System.out.println(boards);
+			// 한번만 가서 가공매핑 잘해서 끌고오기가 가능해짐, 결과는 동일하지만 과정만 바뀌었다
+			// 대부분은 오토매핑으로 간단히 가능하지만 이런 상황(일대다관계)에서 resultMap 아주굿
+			// 파일만 달린게 아니라 후기 댓글 연관게시글 등 List 필드가 여러개면 select여러번해야하는데 그렇게 안하고 테이블 여러개 조인하고 collection만 추가하면 한번에 퉁
+			// sql문이 복잡하면 복잡할수록 result map의 효용이 좋아진다
+			// 공식문서를 잘 읽어봅시다
+			// 오토매핑할때 달아주는 별칭 조금 귀찮다면? 세팅에 mapUnderScoreToCamelCase 이런거 추가해서 가능하기도함
+			// typeAliases도 그냥 사용하는게 아니라 패키지로 쓰면 풀클래스명 필요없이 vo로 쓰고 안에꺼 클래스명만 가져다 쓸수도있고, mapper도 패키지안에 한번에 등록
+			// 동적 sql에도 foreach 쓰는법도 있다
+			// 페이징처리 오라클 offset으로 했지만 마이바티스 RowBounds로도 가능, 이러면 오라클말고 MySQL 쓰는 회사에서도 쓸수있고
+			// SQL문도 xml로 안쓰고 그냥 코드로 바로쓰기도 가능하고... 공식문서가 보물창고로군
+			// -----
+			
+			return boards;
 			
 			// DB에 두번가야한다는 사실이 마음에 안든다, 돈이 많이 나오긴 싫음
 			// 만명이 한번하면 만번인걸.. 사용자가 많을수록 DB에 갈 횟수가 기하급수적으로 늘어나서 돈이많이들어
@@ -496,6 +516,24 @@ public class BoardService {
 			// 근데 써.. 대체재가 없고 안정적이고 오래씀, 더욱 안정적인 무언가가 없어서 어쩔수없이 쓰고있음
 			// 객체형 DB로 옮기기엔 너무 많이 해뒀고, 기존게 안정적이라서 못바꿈. RDBMS 안정적이라 쓰는것뿐
 			// 이런 상황에서 문제 해결하기 -> VO에 SET으로 담으면 중복제거되니 가능하지만 좀더 똑똑한 방법 써보자
+			
+			// 마이바티스의 result maps
+			// 마땅히 매핑할때가 없을 때 map으로 리턴하면 key-value가 담기는데 별로임
+			// 이런 상황에서 대부분 자바빈이나 플레인 오브젝트(VO라고 생각, plain old java object)를 씀
+			// POJO는 자카르타 EE라는 개념이 있는데, 자바로 웹개발을 할 때 개발자들이 자기마음대로 했더니 유지보수가 안됨
+			// 만든사람만 코드를 알아볼 수 있어서 문제가 생기면 고칠 때 만든 사람을 데려와야함, 돈이 많이 든다
+			// 개발할 때 규격을 만들자 -> 웹개발 명세를 만들어서 사용할것과 규격을 정해두게됨, 엄청 엄격하게 정해버림
+			// DB에서 조회해서 리턴할때 우리가 만든 VO를 못쓰고 규격을 상속받고 오버라이딩해서 써야하니 불편했다
+			// 스프링으로 넘어가면서 사람들이 만들어서 쓸수있게 해줌, POJO -> 똑같이 getter/setter, 생성자 이런게 있음
+			// 오토매핑으로 쓰는거 알려주는게 있고.. 우리가 할 건 복잡한 결과매핑
+			// DB는 본인이 만들어쓰는경우가 아닐수있으니 정규화가 잘 되어있지 않을 수 있어서 매핑을 VO에 완벽히 못함
+			// 조인이 여러개 증가하면 각 매핑해야할 VO가 전부 다르게됨, 이럴때 사용 가능한 result map
+			// 도구들이 많다 그중에 collection을 써보자
+			// 1:1은 association, 1:다는 collection
+			// 지금처럼 하나의 게시글에 여러개 첨부파일 -> 일대다 관계, 실제로 가장 많이 표현되는 관계
+			// 하나의 게시글에 여러개의 댓글, 하나의 상품에 여러개의 리뷰, 하나의 게시글에 여러개의 첨부파일 등
+			// 한명의 회원이 여러개의 게시글 이런것도 전부 일대다관계
+			// 한꺼번에 조회할때 collection을 써서 알차게 조회가능 -> 맞춤 클래스 생성하러 감, dto에 생성
 			
 		}
 		

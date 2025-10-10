@@ -437,5 +437,51 @@
 		    BY
 		       BOARD_NO DESC
 	</select>
+	
+	<!-- BoardDto 생성 후 새로 생성함 select태그니까 resultType 또는 resultMap을 써야함,
+	xml 들어오자마자 보이도록 맨위에 작성하면 좋은데 아래거 보면서 할거라 가까이작성
+	어떤 컬럼을 어디에 set할것인지 작성해줘야함
+	pk는 무슨 태그로 매핑? -> id태그
+	pk 컬럼의 값을 -> column에 작성
+	필드에 담아야겠따 -> property에 필드명 작성
+	일반 필드, 일반컬럼이면 result 태그로 column-property 작성
+	첨부는 몇행일지 모르니 필드도 리스트로 뒀음
+	??? 15:23
+	collection 태그 작성
+	property에는 똑같이 필드명
+	ofType에는 type처럼 어떤 형태로 값을 뽑을지 풀클래스명 작성
+	그리고 collection 내부에는 또 똑같이 작성 -> pk매핑, 일반매핑
+	그리고 select 태그의 resultMap 속성값으로 resultMap id 작성
+	board 한행, at 여러행이니 이렇게 써봤으니 확인
+	-->
+	<resultMap id="boardResultSet" type="com.kh.java.board.model.dto.BoardDto">
+		<id column="boardNo" property="boardNo"/>
+		<result column="boardTitle" property="boardTitle" />
+		<result column="boardContent" property="boardContent" />
+		<collection property="files" ofType="com.kh.java.board.model.vo.Attachment">
+			<id column="fileNo" property="fileNo" />
+			<result column="changeName" property="changeName" />
+			<result column="filePath" property="filePath" />
+		</collection>
+	</resultMap>
+	<select id="selectBoardAndAttachment"
+			parameterType="long" resultMap="boardResultSet">
+		SELECT
+		       BOARD_NO boardNo
+		     , BOARD_TITLE boardTitle
+		     , BOARD_CONTENT boardContent
+		     , FILE_NO fileNo
+		     , CHANGE_NAME changeName
+		     , FILE_PATH filePath
+		  FROM
+		       KH_BOARD
+		  JOIN
+		       KH_ATTACHMENT ON (BOARD_NO = REF_BNO)
+		 WHERE
+		       BOARD_NO = #{boardNo}
+		 ORDER
+		    BY
+		       FILE_NO ASC
+	</select>
 
 </mapper>

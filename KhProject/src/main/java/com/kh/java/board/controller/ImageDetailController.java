@@ -1,7 +1,6 @@
 package com.kh.java.board.controller;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.java.board.model.dto.BoardDto;
 import com.kh.java.board.model.service.BoardService;
 
 @WebServlet("/detail.image")
@@ -48,9 +48,24 @@ public class ImageDetailController extends HttpServlet {
 		// 문제해결상황 대부분은 비슷한 경험이 있으니 앞에서 해본 것을 바탕으로 적용해서 해결가능
 		// 최종목적은 db에 뭘 넣거나 가져오거나, 지금 하고있는건 그런 방법들이니 생각하고 복습하기, 기억이 있어야 메소드하지
 		
-		Map<String, Object> map = new BoardService().selectImageDetail(num);
-		
+		// Map<String, Object> map = new BoardService().selectImageDetail(num);
 		// System.out.println(map);
+		// BoardDto를 받아오는것으로 바꿔줬으니 여기서도 바꿔야함
+		BoardDto board = new BoardService().selectImageDetail(num);
+		
+		if(board != null) {
+			
+			request.setAttribute("board", board);
+			request.getRequestDispatcher("/WEB-INF/views/image_board/detail.jsp")
+			       .forward(request, response);
+			
+		} else {
+			
+			request.setAttribute("msg", "게시글 조회 실패..");
+			request.getRequestDispatcher("/WEB-INF/views/common/result_page.jsp")
+			       .forward(request, response);
+			
+		}
 		
 	}
 
