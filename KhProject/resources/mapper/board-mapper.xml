@@ -427,6 +427,8 @@
 		       BOARD_TYPE = 2
 		   AND
 		       KH_BOARD.STATUS = 'Y'
+		   AND
+		       FILE_LEVEL = 1
 		 ORDER
 		    BY
 		       BOARD_NO DESC
