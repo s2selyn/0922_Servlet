@@ -410,5 +410,26 @@
 		     , 'Y'
 		       )
 	</insert>
+	
+	<select id="selectImageList"
+			resultType="com.kh.java.board.model.dto.ImageBoardDto">
+		SELECT
+		       BOARD_NO boardNo
+		     , BOARD_TITLE boardTitle
+		     , COUNT
+		     , FILE_PATH filePath
+		     , CHANGE_NAME changeName
+		  FROM
+		       KH_BOARD
+		  JOIN
+		       KH_ATTACHMENT ON (REF_BNO = BOARD_NO)
+		 WHERE
+		       BOARD_TYPE = 2
+		   AND
+		       KH_BOARD.STATUS = 'Y'
+		 ORDER
+		    BY
+		       BOARD_NO DESC
+	</select>
 
 </mapper>

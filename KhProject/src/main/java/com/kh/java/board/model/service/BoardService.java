@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.kh.java.board.model.dao.BoardDao;
+import com.kh.java.board.model.dto.ImageBoardDto;
 import com.kh.java.board.model.vo.Attachment;
 import com.kh.java.board.model.vo.Board;
 import com.kh.java.board.model.vo.Category;
@@ -380,6 +381,25 @@ public class BoardService {
 		
 		return result;
 		// 이렇게 작성하면 결과 곱할 필요도 없음 깔끔, DAO에 insertAttachmentList 작성하러감
+		
+	}
+	
+	public List<ImageBoardDto> selectImageList() {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		// ??? 10:45 복습! 커넥션 만드는법: ojdbc라이브러리를 추가해서 드라이버매니저로 드라이버등록하고, 접속정보를 인자값으로 전달하면서 커넥션 객체 생성
+		// sql세션은 커넥션 역할도 겸함, 얘도 접속해야하니 ojdbc 필요, 마이바티스 필요하니 설치, 동작을 위한 설정파일을 만들어야하니 mybatis-config.xml을 생성해서 그안에 environments > environment접속정보 url 이름 패스워드 드라이버 정보를 써서
+		// 데이터 소스가 객체로 올라가면서 내가적은 데이터들이 필드에 세터를 이용해서 값들이 주입됨
+		// 외부 파일(xml파일)인데 읽기 위해서 마이바티스에서 제공하는 resources를 사용해서 파일데이터를 읽어와서 그다음 팩토리, 빌드를 사용해서 sqlSession객체를 만드는것
+		// 이것을 하기 위한 흐름과 절차(DB접속하려면 접속정보가 있어야함, 이걸 하려면 jdbc가 있어야 자바에서 커넥션할수있음)
+		
+		// sqlSession으로 sql문 실행하고 결과 받아오기, 뭘로 돌아올지 정해둠
+		List<ImageBoardDto> boards = bd.selectImageList(sqlSession);
+		
+		// select문이라 갔다와서 할 작업은 딱히 없음
+		sqlSession.close();
+		
+		return boards;
 		
 	}
 

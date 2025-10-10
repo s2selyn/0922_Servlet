@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.kh.java.board.model.dto.ImageBoardDto;
 import com.kh.java.board.model.vo.Attachment;
 import com.kh.java.board.model.vo.Board;
 import com.kh.java.board.model.vo.Category;
@@ -96,6 +97,10 @@ public class BoardDao {
 	
 	public int insertAttachmentList(SqlSession sqlSession, Attachment at) {
 		return sqlSession.insert("boardMapper.insertAttachmentList", at);
+	}
+	
+	public List<ImageBoardDto> selectImageList(SqlSession sqlSession) {
+		return sqlSession.selectList("boardMapper.selectImageList");
 	}
 
 }
