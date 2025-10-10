@@ -402,5 +402,38 @@ public class BoardService {
 		return boards;
 		
 	}
+	
+	public Map<String, Object> selectImageDetail(Long boardNo) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		// 이것도 누가 대신 반납해주면 좋겠다
+		
+		// DB에 몇번가야함? 순서도 정해야함
+		// SELECT ONE KH_BOARD
+		// SELECT LIST KH_ATTACHMENT
+		// 화면을 보면 뭔가 더 해야할텐데? 상세보기하면 조회수가 1 증가해야함
+		// 이걸 하려면 기존 게시글의 count 컬럼값 갱신해야하니 업데이트해야해, 사실 세번가야하는거지
+		// UPDATE KH_BOARD
+		// 그럼 뭐부터 할까? 뭐부터 하는게 좋을지 생각해서 정해야함
+		// 웬만하면 업데이트부터 함, 트랜잭션이 생김
+		// 조회 다 했는데 업데이트 실패하면 조회한게 의미가 없음 괜히가져온게됨
+		// 데이터의 변동 작업을 먼저 수행, 실패한다면 SELECT에 문제가 있을 확률이 높음, 없는 게시글(삭제)일 수 있음
+		// 이런 경우는 웬만하면 UPDATE부터 수행
+		// 웬만하면 이니까 지키면 좋은데 무조건 그렇게 해야하는건 또 아님, 특별한 이유(생각, 계획)가 있다면야..
+		// 그냥 하고싶어서 하는건 좀 이상하고, 웬만하면 웬만한걸 따라가는게 좋고 확고한 이유가 있다면 뒤로가도 괜찮다
+		
+		// 1. UPDATE KH_BOARD -> 이미 구현한것을 생각, updateBoard 메소드, 쓸수있는지 sql문 확인해보기 -> 매퍼에 increaseCount 서도될듯?
+		int updateResult = bd.increaseCount(sqlSession, );
+		// 앗 근데 우리 boardNo는 지금 Long, 만들어둔 increaseCount는 int를 매개변수로 받는다
+		// 주소값은 int로 바꿀 수 없음, Long 클래스에 있는 메소드 중에 ㅇㅅㅇ?
+		
+		// 2. SELECT ONE KH_BOARD
+		
+		// 3. SELECT LIST KH_ATTACHMENT
+		
+		return ;
+		
+	}
 
 }
