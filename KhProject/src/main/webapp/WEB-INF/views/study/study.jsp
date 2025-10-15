@@ -254,6 +254,16 @@
 	<%-- 돌아올 응답을 출력할 라벨 요소 --%>
 	응답 : <label id="output1">현재 응답 없음</label>
 	
+	<%-- 지금까지 사용자에게 값을 입력받아서 요청 처리(서버에 넘기기)할 때 어떻게 했는지 되새기기
+	input과 botton이 form태그로 감싸져있어야했다
+	form태그에는 action, input요소에는 name 속성값들이 필수인게 전제조건
+	사용자가 입력하고 버튼을 클릭하면 url에 action속성값이 추가되어 전송되고
+	우리가 서버에서 get parameter로 뽑아서 사용가능했음
+	
+	입력값이 없을때는(페이징처리, 게시글상세조회 등) 아래쪽에 스크립트 태그를 만들었음
+	이벤트핸들러를 달아서  onclick 함수를 호출하게 하거나
+	document.getElementByXXX 또는 document.querySelector 등을 사용 --%>
+	
 	<script>
 		
 		// 요청 보내기 버튼을 클릭하면!
@@ -272,10 +282,16 @@
 				},
 				
 				// 이 이후에는 성공시 요청처리, 실패시 요청처리, 통신 종료 시 요청처리 내용을 기술
-				success : function() {
+				success : function(result) {
 					
 					// 서버로 요청을 보내서 응답도 잘 돌아왔다, 통신에 성공했을 때 어떤 작업을 처리할지
 					console.log("AJAX요청 성공 !");
+					console.log(result); // 매개변수로 받은 것이 서버에서 작성한것으로 잘 출력됨
+					// 이걸 화면에 넣고싶다면?
+					// 바꾸고 싶은 요소에 접근부터 해야함, id가 있다!
+					$("#output1").text(result);
+					// jQuery 써서 content영역의 값을 바꾸고싶다면? text or html
+					// css, attribute 포함해서 네개 메소드는 알아야함
 					
 				},
 				
@@ -292,7 +308,7 @@
 				// 지금은 ajax1.do 매핑값을 가진 서블릿이 없으므로 404가 돌아올것임 -> 200, 201이 아님
 				// 브라우저 개발자도구의 console에 error가 호출된다, 그리고 complete도 호출되었음
 				
-				// 이제 실질적으로 ajax 요청을 받아서 처리할 서블릿을 생성하자
+				// 이제 실질적으로 ajax 요청을 받아서 처리할 서블릿을 생성하자 -> AjaxController1
 				
 			});
 			
