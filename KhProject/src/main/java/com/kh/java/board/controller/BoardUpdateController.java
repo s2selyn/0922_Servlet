@@ -146,11 +146,11 @@ public class BoardUpdateController extends HttpServlet {
 					// 그러면 지워주는(삭제) 작업을 할까?
 					// 뭐가 있어야 삭제할 수 있나? 경로랑 파일명, 경로는 같으니까 이미 갖고있음
 					// 원본 파일의 changeName이 없다, 이게있어야 지우는데 어떻게하지?
-					// 1. DB가서 들고온다, 2. 앞에서 넘긴다(changeName이 있음)
+					// 1. DB가서 들고온다, 2. 앞에서 넘긴다(changeName이 있음, update_from.jsp에서)
 					// 앞에서 넘기는걸로 하자 , 사용자에게 보여줄 필요없음 -> update_form.jsp 가서 파일명 넘기는 코드 작성
 					
 					// 기존에 존재하던 첨부파일 삭제
-					// ??? 10:24 언제 해봤음???
+					// 언제 해봤음? insert board 할 때 실패하면 파일 지우는거
 					new File(savePath + "/" + multiRequest.getParameter("changeName"))
 							.delete();
 					

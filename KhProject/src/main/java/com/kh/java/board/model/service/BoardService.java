@@ -389,10 +389,10 @@ public class BoardService {
 	public List<ImageBoardDto> selectImageList() {
 		
 		SqlSession sqlSession = Template.getSqlSession();
-		// ??? 10:45 복습! 커넥션 만드는법: ojdbc라이브러리를 추가해서 드라이버매니저로 드라이버등록하고, 접속정보를 인자값으로 전달하면서 커넥션 객체 생성
-		// sql세션은 커넥션 역할도 겸함, 얘도 접속해야하니 ojdbc 필요, 마이바티스 필요하니 설치, 동작을 위한 설정파일을 만들어야하니 mybatis-config.xml을 생성해서 그안에 environments > environment접속정보 url 이름 패스워드 드라이버 정보를 써서
+		// 커넥션 객체를 만드는 방법은 JDBC API를 이용해서 OJDBC라이브러리를 프로젝트 빌드 패스에 추가 -> 드라이버 등록 -> 드라이버 매니저를 이용해서 접속 정보를 메소드 호출 시 인자값으로 전달 -> getConnection 메소드에 전달하면서 커넥션 객체 생성
+		// sql세션은 커넥션 역할도 겸함, 얘도 접속해야하니 ojdbc 필요, 마이바티스 필요하니 설치, 동작을 위한 설정파일을 만들어야하니 소스폴더 생성, mybatis-config.xml을 생성해서 그안에 environments > environment > 데이터 소스 태그, property 속성 이용 > 접속정보 url 이름 패스워드 드라이버 정보를 써서
 		// 데이터 소스가 객체로 올라가면서 내가적은 데이터들이 필드에 세터를 이용해서 값들이 주입됨
-		// 외부 파일(xml파일)인데 읽기 위해서 마이바티스에서 제공하는 resources를 사용해서 파일데이터를 읽어와서 그다음 팩토리, 빌드를 사용해서 sqlSession객체를 만드는것
+		// 외부 파일(xml파일)인데 읽기 위해서 마이바티스에서 제공하는 resources 클래스를 사용해서 스트림을 만들고 파일데이터를 읽어와서 그다음 sql세션 팩토리 빌더 등을 사용해서 sqlSession객체를 만드는것
 		// 이것을 하기 위한 흐름과 절차(DB접속하려면 접속정보가 있어야함, 이걸 하려면 jdbc가 있어야 자바에서 커넥션할수있음)
 		
 		// sqlSession으로 sql문 실행하고 결과 받아오기, 뭘로 돌아올지 정해둠
@@ -480,26 +480,9 @@ public class BoardService {
 			Map<String, Object> map = new HashMap();
 			map.put("board", board);
 			map.put("files", files);
-			
+			return map;
 			마이바티스 collection 쓰기전에 주석처리
 			*/
-			
-			// -----
-			BoardDto boards = bd.selectBoardAndAttachment(sqlSession, boardNo);
-			// System.out.println(boards);
-			// 한번만 가서 가공매핑 잘해서 끌고오기가 가능해짐, 결과는 동일하지만 과정만 바뀌었다
-			// 대부분은 오토매핑으로 간단히 가능하지만 이런 상황(일대다관계)에서 resultMap 아주굿
-			// 파일만 달린게 아니라 후기 댓글 연관게시글 등 List 필드가 여러개면 select여러번해야하는데 그렇게 안하고 테이블 여러개 조인하고 collection만 추가하면 한번에 퉁
-			// sql문이 복잡하면 복잡할수록 result map의 효용이 좋아진다
-			// 공식문서를 잘 읽어봅시다
-			// 오토매핑할때 달아주는 별칭 조금 귀찮다면? 세팅에 mapUnderScoreToCamelCase 이런거 추가해서 가능하기도함
-			// typeAliases도 그냥 사용하는게 아니라 패키지로 쓰면 풀클래스명 필요없이 vo로 쓰고 안에꺼 클래스명만 가져다 쓸수도있고, mapper도 패키지안에 한번에 등록
-			// 동적 sql에도 foreach 쓰는법도 있다
-			// 페이징처리 오라클 offset으로 했지만 마이바티스 RowBounds로도 가능, 이러면 오라클말고 MySQL 쓰는 회사에서도 쓸수있고
-			// SQL문도 xml로 안쓰고 그냥 코드로 바로쓰기도 가능하고... 공식문서가 보물창고로군
-			// -----
-			
-			return boards;
 			
 			// DB에 두번가야한다는 사실이 마음에 안든다, 돈이 많이 나오긴 싫음
 			// 만명이 한번하면 만번인걸.. 사용자가 많을수록 DB에 갈 횟수가 기하급수적으로 늘어나서 돈이많이들어
@@ -535,6 +518,23 @@ public class BoardService {
 			// 하나의 게시글에 여러개의 댓글, 하나의 상품에 여러개의 리뷰, 하나의 게시글에 여러개의 첨부파일 등
 			// 한명의 회원이 여러개의 게시글 이런것도 전부 일대다관계
 			// 한꺼번에 조회할때 collection을 써서 알차게 조회가능 -> 맞춤 클래스 생성하러 감, dto에 생성
+			
+			// -----
+			BoardDto boards = bd.selectBoardAndAttachment(sqlSession, boardNo);
+			// System.out.println(boards);
+			// 한번만 가서 가공매핑 잘해서 끌고오기가 가능해짐, 결과는 동일하지만 과정만 바뀌었다
+			// 대부분은 오토매핑으로 간단히 가능하지만 이런 상황(일대다관계)에서 resultMap 아주굿
+			// 파일만 달린게 아니라 후기 댓글 연관게시글 등 List 필드가 여러개면 select여러번해야하는데 그렇게 안하고 테이블 여러개 조인하고 collection만 추가하면 한번에 퉁
+			// sql문이 복잡하면 복잡할수록 result map의 효용이 좋아진다
+			// 공식문서를 잘 읽어봅시다
+			// 오토매핑할때 달아주는 별칭 조금 귀찮다면? 세팅에 mapUnderScoreToCamelCase 이런거 추가해서 가능하기도함
+			// typeAliases도 그냥 사용하는게 아니라 패키지로 쓰면 풀클래스명 필요없이 vo로 쓰고 안에꺼 클래스명만 가져다 쓸수도있고, mapper도 패키지안에 한번에 등록
+			// 동적 sql에도 foreach 쓰는법도 있다
+			// 페이징처리 오라클 offset으로 했지만 마이바티스 RowBounds로도 가능, 이러면 오라클말고 MySQL 쓰는 회사에서도 쓸수있고
+			// SQL문도 xml로 안쓰고 그냥 코드로 바로쓰기도 가능하고... 공식문서가 보물창고로군
+			// -----
+			
+			return boards;
 			
 		}
 		

@@ -87,7 +87,7 @@ public class BoardDao {
 	
 	public List<Board> selectSearchList(SqlSession sqlSession, Map<String, Object> map) {
 		
-		// ??? 12:35 주의할점: 미리 보드리스트를 만들어서 키값 잘 맞춰서 출력해줘야함
+		// 주의할점: 미리 보드리스트를 만들어 둔 것을 응답페이지로 사용할것이라 키값을 동일하게 맞춰서 조회해주는것이 좋겠다.
 		return sqlSession.selectList("boardMapper.selectSearchList", map);
 		// map에 담은게 많아서 매퍼에서 할일이 많다
 		
