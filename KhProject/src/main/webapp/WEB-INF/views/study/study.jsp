@@ -315,6 +315,57 @@
 		});
 	
 	</script>
+	
+	<hr>
+	
+	<h3>2. 버튼 클릭 시 DB조회 결과 응답</h3>
+	
+	아이디 : <input type="text" id="userId" /> <br>
+	비밀번호 : <input type="password" id="userPwd" /> <br>
+	
+	<%-- 로그인을 구현해뒀다, 아이디/비밀번호를 입력받아서 member가 응답으로 돌아오는것을 화면에 보여주자, request 어쩌구 하는게 아니라 그냥 그 데이터를 보여주도록 해보자 --%>
+	<button onclick="memberInfo();">정보조회</button>
+	
+	<br/><br/>
+	사용자 이름 : <label id="name">현재 응답 없음</label>
+	사용자 이메일 : <label id="email">현재 응답 없음</label>
+	<%-- 입력받은정보로 DB가서 조회한다음 이름과 이메일을 출력할것임, ajax 요청을 이용할거얏 --%>
+	<script>
+	
+		function memberInfo() {
+			
+			$.ajax({
+				
+				url : "ajax2.do", // 아직 서버에 매핑되어있는 서블릿, 처리해줄 친구가 서블릿 컨테이너에 없으므로 404 -> 서블릿 생성
+				type : "post", // 비밀번호가 넘어갈테니 post방식으로 써보자
+				
+				// 요청보낼때 값을 전달하고 싶으면 data 속성에 작성
+				data : {
+					
+					id : $("#userId").val(),
+					pwd : $("#userPwd").val()
+					
+				},
+				
+				// 조회해서 출력해줄건데 성공했을때 할거니까
+				success : function(response) {
+					
+					console.log("AJAX요청 성공!");
+					
+					// response에 하나씩 print 메소드로 담아서 보냈음
+					// console.log(response); // 이름, 이메일이 딱붙어서 나온다
+					// 필드가 늘어난다면? 감당이 되느냐는거지 -> 옛날에는 이걸 XML 형태로 보냈다
+					// $("#name").text(response);
+					
+					console.log(response);
+					
+				}
+				
+			}); // 메소드를 호출하면서 넘길 인자값이 많으니 객체로 전달한다
+			
+		}
+	
+	</script>
 
 </body>
 </html>
