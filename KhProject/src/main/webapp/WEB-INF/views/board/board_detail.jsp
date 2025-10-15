@@ -113,20 +113,31 @@
 			<table class="form-group" align="center">
 				<thead>
 					<tr>
+						<%-- 댓글을 작성하는 영역, 로그인 전후로 보여줄 영역이 다름
+						댓글 작성부터 구현할건데, 로그인 전에 보여줄 녀석, 로그인 하고 나서 보여줄 녀석 -> 조건문
+						jsp상에서 조건문 쓰려면 선택지가 두개, choose when otherwise 아니면 if
+						지금은 choose가 좋겠지? 두개니까 --%>
 						<th>댓글작성</th>
-							<td>
-								<textarea id="replyContent" cols="50" rows="3" style="resize:none;" class="form-control"></textarea>
-							</td>
-							<td><button onclick="insertReply();" class="btn" style="width : 100%; height : 100%; background-color: #52b1ff; color : white;">댓글등록</button></td>
 						
-							<td>
-								<textarea readonly cols="50" rows="3" style="resize:none;" class="form-control">로그인 후 이용가능한 서비스입니다.</textarea>
-							</td>
-							<td><button class="btn" style="width : 100%; height : 100%; background-color: #52b1ff; color : white;">댓글등록</button></td>
+							<c:choose>
+								<c:when test="${ sessionScope.userInfo ne null }">
+									<td>
+										<textarea id="replyContent" cols="50" rows="3" style="resize:none;" class="form-control"></textarea>
+									</td>
+									<td><button onclick="insertReply();" class="btn" style="width : 100%; height : 100%; background-color: #52b1ff; color : white;">댓글등록</button></td>
+									<%-- 이 버튼을 클릭하면 요청이 가도록 만들자 -> 맨 아래에 script 태그에서 작업 --%>
+								</c:when>
+								<c:otherwise>
+									<td>
+										<textarea readonly cols="50" rows="3" style="resize:none;" class="form-control">로그인 후 이용가능한 서비스입니다.</textarea>
+									</td>
+									<td><button class="btn" style="width : 100%; height : 100%; background-color: #52b1ff; color : white;">댓글등록</button></td>
+								</c:otherwise>
+							</c:choose>
 					</tr>
 				</thead>
 				<tbody>
-				
+				<%-- 게시글에 달린 댓글들을 조회하는 영역 --%>
 				</tbody>
 			</table>
 			<br><br><br><br>
@@ -136,7 +147,33 @@
 	
 	<jsp:include page="../include/footer.jsp" />
 	
+	<script>
 	
+		function insertReply() {
+			
+			// 댓글작성 요청 -> KH_REPLY 한 행 INSERT
+			// 게시글번호, 댓글 내용, 작성자 번호
+			// DEFAULT 값 넣을 컬럼들(내용, 게시글 번호, 작성자정보), 게시글번호는 SEQ 이용할 계획
+			
+			const content = $("#replyContent").val();
+			
+			content.replaceAll("이승철바보", "사실바보아님"); // 욕설 고치기 등
+			
+			// 요청을 보내려면?
+			$.ajax({
+				
+				url : "insert.reply",
+				type : "POST", // insert는 post로 가는 것이 좋다
+				// get은 url에 노출됨, 전송길이에 제한이 있어 크기가 큰 데이터는 절삭됨, 캐싱되어 메모리에 올라가있으므로 같은 url로 요청되면 재사용됨?
+				// 만약에 댓글이 get방식이라면? 나중에 요청이 전송될 때 url에 전부 노출됨
+				// 보통은 필터링이 된다, get 방식이라면 내가 url을 고쳐서 요청을 보낸다면 replaceAll을 이용할 수 없게 됨
+				// 앞에서 1차 거름망을 한번 할 수 없게 된다, 어차피 2차에서 해야하긴 하지만 기본적으로 insert는 POST
+				
+			});
+			
+		}
+	
+	</script>
 	
 	
 	

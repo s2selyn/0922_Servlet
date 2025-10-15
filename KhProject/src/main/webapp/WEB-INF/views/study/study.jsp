@@ -437,7 +437,26 @@
 				type : "get", // 조회의 요청전송방식은 get
 				success : function(result) { // 성공했을때 화면상에 조회해온 내용을 출력해줄것임
 					
-					console.log(result); // 매개변수로 받아서 출력해볼거니까 이렇게 미리 작성
+					// console.log(result); 매개변수로 받아서 출력해볼거니까 이렇게 미리 작성
+					
+					// 몇개가 돌아올지 모르니까 반복문을 쓸것이야
+					let str = '';
+					for(e of result) {
+						
+						// console.log(e.board); 이렇게 접근해야 실제 필요한 값들이 나옴
+						const board = e.board;
+						str += `
+								<tr>
+									<td>\${board.boardNo}</td>
+									<td>\${board.boardTitle}</td>
+									<td>\${board.boardWriter}</td>
+								</tr>
+							   `;
+						// 동적인 요소로 행을 추가
+						
+					}
+					
+					$("tbody").html(str);
 					
 				}
 				
