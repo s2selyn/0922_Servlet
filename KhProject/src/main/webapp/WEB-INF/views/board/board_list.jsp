@@ -145,20 +145,18 @@ tr:hover{
         		
 				<c:forEach var="i" begin="${ pi.startPage }"
 								   end="${ pi.endPage }">
-
-				<c:choose>
-				<c:when test="${ not empty condition }">
-	                <button 
-	                class="btn btn-outline-primary" style="color:#52b1ff;"
-	                onclick="location.href='search.board?page=${i}&condition=${condition}&query=${keyword}'">${i}</button>
-	            </c:when>
-	            <c:otherwise>
-	                <button 
-	                class="btn btn-outline-primary" style="color:#52b1ff;"
-	                onclick="location.href='boards?page=${i}'">${i}</button>
-	            </c:otherwise>
-	                
-				</c:choose>
+					<c:choose>
+						<c:when test="${ not empty condition }">
+			                <button 
+			                class="btn btn-outline-primary" style="color:#52b1ff;"
+			                onclick="location.href='search.board?page=${i}&condition=${condition}&query=${keyword}'">${i}</button>
+			            </c:when>
+			            <c:otherwise>
+			                <button 
+			                class="btn btn-outline-primary" style="color:#52b1ff;"
+			                onclick="location.href='boards?page=${i}'">${i}</button>
+			            </c:otherwise>
+					</c:choose>
 				</c:forEach>
 	        			
 	        	<c:if test="${ pi.currentPage ne pi.maxPage }">

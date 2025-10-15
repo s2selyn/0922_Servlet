@@ -396,7 +396,7 @@
 		     , #{boardWriter}
 		       )
 	</insert>
-	
+	<!-- ↑↓위아래 insert문들 쓸 때 생각해야할것들이 있음(10월 2일 16:44 ~ 16:48) -->
 	<insert id="insertAttachmentList"
 			parameterType="com.kh.java.board.model.vo.Attachment">
 		INSERT
