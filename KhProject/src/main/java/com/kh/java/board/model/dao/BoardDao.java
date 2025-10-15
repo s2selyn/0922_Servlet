@@ -116,5 +116,9 @@ public class BoardDao {
 	public int insertReply(SqlSession sqlSession, Reply reply) {
 		return sqlSession.insert("boardMapper.insertReply", reply);
 	}
+	
+	public List<Reply> selectReply(SqlSession sqlSession, Long boardNo) {
+		return sqlSession.selectList("boardMapper.selectReply", boardNo);
+	}
 
 }

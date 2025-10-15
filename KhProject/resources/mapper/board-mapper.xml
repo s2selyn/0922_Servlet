@@ -503,5 +503,26 @@
 		     , #{replyWriter}
 		       )
 	</insert>
+	
+	<select id="selectReply"
+			resultType="com.kh.java.board.model.vo.Reply">
+	<!-- attachment처럼 한꺼번에 가져갈 수 있지, 그게 효율적일수있지만 이번엔 경우가 좀 다름, 구현하고 설명하실예정 -->
+		SELECT
+		       REPLY_NO replyNo
+		     , REPLY_CONTENT replyContent
+		     , USER_ID replyWriter
+		     , CREATE_DATE createDate
+		  FROM
+		       KH_REPLY
+		  JOIN
+		       KH_MEMBER ON (REPLY_WRITER = USER_NO)
+		 WHERE
+		       KH_REPLY.STATUS = 'Y'
+		   AND
+		       REF_BNO = #{boardNo}
+		 ORDER
+		    BY
+		       createDate DESC
+	</select>
 
 </mapper>

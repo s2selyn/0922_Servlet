@@ -184,7 +184,49 @@
 					
 					if(result === 'success') {
 						$('#replyContent').val(''); // 작성하면 일단 없어지게 하고 댓글 몇개 달기
+						selectReply();
 					}
+					
+				}
+				
+			});
+			
+		};
+		
+		$(function() {
+			
+			selectReply(); // 댓글 작성했을 때도 작성한 댓글 보이도록 호출하기 위해서 따로 분리함
+			// 첨부파일처럼 조회를 구현하면 페이지를 새로고침하고 전체 내용을 다시 조회하도록 해야함
+			// 네이버 웹툰 같은것도 새로고침 버튼으로 전체를 로드하는게 아니라 댓글만 ajax로 요청 보내서 읽어오게 되어있음
+			// 객체 형태로 응답데이터를 만들어서 돌려줌
+			// 분리하면 댓글로 따로 조회하는 기능으로 구현해서 새로 댓글을 작성하거나 새로고침하지 않아도 댓글만 새로 가져올 수있음
+			// 그러니 뭉치지 않고 분리하는것이 더 나을수도 있음
+			
+		});
+		
+		function selectReply() {
+			
+			$.ajax({
+				
+				// select해오고 gson으로 뿌려주기
+				url : "list.reply",
+				type : "get",
+				data : {
+					boardNo : ${map.board.boardNo} // 게시글 번호를 들고가야 현재 게시글에 달린 댓글을 가져올 수 있음
+				},
+				
+				success : function(result) {
+					
+					// console.log(result);
+					
+					const str = result.map(e => `
+												 <tr>
+													 <td>\${e.replyWriter}</td>
+													 <td>\${e.replyContent}</td>
+													 <td>\${e.createDate}</td>
+												 </tr>
+											    `).join('');
+					$("tbody").html(str);
 					
 				}
 				

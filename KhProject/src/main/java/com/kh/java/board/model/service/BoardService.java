@@ -558,5 +558,17 @@ public class BoardService {
 		return result; // 결과반환
 		
 	}
+	
+	public List<Reply> selectReply(Long boardNo) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		List<Reply> reply = bd.selectReply(sqlSession, boardNo);
+		
+		sqlSession.close();
+		
+		return reply;
+		
+	}
 
 }
