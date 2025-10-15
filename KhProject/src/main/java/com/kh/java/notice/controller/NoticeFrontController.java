@@ -36,6 +36,9 @@ public class NoticeFrontController extends HttpServlet {
 		case "select" : view = nc.select(request, response);
 		}
 		
+		// 오늘의 숙제 -> 내일까지
+		// AJAX로 테이블에다가 INSERT, SELECT구현해보기 -> Notice
+		
 		request.getRequestDispatcher(view).forward(request, response);
 		
 	}
