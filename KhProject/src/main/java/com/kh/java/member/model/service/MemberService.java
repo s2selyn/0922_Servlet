@@ -212,5 +212,17 @@ public class MemberService {
 		return result;
 		
 	}
+	
+	public String checkId(String id) {
+		
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		String result = md.checkId(sqlSession, id);
+		
+		sqlSession.close();
+		
+		return result;
+		
+	}
 
 }

@@ -100,4 +100,21 @@
 		       STATUS = 'Y'
 	</update>
 	
+	<select id="checkId"
+			resultType="string"
+			parameterType="string">
+		SELECT
+		       DECODE(
+		       COUNT(*)
+		     , 0
+		     , 'NNNNY'
+		     , 1
+		     , 'NNNNN'
+		       )
+		  FROM
+		       KH_MEMBER
+		 WHERE
+		 	   USER_ID = #{id}
+	</select>
+	
 </mapper>

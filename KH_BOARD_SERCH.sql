@@ -131,3 +131,38 @@ SELECT
  ORDER
     BY
        FILENO ASC;
+
+--------------------------------------------------
+
+SELECT
+       USER_ID
+  FROM
+       KH_MEMBER
+ WHERE
+       USER_ID = 'admin';
+-- 있을땐 아이디값(1행), 없을 땐 null(selectOne 쓸거니까)
+
+SELECT
+       COUNT(*)
+  FROM
+       KH_MEMBER
+ WHERE
+       USER_ID = 'admin';
+-- 있을땐 1, 없을 땐 0(그룹함수니까 결과가 오긴 온다)
+
+/*
+ * String userId = bd.checkId(sqlSession, id);
+ * int result = bd.checkId(sqlSession, id);
+ * 
+ * if(userId != null || result > 0) {
+ * 		return "NNNNN"
+ * } else {
+ * 		return "NNNNY"
+ * }
+ * 
+ */
+
+SELECT DECODE(COUNT(*), 0, 'NNNNY', 1, 'NNNNN') FROM KH_MEMBER WHERE USER_ID = 'admin3';
+-- return bd.checkId(sqlSession, id);
+-- 서버자원을 덜쓰고 DB에서 SQL문으로 바로 가능, 자바에서 쓸 코드를 줄일 수 있다, 빠르기도 함
+-- 아무튼 미리 SQL을 생각해둬야하는것

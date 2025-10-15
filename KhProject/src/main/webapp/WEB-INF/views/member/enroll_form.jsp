@@ -39,7 +39,46 @@
 			if($userId.length >= 5) {
 				
 				// 아이디가 중복값이 존재하는가 검사 -> DB까지 가서 SELECT 해봐야 알 수 있다
+				// 지금 keyup으로 했음, 이럴때마다 동기식 요청이 간다면? 서블릿 갔다 올때마다 렌더링.. 데이터 와리가리가 많고 그때마다 화면 번쩍임 복잡함
+				// 비동기 방식으로 ajax 써서 구현할것이다
+				// ajax 세가지 방법 중 첫번째 jQ이용할건데, 방법1 $ 2 참조 3 ajax메소드호출
+				// 보낼 데이터가 많음, 자바스크립트에서는 여러데이터를 배열이나 객체로 다루는데 지금은 키밸류가 필요하므로 객체이용
+				$.ajax({
+					
+					url : "checkId", // 꼭 보낼 필수속성 url
+					type : "get", // form태그였다면 method 속성값, 필수는 아님, 안적으면 get방식으로 간다
+					data : { // 요청 시 전달값이 있을때는 data 속성
+						id : $userId
+					},
+					// 네이버처럼 한다고 해보자
+					success : function(response) {
+						
+						// 돌아온 값을 써주고싶다 -> 매개변수 추가(자바스크립트는 자료형 생략가능)
+						// console.log(response); 잘 들어온당
+						// response 경우의수 : NNNNN(중복아이디있음) / NNNNY(중복아이디없음)
+						// 네이버는 substr로 잘라썼는데 우리는 그대로 써보자
+						// 어쨌든 하고싶은 일은 span요소에 값띄우기인데, 출력하고싶은 값이 다름 -> 조건
+						if(response === 'NNNNN') {
+							
+							// span 요소의 id="idChk"
+							$("#idChk").css('font-size', '12px')
+									   .css('color', 'red')
+									   .text('이미 존재하는 아이디 입니다.');
+							
+						} else {
+							
+							$("#idChk").css('font-size', '12px')
+									   .css('color', 'green')
+									   .text('사용 가능한 아이디 입니다.');
+							
+						}
+						
+					}
+					
+				});
 				
+			} else { // 5글자 미만일 때 아무것도 안보이게 -> 뭐 5글자 이상 입력하라고 할 수도 있겠지? ㅇㅇ
+				$("#idChk").text("");
 			}
 			
 		}
