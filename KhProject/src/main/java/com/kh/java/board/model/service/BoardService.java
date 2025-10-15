@@ -12,6 +12,7 @@ import com.kh.java.board.model.dto.ImageBoardDto;
 import com.kh.java.board.model.vo.Attachment;
 import com.kh.java.board.model.vo.Board;
 import com.kh.java.board.model.vo.Category;
+import com.kh.java.board.model.vo.Reply;
 import com.kh.java.common.Template;
 import com.kh.java.common.vo.PageInfo;
 
@@ -538,6 +539,23 @@ public class BoardService {
 		}
 		
 		return null;
+		
+	}
+	
+	public int insertReply(Reply reply) {
+		
+		// 딱히 할 작업은 없고 계속 고정된 형태로 작업중임
+		SqlSession sqlSession = Template.getSqlSession();
+		
+		int result = bd.insertReply(sqlSession, reply);
+		
+		if(result > 0) { // 성공했다면 커밋
+			sqlSession.commit();
+		}
+		
+		sqlSession.close(); // 자원반납
+		
+		return result; // 결과반환
 		
 	}
 

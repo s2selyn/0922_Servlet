@@ -10,6 +10,7 @@ import com.kh.java.board.model.dto.ImageBoardDto;
 import com.kh.java.board.model.vo.Attachment;
 import com.kh.java.board.model.vo.Board;
 import com.kh.java.board.model.vo.Category;
+import com.kh.java.board.model.vo.Reply;
 import com.kh.java.common.vo.PageInfo;
 
 public class BoardDao {
@@ -110,6 +111,10 @@ public class BoardDao {
 	
 	public BoardDto selectBoardAndAttachment(SqlSession sqlSession, Long boardNo) {
 		return sqlSession.selectOne("boardMapper.selectBoardAndAttachment", boardNo);
+	}
+	
+	public int insertReply(SqlSession sqlSession, Reply reply) {
+		return sqlSession.insert("boardMapper.insertReply", reply);
 	}
 
 }

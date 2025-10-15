@@ -483,5 +483,25 @@
 		    BY
 		       FILE_NO ASC
 	</select>
+	
+	<insert id="insertReply"
+			parameterType="com.kh.java.board.model.vo.Reply">
+		INSERT
+		  INTO
+		       KH_REPLY
+		       (
+		       REPLY_NO
+		     , REF_BNO
+		     , REPLY_CONTENT
+		     , REPLY_WRITER
+		       )
+		VALUES
+		       (
+		       SEQ_RNO.NEXTVAL
+		     , #{refBno}
+		     , #{replyContent}
+		     , #{replyWriter}
+		       )
+	</insert>
 
 </mapper>

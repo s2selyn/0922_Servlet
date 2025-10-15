@@ -116,7 +116,9 @@
 						<%-- 댓글을 작성하는 영역, 로그인 전후로 보여줄 영역이 다름
 						댓글 작성부터 구현할건데, 로그인 전에 보여줄 녀석, 로그인 하고 나서 보여줄 녀석 -> 조건문
 						jsp상에서 조건문 쓰려면 선택지가 두개, choose when otherwise 아니면 if
-						지금은 choose가 좋겠지? 두개니까 --%>
+						지금은 choose가 좋겠지? 두개니까
+						로그인한 상태는 sessionScope에 담김 userInfo가 null이 아니면 로그인한 상태임
+						 --%>
 						<th>댓글작성</th>
 						
 							<c:choose>
@@ -157,7 +159,7 @@
 			
 			const content = $("#replyContent").val();
 			
-			content.replaceAll("이승철바보", "사실바보아님"); // 욕설 고치기 등
+			content.replaceAll("이승철바보", "사실바보아님"); // 욕설 고치기 등 필터링
 			
 			// 요청을 보내려면?
 			$.ajax({
@@ -168,6 +170,23 @@
 				// 만약에 댓글이 get방식이라면? 나중에 요청이 전송될 때 url에 전부 노출됨
 				// 보통은 필터링이 된다, get 방식이라면 내가 url을 고쳐서 요청을 보낸다면 replaceAll을 이용할 수 없게 됨
 				// 앞에서 1차 거름망을 한번 할 수 없게 된다, 어차피 2차에서 해야하긴 하지만 기본적으로 insert는 POST
+				
+				data : {
+					
+					replyContent : content,
+					boardNo : ${map.board.boardNo}
+					
+				},
+				
+				success : function(result) {
+					
+					// console.log(result);
+					
+					if(result === 'success') {
+						$('#replyContent').val(''); // 작성하면 일단 없어지게 하고 댓글 몇개 달기
+					}
+					
+				}
 				
 			});
 			
