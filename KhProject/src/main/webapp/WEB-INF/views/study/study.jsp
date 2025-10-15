@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>AJAX</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
 
@@ -227,6 +233,72 @@
 		- error : 통신 실패 시 실행할 콜백함수를 정의
 		- complete : 성공하든 실패하든 무조건 끝나면 실행할 콜백함수를 정의
 	</pre>
+	
+	<%-- jQuery CDN 방식으로 가져올 스크립트 태그 작성먼저 해야함, header.jsp에서 11~14행 복사해옴 --%>
+	
+	<h2>jQuery를 사용한 AJAX요청 및 응답</h2>
+	
+	<h3>1. 버튼을 클릭하여 서버에 데이터틀 전송하고 단순 문자열 데이터 응답받기</h3>
+	
+	<div class="form-group">
+		<div class="form-control">
+			<%-- 입력값을 받아서 사용하기 위해 id 속성값 부여 --%>
+			입력 : <input type="text" id="input1" />
+		</div>
+		<div class="form-control">
+			<%-- 버튼 선택을 위한 id도 추가로 부여함 --%>
+			<button class="btn btn-sm btn-primary" id="btn1">요청보내기!</button>
+		</div>
+	</div>
+	
+	<%-- 돌아올 응답을 출력할 라벨 요소 --%>
+	응답 : <label id="output1">현재 응답 없음</label>
+	
+	<script>
+		
+		// 요청 보내기 버튼을 클릭하면!
+		$('#btn1').click(function() {
+			
+			// 동기식 요청
+			// location.href = "ajax1.do?input1=머시기";
+			
+			// 비동기식 요청(jQuery버전)
+			$.ajax({
+				
+				url : "ajax1.do", // 요청 보낼 URL 속성 -> 이것을 서블릿 매핑값으로 작성한다
+				type : "get",
+				data : {
+					value : $("#input1").val() // 내가 input요소에 적은 key를 뭐라고 할건지 적고, 속성값을 가져옴
+				},
+				
+				// 이 이후에는 성공시 요청처리, 실패시 요청처리, 통신 종료 시 요청처리 내용을 기술
+				success : function() {
+					
+					// 서버로 요청을 보내서 응답도 잘 돌아왔다, 통신에 성공했을 때 어떤 작업을 처리할지
+					console.log("AJAX요청 성공 !");
+					
+				},
+				
+				// 실패 시 할 일
+				error : function() {
+					console.log("AJAX요청 실패 !");
+				},
+				
+				// 성공실패 상관없이 무조건 할 일
+				complete : function() {
+					console.log("나는 무조건함!!!");
+				}
+				
+				// 지금은 ajax1.do 매핑값을 가진 서블릿이 없으므로 404가 돌아올것임 -> 200, 201이 아님
+				// 브라우저 개발자도구의 console에 error가 호출된다, 그리고 complete도 호출되었음
+				
+				// 이제 실질적으로 ajax 요청을 받아서 처리할 서블릿을 생성하자
+				
+			});
+			
+		});
+	
+	</script>
 
 </body>
 </html>
